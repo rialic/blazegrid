@@ -1,0 +1,35 @@
+{
+    "private": true,
+    "packageManager": "yarn@3.2.0",
+    "scripts": {
+        "dev": "yarn development",
+        "development": "mix",
+        "watch": "mix watch",
+        "wat": "yarn watch",
+        "watch-poll": "mix watch -- --watch-options-poll=1000",
+        "hot": "mix watch --hot",
+        "prod": "yarn production",
+        "production": "mix --production",
+        "vscode": "yarn dlx @yarnpkg/sdks vscode",
+        "destroy-package-manager": "rm -Rf .yarn && rm -Rf .vscode && rm -Rf .editorconfig && rm -Rf .pnp.cjs && rm -Rf .pnp.loader.mjs && rm -f .yarnrc.yml && rm -f yarn.lock && rm -Rf node_modules"
+    },
+    "devDependencies": {
+        "autoprefixer": "^10.4.5",
+        "cssnano": "^5.1.7",
+        "eslint": "^8.13.0",
+        "eslint-config-eslintx": "^1.0.3",
+        "laravel-mix": "^6.0.43",
+        "laravel-mix-purgecss": "^6.0.0",
+        "postcss": "^8.1.14",
+        "postcss-import": "^14.1.0",
+        "postcss-purgecss-laravel": "^2.0.0",
+        "resolve-url-loader": "^5.0.0",
+        "sass": "^1.50.1",
+        "sass-loader": "^12.6.0",
+        "webpack": "^5.72.0",
+        "webpack-cli": "^4.9.2"
+    },
+    "dependencies": {
+        "bootstrap": "^5.1.3"
+    }
+}

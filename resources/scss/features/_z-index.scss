@@ -1,0 +1,9 @@
+/*--------------------*\
+  Z-INDEX
+\*--------------------*/
+
+@each $key, $val in $zindex {
+    .zindex-#{$key} {
+        z-index: $val;
+    }
+}
