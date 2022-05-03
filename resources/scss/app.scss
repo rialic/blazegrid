@@ -16,10 +16,17 @@
 @import "~bootstrap/scss/close";
 @import "~bootstrap/scss/offcanvas";
 
+@import '~@fortawesome/fontawesome-free/scss/fontawesome';
+@import '~@fortawesome/fontawesome-free/scss/solid';
+@import '~@fortawesome/fontawesome-free/scss/brands';
+@import '~@fortawesome/fontawesome-free/scss/regular';
+
 @import "~bootstrap/scss/utilities/api";
 @import './features/font-size';
 @import './features/z-index';
-@import './features/waves';
+
+@import './components/waves';
+@import './components/circles';
 
 html {
     height: 100%;
@@ -36,7 +43,8 @@ body {
 \*--------------------*/
 .header-menu {
     display: flex;
-    height: 4.375rem;
+    justify-content: space-between;
+    min-height: 4.375rem;
     background-color: #0f1923;
     border-bottom: rem(1px) solid #323b45;
 }

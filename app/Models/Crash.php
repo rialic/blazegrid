@@ -41,7 +41,7 @@ class Crash extends Model
         $this->cr_created_at_server = Carbon::parse($value)->setTimezone('America/Sao_Paulo');
     }
 
-    //GETTERS
+    // GETTERS
     public function getPointAttribute()
     {
         return $this->cr_point;
@@ -55,5 +55,11 @@ class Crash extends Model
     public function getCreateAtServerAttribute()
     {
         return $this->cr_create_at_server;
+    }
+
+    // TRANSIENTS METHODS
+    public function getPrimaryKeyAttribute()
+    {
+        return $this->primaryKey;
     }
 }

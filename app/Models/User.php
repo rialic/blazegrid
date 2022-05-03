@@ -3,7 +3,6 @@
 namespace App\Models;
 
 use Illuminate\Contracts\Auth\MustVerifyEmail;
-use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Support\Str;
@@ -11,23 +10,37 @@ use Illuminate\Support\Facades\Hash;
 
 class User extends Authenticatable
 {
-    use HasFactory, Notifiable;
+    use Notifiable;
 
     protected $table = 'tb_users';
     protected $primaryKey = 'us_id';
 
+    protected $appends = [
+        'uuid',
+        'name',
+        'cpf',
+        'email',
+        'phone',
+        'whatsapp',
+        'status'
+    ];
+
     protected $fillable = [
+        'us_socialite_id',
         'us_name',
         'us_cpf',
         'us_email',
         'us_phone',
         'us_whatsapp',
+        'us_status',
         'us_password',
+        'us_terms_conditions'
     ];
 
     protected $hidden = [
         'us_id',
         'us_uuid',
+        'us_socialite_id',
         'us_name',
         'us_cpf',
         'us_email',
@@ -60,6 +73,11 @@ class User extends Authenticatable
     }
 
     // SETTERS
+    public function setSocialiteIdAttribute($value)
+    {
+        $this->us_socialite_id = $value;
+    }
+
     public function setNameAttribute($value)
     {
         $this->us_name = $value;
@@ -85,12 +103,27 @@ class User extends Authenticatable
         $this->us_whatsapp = $value;
     }
 
+    public function setStatusAttribute($value)
+    {
+        $this->us_status = $value;
+    }
+
     public function setPasswordAttribute($value)
     {
         $this->us_password = Hash::make($value);
     }
 
+    public function setTermsConditionsAttribute($value)
+    {
+        $this->us_terms_conditions = $value;
+    }
+
     // GETTERS
+    public function getSocialiteIdAttribute()
+    {
+        return $this->us_socialite_id;
+    }
+
     public function getNameAttribute()
     {
         return $this->us_name;
@@ -116,8 +149,45 @@ class User extends Authenticatable
         return $this->us_whatsapp;
     }
 
-    public function getPasswordAttribute()
+    public function getStatusAttribute()
     {
-        return $this->us_password;
+        return $this->us_status;
+    }
+
+    // RELATIONSHIPS
+    public function plan()
+    {
+        return $this->belongsTo(Plans::class, 'pl_id', 'pl_id');
+    }
+
+    public function roles()
+    {
+        return $this->belongsToMany(Role::class, 'tb_role_user', 'us_id', 'ro_id');
+    }
+
+    // TRANSIENTS METHODS
+    public function isAdmin()
+    {
+        return $this->hasAnyRoles('ADMIN');
+    }
+
+
+    public function hasPermission(Permission $permission)
+    {
+        return $this->hasAnyRoles($permission->roles);
+    }
+
+    public function hasAnyRoles($roles)
+    {
+        if (is_array($roles) || is_object($roles)) {
+            return !! $roles->intersect($this->roles)->count();
+        }
+
+        return $this->roles->contains('name', $roles);
+    }
+
+    public function getPrimaryKeyAttribute()
+    {
+        return $this->primaryKey;
     }
 }

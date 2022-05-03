@@ -1,0 +1,27 @@
+.irregular-circle {
+    position: relative;
+    width: rem(64);
+    height: rem(64);
+    line-height: rem(64);
+    color: #ffffff;
+    border-radius: 92% 50% 80% 50%;
+    z-index: 99;
+}
+
+.irregular-circle-alt {
+    position: relative;
+    top: rem(4);
+    width: rem(80);
+    height: rem(64);
+    right: rem(-8);
+    line-height: rem(64);
+    border-radius: 50% 100% 50% 80%;
+}
+
+.circle--primary {
+    background-color: rgba(58, 63, 68, .6);
+}
+
+.circle--secondary {
+    background-color: rgba(122, 130, 136, .6);
+}

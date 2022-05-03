@@ -12,7 +12,7 @@
 
                     &nbsp;{{config('app.name')}}&nbsp;
 
-                </a> - Analisando Crash e Double.
+                </a> - Históricos para Crash e Double.
 
             </div>
 

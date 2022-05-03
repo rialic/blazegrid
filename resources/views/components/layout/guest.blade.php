@@ -12,9 +12,7 @@
 </head>
 
 <body>
-    @include('components.header.guest-header-menu')
-
-    {{-- @include('components.section.guest-offcanvas') --}}
+    @include('components.header.header-menu')
 
     {{$slot}}
 
