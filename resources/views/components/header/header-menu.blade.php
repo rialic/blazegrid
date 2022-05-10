@@ -1,5 +1,5 @@
 <header class="header-menu justify-content-between">
-  <a href="{{route('public.init')}}" class="d-flex align-items-center px-1 text-decoration-none">
+  <a href="{{route('guest.init')}}" class="d-flex align-items-center px-1 text-decoration-none">
     <span class="fs-24 fw-bold text-danger">blaze</span>
 
     &thinsp;
@@ -23,14 +23,14 @@
 
   @guest
   <ul class="nav align-items-stretch">
-    <x-menu.nav-link href="{{route('public.login')}}" text="Cadastre-se" />
-    <x-menu.nav-link href="{{route('public.login')}}" text="Entrar" />
+    <x-menu.nav-link href="{{route('login')}}" text="Cadastre-se" />
+    <x-menu.nav-link href="{{route('login')}}" text="Entrar" />
   </ul>
   @endguest
 
   @auth
   <ul class="nav align-items-stretch">
-    <x-menu.nav-link href="javascript:void(0);" text="Sair" />
+    <x-menu.nav-link href="{{route('priv.logout')}}" text="Sair" />
   </ul>
   @endauth
 </header>

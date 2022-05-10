@@ -139,6 +139,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */   "empty": () => (/* binding */ empty),
 /* harmony export */   "makeElement": () => (/* binding */ makeElement),
 /* harmony export */   "numericKeyboard": () => (/* binding */ numericKeyboard),
+/* harmony export */   "parseFilters": () => (/* binding */ parseFilters),
 /* harmony export */   "random": () => (/* binding */ random),
 /* harmony export */   "serialize": () => (/* binding */ serialize),
 /* harmony export */   "space": () => (/* binding */ space),
@@ -170,100 +171,179 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
 function _typeof(obj) { "@babel/helpers - typeof"; return _typeof = "function" == typeof Symbol && "symbol" == typeof Symbol.iterator ? function (obj) { return typeof obj; } : function (obj) { return obj && "function" == typeof Symbol && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }, _typeof(obj); }
 
 var _ref = function () {
-  function e(e) {
-    return new Promise(function (t, o) {
-      var a = document.createElement("textarea");
-      a.value = e, a.style.top = "0", a.style.left = "0", a.style.position = "fixed", document.body.appendChild(a), a.focus(), a.select();
+  /**
+       * Return true if variable is empty or false if not.
+       * @param {Object} val - Value to be evaluated
+       * @returns {boolean}
+       */
+  var empty = function empty(val) {
+    if (_typeof(val) === 'object') {
+      if (val !== null) {
+        var getObjectInstanceVal = function getObjectInstanceVal() {
+          return Object.prototype.toString.call(val);
+        };
 
-      try {
-        document.execCommand("copy") && t(!0);
-      } catch (e) {
-        o(!1);
-      }
+        var getArrayLength = function getArrayLength() {
+          return val.length;
+        };
 
-      document.body.removeChild(a);
-    });
-  }
+        var getObjectLength = function getObjectLength() {
+          return Object.keys(val).length;
+        };
 
-  return {
-    empty: function empty(e) {
-      if ("object" == _typeof(e) && null !== e) {
-        var t = function t() {
-          return Object.keys(e).length;
-        },
-            o = function o() {
-          var t;
-          var o = [String, Boolean, Number];
+        var _default = function _default() {
+          return val.valueOf();
+        };
 
-          for (var _i = 0, _o = o; _i < _o.length; _i++) {
-            var _a = _o[_i];
+        var getValueOf = function getValueOf() {
+          var valueOf;
+          var instanceList = [String, Boolean, Number];
 
-            if (e instanceof _a) {
-              t = e.valueOf();
+          for (var _i = 0, _instanceList = instanceList; _i < _instanceList.length; _i++) {
+            var instan = _instanceList[_i];
+
+            if (val instanceof instan) {
+              valueOf = val.valueOf();
               break;
             }
           }
 
-          return t;
-        },
-            a = {
-          "[object Array]": function objectArray() {
-            return e.length;
-          },
-          "[object Object]": t,
-          "[object NodeList]": t,
-          "[object RadioNodeList]": t,
-          "[object HTMLCollection]": t,
-          "[object DOMTokenList]": t,
-          "[object NamedNodeMap]": t,
-          "[object String]": o,
-          "[object Boolean]": o,
-          "[object Number]": o,
-          "default": function _default() {
-            return e.valueOf();
-          }
+          return valueOf;
         };
 
-        e = (a[function () {
-          return Object.prototype.toString.call(e);
-        }()] || a["default"])();
+        var objectList = {
+          '[object Array]': getArrayLength,
+          '[object Object]': getObjectLength,
+          '[object NodeList]': getObjectLength,
+          '[object RadioNodeList]': getObjectLength,
+          '[object HTMLCollection]': getObjectLength,
+          '[object DOMTokenList]': getObjectLength,
+          '[object NamedNodeMap]': getObjectLength,
+          '[object String]': getValueOf,
+          '[object Boolean]': getValueOf,
+          '[object Number]': getValueOf,
+          'default': _default
+        };
+        val = (objectList[getObjectInstanceVal()] || objectList['default'])();
+      }
+    }
+
+    return !val;
+  };
+  /**
+     * Return the random number in a initial range and final range.
+     * @param {number} initVal - It will be use to set the inital value in the range. (Optional)
+     * @param {number} finalVal - If provided, it will be used to set the final value in the range.
+     * @returns {number} - Number chosen
+     */
+
+
+  /**
+     * Return the random number in a initial range and final range.
+     * @param {number} initVal - It will be use to set the inital value in the range. (Optional)
+     * @param {number} finalVal - If provided, it will be used to set the final value in the range.
+     * @returns {number} - Number chosen
+     */
+  var random = function random() {
+    var initVal = 0;
+    var finalVal = null;
+    var firstArg = arguments.length <= 0 ? undefined : arguments[0];
+    var secondArg = arguments.length <= 1 ? undefined : arguments[1];
+    var argsLengthEqualTwo = arguments.length === 2;
+    var isNumberFirstArg = typeof firstArg === 'number';
+    var isNumberSecondArg = argsLengthEqualTwo ? typeof secondArg === 'number' : true;
+
+    if (isNumberFirstArg && isNumberSecondArg) {
+      firstArg = Math.trunc(firstArg);
+      secondArg = Math.trunc(secondArg);
+      finalVal = firstArg;
+
+      if (argsLengthEqualTwo) {
+        initVal = firstArg;
+        finalVal = secondArg;
       }
 
-      return !e;
-    },
-    random: function random() {
-      var t = 0,
-          o = null,
-          a = arguments.length <= 0 ? undefined : arguments[0],
-          r = arguments.length <= 1 ? undefined : arguments[1];
-      var n = 2 === arguments.length;
-      if ("number" == typeof a && (!n || "number" == typeof r)) return a = Math.trunc(a), r = Math.trunc(r), o = a, n && (t = a, o = r), Math.floor(Math.random() * (o - t + 1)) + t;
-    },
-    serialize: function serialize(e) {
-      var t = "";
+      return Math.floor(Math.random() * (finalVal - initVal + 1)) + initVal;
+    }
 
-      for (var o in e) {
-        e.hasOwnProperty(o) && (t.length > 0 && (t += "&"), t += encodeURI(o + "=" + e[o]));
+    return;
+  };
+  /**
+     * Serialize a json and return.
+     * @param {Object} object - JSON to be serialized
+     * @returns {string} - String serialized from object
+     */
+
+
+  /**
+     * Serialize a json and return.
+     * @param {Object} object - JSON to be serialized
+     * @returns {string} - String serialized from object
+     */
+  var serialize = function serialize(obj) {
+    var encodedString = '';
+
+    for (var prop in obj) {
+      if (obj.hasOwnProperty(prop)) {
+        if (encodedString.length > 0) {
+          encodedString += '&';
+        }
+
+        encodedString += encodeURI(prop + '=' + obj[prop]);
       }
+    }
 
-      return t;
-    },
-    cleanForm: function cleanForm(e) {
-      "FORM" === e.tagName && e.reset();
-    },
-    copyTextToClipboard: function copyTextToClipboard(t) {
-      return new Promise(function (o, a) {
-        navigator.clipboard ? navigator.clipboard.writeText(t).then(function () {
-          return o(!0);
-        })["catch"](function () {
-          return a(!1);
-        }) : _asyncToGenerator( /*#__PURE__*/_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default().mark(function _callee() {
+    return encodedString;
+  };
+  /**
+     * Clear all fields inside a form
+     * @param {Object} form - HTML Form to clear all fields
+     */
+
+
+  /**
+     * Clear all fields inside a form
+     * @param {Object} form - HTML Form to clear all fields
+     */
+  var cleanForm = function cleanForm(form) {
+    var isFormTag = form.tagName === 'FORM';
+    if (isFormTag) form.reset();
+  };
+
+  var parseFilters = function parseFilters(filters) {
+    var keys = Object.keys(filters);
+    var parsedFilters = {};
+    keys.forEach(function (key) {
+      if (!empty(filters[key])) {
+        parsedFilters["filter:".concat(key)] = filters[key];
+      }
+    });
+    return parsedFilters;
+  };
+  /**
+       * Return Promise with value true or false.
+       * @typedef {Boolean} - true or false
+       * @param {string} text - Given text to copy to clipboard.
+       * @returns {Promise} - Promise
+       */
+
+
+  /**
+       * Return Promise with value true or false.
+       * @typedef {Boolean} - true or false
+       * @param {string} text - Given text to copy to clipboard.
+       * @returns {Promise} - Promise
+       */
+  var copyTextToClipboard = function copyTextToClipboard(text) {
+    return new Promise(function (resolve, reject) {
+      if (!navigator.clipboard) {
+        _asyncToGenerator( /*#__PURE__*/_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default().mark(function _callee() {
           return _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default().wrap(function _callee$(_context) {
             while (1) {
               switch (_context.prev = _context.next) {
                 case 0:
                   _context.next = 2;
-                  return e.call(_this, t);
+                  return fallbackCopyTextToClipboard.call(_this, text);
 
                 case 2:
                   return _context.abrupt("return", _context.sent);
@@ -275,100 +355,241 @@ var _ref = function () {
             }
           }, _callee);
         }))().then(function () {
-          return o(!0);
+          return resolve(true);
         })["catch"](function () {
-          return a(!1);
+          return reject(false);
         });
-      });
-    },
-    makeElement: function makeElement(e) {
-      var t = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : {};
-      var o = "string" == typeof e && Boolean(e),
-          a = "object" == _typeof(t) && Boolean(t);
 
-      if (o && a) {
-        var _o2 = document.createElement(e),
-            _a2 = function _a2(_ref3) {
-          var _ref4 = _slicedToArray(_ref3, 2),
-              e = _ref4[0],
-              t = _ref4[1];
-
-          return _o2.setAttribute(e, t);
-        };
-
-        return Object.entries(t).forEach(_a2), _o2;
+        return;
       }
-    },
-    space: void document.querySelectorAll('textarea, input[type="text"]').forEach(function (e) {
-      e.addEventListener("input", function () {
-        var t = /^\s+/g;
-        t.test(e.value) && (e.value = e.value.replace(t, ""));
-      }), e.addEventListener("blur", function () {
-        e.value = e.value.trim();
+
+      navigator.clipboard.writeText(text).then(function () {
+        return resolve(true);
+      })["catch"](function () {
+        return reject(false);
       });
-    }),
-    upperCase: function () {
-      var e = document.querySelectorAll('[data-js="uppercase"]');
+    });
+  };
 
-      if (0 !== e.length) {
-        var t = function t(e) {
-          e.target.value = e.target.value.toUpperCase();
-        },
-            o = function o(e) {
-          var o = "INPUT" === e.tagName,
-              a = "TEXTAREA" === e.tagName;
-          (o || a) && e.addEventListener("input", t);
-        };
+  function fallbackCopyTextToClipboard(text) {
+    return new Promise(function (resolve, reject) {
+      var textArea = document.createElement('textarea');
+      textArea.value = text;
+      textArea.style.top = '0';
+      textArea.style.left = '0';
+      textArea.style.position = 'fixed';
+      document.body.appendChild(textArea);
+      textArea.focus();
+      textArea.select();
 
-        e.forEach(o);
+      try {
+        var successful = document.execCommand('copy');
+
+        if (successful) {
+          resolve(true);
+        }
+      } catch (err) {
+        reject(false);
       }
-    }(),
-    upperCaseFirst: function () {
-      var e = document.querySelectorAll('[data-js="first-uppercase"]'),
-          t = /^[a-zàáâäãåąčćęèéêëėįìíîïłńòóôöõøùúûüųūÿýżźñçčšž∂ð]/;
 
-      if (0 !== e.length) {
-        var o = function o(e) {
-          var t = "INPUT" === e.tagName,
-              o = "TEXTAREA" === e.tagName;
-          (t || o) && e.addEventListener("input", a);
-        },
-            a = function a(e) {
-          var o = e.target;
+      document.body.removeChild(textArea);
+    });
+  }
+  /**
+     * Return HTML element with attributes and return it.
+     * @typedef {Object} HTML - HTML
+     * @param {string} elementName - Given name to html element.
+     * @param {Object.<string, string|number>} attributes - Attributes from HTML element.
+     * @returns {HTML} - HTML element made
+     */
 
-          if (t.test(o.value)) {
-            var _e2 = o.selectionStart,
-                _a3 = o.selectionEnd;
-            o.value = o.value.replace(t, function (e) {
-              return e.toUpperCase();
-            }), o.setSelectionRange(_e2, _a3);
+
+  /**
+     * Return HTML element with attributes and return it.
+     * @typedef {Object} HTML - HTML
+     * @param {string} elementName - Given name to html element.
+     * @param {Object.<string, string|number>} attributes - Attributes from HTML element.
+     * @returns {HTML} - HTML element made
+     */
+  var makeElement = function makeElement(elementName) {
+    var attributes = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : {};
+    var isValidStringEl = typeof elementName === 'string' && Boolean(elementName);
+    var isValidObjectAttr = _typeof(attributes) === 'object' && Boolean(attributes);
+
+    if (isValidStringEl && isValidObjectAttr) {
+      var element = document.createElement(elementName);
+      var attributeList = Object.entries(attributes);
+
+      var defineElementAttr = function defineElementAttr(_ref3) {
+        var _ref4 = _slicedToArray(_ref3, 2),
+            key = _ref4[0],
+            value = _ref4[1];
+
+        return element.setAttribute(key, value);
+      };
+
+      attributeList.forEach(defineElementAttr);
+      return element;
+    }
+
+    return;
+  };
+  /**
+     * It convert the first letter of text in Upper Case
+     */
+
+
+  /**
+     * It convert the first letter of text in Upper Case
+     */
+  var upperCaseFirst = function upperCaseFirst() {
+    var inputsEl = document.querySelectorAll('[data-js="first-uppercase"]');
+    var patternUpperCaseFirst = /^[a-zàáâäãåąčćęèéêëėįìíîïłńòóôöõøùúûüųūÿýżźñçčšž∂ð]/;
+    var hasUpperCaseFirstInputsEl = inputsEl.length !== 0;
+
+    if (hasUpperCaseFirstInputsEl) {
+      var defineUpperCaseFirstListener = function defineUpperCaseFirstListener(inputEl) {
+        var isInputEl = inputEl.tagName === 'INPUT';
+        var isTextAreaEl = inputEl.tagName === 'TEXTAREA';
+
+        if (isInputEl || isTextAreaEl) {
+          inputEl.addEventListener('input', _handleConvertToUpperCase);
+        }
+      };
+
+      var _handleConvertToUpperCase = function _handleConvertToUpperCase(event) {
+        var inputEl = event.target;
+        var hasLetter = patternUpperCaseFirst.test(inputEl.value);
+
+        if (hasLetter) {
+          var focusStartPos = inputEl.selectionStart;
+          var focusEndPos = inputEl.selectionEnd;
+          inputEl.value = inputEl.value.replace(patternUpperCaseFirst, function (letter) {
+            return letter.toUpperCase();
+          });
+          inputEl.setSelectionRange(focusStartPos, focusEndPos);
+        }
+      };
+
+      inputsEl.forEach(defineUpperCaseFirstListener);
+    }
+  };
+  /**
+     * It convert all text in Upper Case letters
+     */
+
+
+  /**
+     * It convert all text in Upper Case letters
+     */
+  var upperCase = function upperCase() {
+    var inputsEl = document.querySelectorAll('[data-js="uppercase"]');
+    var hasUpperCaseInputs = inputsEl.length !== 0;
+
+    if (hasUpperCaseInputs) {
+      var _handleConvertToUpperCase2 = function _handleConvertToUpperCase2(event) {
+        event.target.value = event.target.value.toUpperCase();
+      };
+
+      var defineUpperCaseListener = function defineUpperCaseListener(inputEl) {
+        var isInputEl = inputEl.tagName === 'INPUT';
+        var isTextAreaEl = inputEl.tagName === 'TEXTAREA';
+        if (isInputEl || isTextAreaEl) inputEl.addEventListener('input', _handleConvertToUpperCase2);
+      };
+
+      inputsEl.forEach(defineUpperCaseListener);
+    }
+  };
+  /**
+     * It show numeric keyboard on mobile phones
+     */
+
+
+  /**
+     * It show numeric keyboard on mobile phones
+     */
+  var numericKeyboard = function numericKeyboard() {
+    var inputsEl = document.querySelectorAll('[data-js="numeric-keyboard"]');
+    var isAppleBrowser = /iPhone|iPad|iPod/i.test(navigator.userAgent);
+    var isFirefoxBrowser = /firefox/i.test(navigator.userAgent);
+    var hasNumericInputs = inputsEl.length !== 0;
+
+    if (hasNumericInputs) {
+      var handleNumericAttributes = function handleNumericAttributes(inputEl) {
+        var isInputEl = inputEl.tagName === 'INPUT';
+        var isTextAreaEl = inputEl.tagName === 'TEXTAREA';
+
+        if (isInputEl || isTextAreaEl) {
+          inputEl.setAttribute('pattern', '[0-9\-]*');
+          inputEl.setAttribute('inputmode', 'numeric');
+          inputEl.removeAttribute('type');
+
+          if (isAppleBrowser) {
+            inputEl.removeAttribute('inputmode');
           }
-        };
 
-        e.forEach(o);
-      }
-    }(),
-    numericKeyboard: function () {
-      var e = document.querySelectorAll('[data-js="numeric-keyboard"]'),
-          t = /iPhone|iPad|iPod/i.test(navigator.userAgent),
-          o = /firefox/i.test(navigator.userAgent);
+          if (isFirefoxBrowser) {
+            inputEl.removeAttribute('inputmode');
+            inputEl.removeAttribute('pattern');
+            inputEl.setAttribute('type', 'tel');
+          }
+        }
+      };
 
-      if (0 !== e.length) {
-        var a = function a(e) {
-          var a = "INPUT" === e.tagName,
-              r = "TEXTAREA" === e.tagName;
-          (a || r) && (e.setAttribute("pattern", "[0-9-]*"), e.setAttribute("inputmode", "numeric"), e.removeAttribute("type"), t && e.removeAttribute("inputmode"), o && (e.removeAttribute("inputmode"), e.removeAttribute("pattern"), e.setAttribute("type", "tel")));
-        };
+      inputsEl.forEach(handleNumericAttributes);
+    }
+  };
+  /**
+     * It remove spaces in the begin and end of input text and textarea while typing.
+     */
 
-        e.forEach(a);
-      }
-    }()
+
+  /**
+     * It remove spaces in the begin and end of input text and textarea while typing.
+     */
+  var space = function space() {
+    var inputsEl = document.querySelectorAll('textarea, input[type="text"]');
+
+    var defineInputEventListener = function defineInputEventListener(inputEl) {
+      var handleRemoveSpaceOnInput = function handleRemoveSpaceOnInput() {
+        var spacePattern = /^\s+/g;
+        var hasSpaceInBeginning = spacePattern.test(inputEl.value);
+
+        if (hasSpaceInBeginning) {
+          inputEl.value = inputEl.value.replace(spacePattern, '');
+        }
+      };
+
+      var handleRemoveSpaceOnBlur = function handleRemoveSpaceOnBlur() {
+        inputEl.value = inputEl.value.trim();
+      };
+
+      inputEl.addEventListener('input', handleRemoveSpaceOnInput);
+      inputEl.addEventListener('blur', handleRemoveSpaceOnBlur);
+    };
+
+    inputsEl.forEach(defineInputEventListener);
+  };
+
+  return {
+    empty: empty,
+    random: random,
+    serialize: serialize,
+    cleanForm: cleanForm,
+    parseFilters: parseFilters,
+    copyTextToClipboard: copyTextToClipboard,
+    makeElement: makeElement,
+    space: space(),
+    upperCase: upperCase(),
+    upperCaseFirst: upperCaseFirst(),
+    numericKeyboard: numericKeyboard()
   };
 }(),
     empty = _ref.empty,
     random = _ref.random,
     serialize = _ref.serialize,
     cleanFields = _ref.cleanFields,
+    parseFilters = _ref.parseFilters,
     copyTextToClipboard = _ref.copyTextToClipboard,
     makeElement = _ref.makeElement,
     space = _ref.space,

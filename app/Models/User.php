@@ -22,7 +22,8 @@ class User extends Authenticatable
         'email',
         'phone',
         'whatsapp',
-        'status'
+        'status',
+        'password'
     ];
 
     protected $fillable = [
@@ -152,6 +153,11 @@ class User extends Authenticatable
     public function getStatusAttribute()
     {
         return $this->us_status;
+    }
+
+    public function getPasswordAttribute()
+    {
+        return $this->us_password;
     }
 
     // RELATIONSHIPS

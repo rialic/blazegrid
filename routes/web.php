@@ -3,15 +3,17 @@
 use Illuminate\Support\Facades\Route;
 
 /*********************************************************
-* GUEST CONTROLLERS
-*********************************************************/
+ * GUEST CONTROLLERS
+ *********************************************************/
+
 use App\Http\Controllers\Guest\HomeController;
 use App\Http\Controllers\Guest\LoginController;
 use App\Http\Controllers\Guest\SocialiteController;
 
 /*********************************************************
-* PRIVATE CONTROLLERS
-*********************************************************/
+ * PRIVATE CONTROLLERS
+ *********************************************************/
+
 use App\Http\Controllers\Priv\CrashController;
 
 /*
@@ -25,19 +27,26 @@ use App\Http\Controllers\Priv\CrashController;
 |
 */
 
-Route::group(['as' => 'public'], function () {
+// Login Controller
+Route::get('/login', [LoginController::class, 'index'])->middleware('guest')->name('login');
 
+Route::group(['as' => 'guest.'], function () {
     // Home Controller
-    Route::get('/', [HomeController::class, 'index'])->name('.init');
+    Route::get('/', [HomeController::class, 'index'])->name('init');
 
-    // Login Controller
-    Route::get('/login', [LoginController::class, 'index'])->name('.login');
+    Route::group(['middleware' => 'guest'], function () {
 
-    // Socialite Controller
-    Route::get('/social-login', [SocialiteController::class, 'redirectToProvider'])->name('.google.login');
-    Route::get('/auth/callback', [SocialiteController::class, 'handleProviderCallback']);
+        // Socialite Controller
+        Route::get('/social-login', [SocialiteController::class, 'redirectToProvider'])->name('socialite.login');
+        Route::get('/auth/callback', [SocialiteController::class, 'handleProviderCallback'])->name('socialite.callback');
+    });
 });
 
-// Login Controller
-Route::get('/crash', [CrashController::class, 'index']);
+Route::group(['middleware' => 'auth', 'as' => 'priv.'], function () {
+    // Login Controller
+    Route::get('/crash', [CrashController::class, 'index'])->name('crash');
+    Route::get('/crash/default-history', [CrashController::class, 'defaultHistory'])->name('crash.default-history');
+    Route::get('/crash/advanced-history', [CrashController::class, 'advancedHistory'])->name('crash.advanced-history');
 
+    Route::get('/logout', [LoginController::class, 'logout'])->name('logout');
+});

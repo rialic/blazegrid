@@ -12,9 +12,4 @@ class CrashRepo extends DBRepositoryImpl implements CrashInterface
     {
         return Crash::class;
     }
-
-    public function getAllLimitedBy($limit)
-    {
-        return $this->entity::orderBy('cr_created_at_server', 'desc')->limit($limit)->get();
-    }
 }

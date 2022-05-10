@@ -10,6 +10,11 @@ class Crash extends Model
     protected $table = 'tb_crash';
     protected $primaryKey = 'cr_id';
 
+    protected $appends = [
+        'point',
+        'created_at_server',
+    ];
+
     protected $guarded  = [
         'cr_id',
         'cr_created_at',
@@ -21,8 +26,8 @@ class Crash extends Model
         'cr_id_server',
         'cr_point',
         'cr_created_at_server',
-        'cr_created_at',
-        'cr_update_at'
+        'created_at',
+        'updated_at'
     ];
 
     // SETTERS
@@ -52,9 +57,9 @@ class Crash extends Model
         return $this->cr_id_server;
     }
 
-    public function getCreateAtServerAttribute()
+    public function getCreatedAtServerAttribute()
     {
-        return $this->cr_create_at_server;
+        return $this->cr_created_at_server;
     }
 
     // TRANSIENTS METHODS

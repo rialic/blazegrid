@@ -13,18 +13,10 @@ class RepositoryServiceProvider extends ServiceProvider
      */
     public function register()
     {
-        $path = app_path('Repository/Interfaces');
-        $files = scandir($path);
-
-        collect($files)->each(function($file, $key) {
-            $isNotHiddenFile = $file !== '.' && $file !== '..';
-
-            if ($isNotHiddenFile) {
-                $fileName = substr($file, 0, strpos($file, 'Interface'));
-
-                $this->app->bind("App\Repository\Interfaces\{$fileName}Interface", "App\Repository\Queries\{$fileName}Repo");
-            }
-        });
+        $this->app->bind("App\Repository\Interfaces\CrashInterface", "App\Repository\Queries\CrashRepo");
+        $this->app->bind("App\Repository\Interfaces\UserInterface", "App\Repository\Queries\UserRepo");
+        $this->app->bind("App\Repository\Interfaces\RoleInterface", "App\Repository\Queries\RoleRepo");
+        $this->app->bind("App\Repository\Interfaces\PlansInterface", "App\Repository\Queries\PlansRepo");
     }
 
     /**

@@ -2,4 +2,4 @@
 
 namespace App\Repository\Interfaces;
 
-interface CrashInterface{}
+interface UserInterface {}

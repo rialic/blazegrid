@@ -25,7 +25,7 @@ class BlazeProxy
     private function getRepo($game)
     {
         $repoList = [
-          'crash' =>  $this->crashRepo
+            'crash' =>  $this->crashRepo
         ];
 
         return $repoList[$game];
@@ -83,7 +83,7 @@ class BlazeProxy
         $records = optional(optional($response)->body)->records;
 
         $response = [];
-        $response['records'] = (!empty($records)) ? collect($records)->map(fn($record) => (array) $record)->all() : null;
+        $response['records'] = (!empty($records)) ? collect($records)->map(fn ($record) => (array) $record)->all() : null;
 
         $this->saveResponse($response, $game);
     }
@@ -104,17 +104,22 @@ class BlazeProxy
             return;
         }
 
+        $params = ['limit' => 25];
         $gameRepo = $this->getRepo($game);
         $gameModel = $gameRepo->getEntity();
-        $gameList = $gameRepo->getAllLimitedBy(25);
+        $gameList = $gameRepo->getData($params);
 
         $isGameRepoEmpty = empty($gameRepo->getEntity()::count());
 
         // Save if the repository is empty
         if ($isGameRepoEmpty) {
-            if($game === 'crash') {
-                collect($records)->each(function($record) use ($gameModel){
-                    $gameModel->forceFill(['id_server' => $record['id'], 'point' => $record['crash_point'], 'created_at_server' => $record['created_at']]);
+            if ($game === 'crash') {
+                collect($records)->each(function ($record) use ($gameModel) {
+                    $gameModel->forceFill([
+                        'id_server' => $record['id'],
+                        'point' => ($record['crash_point'] === '0') ? 1 : $record['crash_point'],
+                        'created_at_server' => $record['created_at']
+                    ]);
                     $gameModel->create($gameModel->getAttributes());
                 });
             }
@@ -123,11 +128,15 @@ class BlazeProxy
         }
 
         // Save if the repository is not empty
-        collect($records)->each(function($record) use ($gameModel, $gameList){
+        collect($records)->each(function ($record) use ($gameModel, $gameList) {
             $isItemAlreadyInList = $gameList->contains('id_server', $record['id']);
 
-            if(!$isItemAlreadyInList) {
-                $gameModel->forceFill(['id_server' => $record['id'], 'point' => $record['crash_point'], 'created_at_server' => $record['created_at']]);
+            if (!$isItemAlreadyInList) {
+                $gameModel->forceFill([
+                    'id_server' => $record['id'],
+                    'point' => ($record['crash_point'] === '0') ? 1 : $record['crash_point'],
+                    'created_at_server' => $record['created_at']
+                ]);
                 $gameModel->create($gameModel->getAttributes());
             }
         });

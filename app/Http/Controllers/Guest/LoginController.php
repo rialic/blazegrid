@@ -11,4 +11,12 @@ class LoginController extends Controller
     {
         return view('pages.guest.login');
     }
+
+    public function logout(Request $request)
+    {
+        auth()->logout();
+        $request->session()->invalidate();
+
+        return redirect()->route('guest.init');
+    }
 }

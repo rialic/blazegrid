@@ -8,7 +8,7 @@
 
                 {{date('Y')}} ©
 
-                <a href="{{route('public.init')}}" class="text-white-50 text-decoration-none">
+                <a href="{{route('guest.init')}}" class="text-white-50 text-decoration-none">
 
                     &nbsp;{{config('app.name')}}&nbsp;
 

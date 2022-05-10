@@ -12,17 +12,13 @@ class Plans extends Model
     public $timestamps = false;
 
     protected $appends = [
+        'plan_id',
         'uuid',
         'name',
         'status',
     ];
 
-    protected $guarded  = [
-        'pl_id',
-        'pl_uuid',
-        'pl_plan_name',
-        'pl_status'
-    ];
+    protected $guarded  = ['*'];
 
     protected $hidden = [
         'pl_id',
@@ -43,6 +39,11 @@ class Plans extends Model
     }
 
     // GETTER
+    public function getPlanIdAttribute()
+    {
+        return $this->pl_id;
+    }
+
     public function getUuidAttribute()
     {
         return $this->pl_uuid;

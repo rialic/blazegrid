@@ -12,6 +12,7 @@ class Role extends Model
     public $timestamps = false;
 
     protected $appends = [
+        'role_id',
         'uuid',
         'name',
         'status',
@@ -38,6 +39,11 @@ class Role extends Model
     }
 
     // GETTERS
+    public function getRoleIdAttribute()
+    {
+        return $this->ro_id;
+    }
+
     public function getUuidAttribute()
     {
         return $this->ro_uuid;

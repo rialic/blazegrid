@@ -9,4 +9,6 @@ interface DBRepositoryInterface
     public function findByIdOrNew($id, $array = []);
     public function findFirstOrNew($search, $array = null);
     public function findFirstOrCreate($search, $array = null);
+    public function query($params);
+    public function getData($params);
 }

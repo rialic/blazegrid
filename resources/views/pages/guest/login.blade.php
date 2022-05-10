@@ -37,7 +37,7 @@
         <div class="text-center">
           <p class="fs-18 mt-3 mb-4 text-muted">Entrar com</p>
 
-          <a href="{{route('public.google.login')}}" class="btn btn-sm btn-danger w-50" type="button">
+          <a href="{{route('guest.socialite.login')}}" class="btn btn-sm btn-danger w-50" type="button">
             <div class="d-flex justify-content-center">
               <span class="me-1 fw-bold">Gmail</span>
 

@@ -1,4 +1,4 @@
-<div class="nav-scroller border-bottom border-primary">
+<div class="nav-scroller mb-3 border-bottom border-primary">
   <div class="d-flex justify-content-center p-2">
     <button class="btn btn-sm btn-danger px-4 mx-2 fw-bold" type="button">
       <div class="d-flex">
