@@ -46,7 +46,7 @@ Route::group(['middleware' => 'auth', 'as' => 'priv.'], function () {
     // Login Controller
     Route::get('/crash', [CrashController::class, 'index'])->name('crash');
     Route::get('/crash/default-history', [CrashController::class, 'defaultHistory'])->name('crash.default-history');
-    Route::get('/crash/advanced-history', [CrashController::class, 'advancedHistory'])->name('crash.advanced-history');
+    Route::get('/crash/advanced-history/{limit}', [CrashController::class, 'advancedHistory'])->name('crash.advanced-history');
 
     Route::get('/logout', [LoginController::class, 'logout'])->name('logout');
 });

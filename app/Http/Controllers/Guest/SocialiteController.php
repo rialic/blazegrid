@@ -38,7 +38,7 @@ class SocialiteController extends Controller
         $password = ('xr2_' . substr($providerUser->email, '0', strpos($providerUser->email, '@')));
 
         if (!$user->exists) {
-            $plan = $this->plansRepo->findByName('Básico');
+            $plan = $this->plansRepo->findByName('Basic');
             $defaultPunterRole = $this->roleRepo->findByName('DEFAULT_PUNTER');
 
             $user->forceFill([
@@ -48,7 +48,7 @@ class SocialiteController extends Controller
                 'password' => $password,
                 'terms_conditions' => true
             ]);
-            $user->plan()->associate($plan->plan_id);
+            $user->plan()->associate($plan->pl_id);
             $user->save();
             $user->roles()->attach($defaultPunterRole->role_id);
         }

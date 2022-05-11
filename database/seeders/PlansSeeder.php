@@ -16,7 +16,7 @@ class PlansSeeder extends Seeder
     public function run()
     {
         $plan[Str::random(3)] = Plans::firstOrCreate([
-            'pl_plan_name' => 'Básico',
+            'pl_plan_name' => 'Basic',
         ]);
 
         $plan[Str::random(3)] = Plans::firstOrCreate([

@@ -22,8 +22,8 @@ class User extends Authenticatable
         'email',
         'phone',
         'whatsapp',
+        'plan',
         'status',
-        'password'
     ];
 
     protected $fillable = [
@@ -52,8 +52,10 @@ class User extends Authenticatable
         'us_password',
         'us_terms_conditions',
         'us_last_date_visit',
+        'us_expiration_plan_date',
         'us_ip',
         'us_inactivation_date',
+        'pl_id',
         'created_at',
         'updated_at'
     ];
@@ -120,6 +122,11 @@ class User extends Authenticatable
     }
 
     // GETTERS
+    public function getUuidAttribute()
+    {
+        return $this->us_uuid;
+    }
+
     public function getSocialiteIdAttribute()
     {
         return $this->us_socialite_id;
@@ -150,14 +157,14 @@ class User extends Authenticatable
         return $this->us_whatsapp;
     }
 
+    public function getPlanAttribute()
+    {
+        return lcfirst($this->plan()->first()->name);
+    }
+
     public function getStatusAttribute()
     {
         return $this->us_status;
-    }
-
-    public function getPasswordAttribute()
-    {
-        return $this->us_password;
     }
 
     // RELATIONSHIPS

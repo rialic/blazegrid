@@ -1,4 +1,5 @@
-export const { empty, random, serialize, cleanFields, parseFilters, copyTextToClipboard, makeElement, space, upperCase, upperCaseFirst, numericKeyboard } = (() => {
+export const { userPlan, empty, serialize, cleanFields, parseFilters, copyTextToClipboard, makeElement, space, upperCase, upperCaseFirst, numericKeyboard } = (() => {
+  const userPlan = user => ({ 'basic': 1, 'premium': 2, 'deluxe': 3 }[user.plan])
 
   /**
        * Return true if variable is empty or false if not.
@@ -45,38 +46,6 @@ export const { empty, random, serialize, cleanFields, parseFilters, copyTextToCl
     }
 
     return !val
-  }
-
-  /**
-     * Return the random number in a initial range and final range.
-     * @param {number} initVal - It will be use to set the inital value in the range. (Optional)
-     * @param {number} finalVal - If provided, it will be used to set the final value in the range.
-     * @returns {number} - Number chosen
-     */
-  const random = (...args) => {
-    let initVal = 0
-    let finalVal = null
-    let firstArg = args[0]
-    let secondArg = args[1]
-    const argsLengthEqualTwo = args.length === 2
-    const isNumberFirstArg = typeof firstArg === 'number'
-    const isNumberSecondArg = (argsLengthEqualTwo) ? typeof secondArg === 'number' : true
-
-    if (isNumberFirstArg && isNumberSecondArg) {
-      firstArg = Math.trunc(firstArg)
-      secondArg = Math.trunc(secondArg)
-
-      finalVal = firstArg
-
-      if (argsLengthEqualTwo) {
-        initVal = firstArg
-        finalVal = secondArg
-      }
-
-      return Math.floor(Math.random() * (finalVal - initVal + 1)) + initVal
-    }
-
-    return
   }
 
   /**
@@ -322,8 +291,8 @@ export const { empty, random, serialize, cleanFields, parseFilters, copyTextToCl
 
 
   return {
+    userPlan,
     empty,
-    random,
     serialize,
     cleanForm,
     parseFilters,

@@ -11,6 +11,7 @@ class Crash extends Model
     protected $primaryKey = 'cr_id';
 
     protected $appends = [
+        'id',
         'point',
         'created_at_server',
     ];
@@ -30,6 +31,10 @@ class Crash extends Model
         'updated_at'
     ];
 
+    protected $casts = [
+        'cr_created_at_server' => 'datetime:Y-m-d H:i:s'
+    ];
+
     // SETTERS
     public function setPointAttribute($value)
     {
@@ -47,6 +52,11 @@ class Crash extends Model
     }
 
     // GETTERS
+    public function getIdAttribute()
+    {
+        return $this->cr_id;
+    }
+
     public function getPointAttribute()
     {
         return $this->cr_point;
