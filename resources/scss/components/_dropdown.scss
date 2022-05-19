@@ -1,0 +1,16 @@
+@import "~bootstrap/scss/dropdown";
+
+/*--------------------*\
+  DROPDOWN DARK
+\*--------------------*/
+.dropdown-menu-dark {
+  background-color: #172635;
+}
+
+/*--------------------*\
+  DROPDOWN ARROW NONE
+\*--------------------*/
+.arrow-none::after {
+  display: none;
+  border: 0;
+}

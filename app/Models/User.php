@@ -21,9 +21,7 @@ class User extends Authenticatable
         'cpf',
         'email',
         'phone',
-        'whatsapp',
-        'plan',
-        'status',
+        'whatsapp'
     ];
 
     protected $fillable = [
@@ -155,11 +153,6 @@ class User extends Authenticatable
     public function getWhatsappAttribute()
     {
         return $this->us_whatsapp;
-    }
-
-    public function getPlanAttribute()
-    {
-        return lcfirst($this->plan()->first()->name);
     }
 
     public function getStatusAttribute()

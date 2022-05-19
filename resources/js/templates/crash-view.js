@@ -1,18 +1,18 @@
 import { format } from 'date-fns-tz'
 import { differenceInMinutes } from 'date-fns'
-import { userPlan, makeElement } from '../utilx'
+import { makeElement } from '../utilx'
 
 export const {
-  renderDefaultHistoryView,
-  renderAdvancedHistoryView
+  renderDefaultCrashHistoryView,
+  renderAdvancedCrashHistoryView
 } = (() => {
-  function renderDefaultHistoryView(data, user) {
+  function renderDefaultCrashHistoryView(data, user) {
     const fragment = document.createDocumentFragment()
 
     data.forEach(crash => {
       const pointColor = (crash.point >= 2) ? 'success' : 'secondary'
       const parentDiv = makeElement('div', { class: 'my-1 me-1 fs-20' })
-      const badgeDiv = makeElement('div', { class: `badge bg-${pointColor}` })
+      const badgeDiv = makeElement('div', { class: `badge bg-${pointColor} bg-gradient` })
       const pointSpan = makeElement('span', { class: 'd-block' })
       const dateSpan = makeElement('span', { class: 'd-block mt-1' })
 
@@ -21,7 +21,7 @@ export const {
 
       pointSpan.textContent = `${crash.point}X`
 
-      if (userPlan(user) !== 1) {
+      if (this.user.plan.name.toLowerCase() !== 'basic') {
         badgeDiv.insertAdjacentElement('beforeend', dateSpan)
         dateSpan.textContent = format(new Date(crash.created_at_server), 'HH:mm:ss', { timeZone: Intl.DateTimeFormat().resolvedOptions().timeZone })
       }
@@ -33,74 +33,30 @@ export const {
     this.defaultHistoryEl.appendChild(fragment)
   }
 
-  function renderAdvancedHistoryView(data) {
+  function renderAdvancedCrashHistoryView(data) {
     const tBody = document.querySelector('.table > tbody')
-    const fragment = document.createDocumentFragment()
     const advancedCrashList = getAdvancedCrashList.call(this, data)
+    const rowsString = advancedCrashList.reduce(getAdvancedCrashRowsString, '')
+    const range = document.createRange()
 
-    advancedCrashList.forEach((crash, index, list) => {
-      const isLastIndex = index === (list.length - 1)
-      const pointColor = (crash.point >= 2) ? 'success' : 'secondary'
-
-      // <tr>
-      const tr = makeElement('tr')
-
-      // Point <td>
-      const badgeTd = makeElement('td', { class: 'text-center' })
-      const badgeDiv = makeElement('div', { class: `badge bg-${pointColor} fs-14` })
-      const pointSpan = makeElement('span', { class: 'd-block' })
-
-      // Date <td>
-      const dateDiv = makeElement('td', { class: 'text-center' })
-
-      // Diff min <td>
-      const diffMinTd = makeElement('td', { class: 'position-relative text-center' })
-      const diffMinDiv = makeElement('div', { class: 'd-block' })
-      const plusMinusIcon = makeElement('i', { class: 'fa-solid fa-plus-minus' })
-      const diffMinReplyBlockDiv = makeElement('div', { class: 'd-reply-block' })
-      const diffMinReplyIcon = makeElement('i', { class: 'fa-solid fa-reply fa-rotate-90 fa-sm text-light' })
-
-      const diffStepTd = makeElement('td', { class: 'position-relative text-center' })
-      const diffStepReplyBlockDiv = makeElement('div', { class: 'd-reply-block' })
-      const diffStepReplyIcon = makeElement('i', { class: 'fa-solid fa-reply fa-rotate-90 fa-sm text-light' })
-
-      tr.insertAdjacentElement('beforeend', badgeTd)
-      badgeTd.insertAdjacentElement('beforeend', badgeDiv)
-      badgeDiv.insertAdjacentElement('beforeend', pointSpan)
-      pointSpan.textContent = `${crash.point}X`
-
-      tr.insertAdjacentElement('beforeend', dateDiv)
-      dateDiv.textContent = format(new Date(crash.created_at_server), 'dd/MM/yyy HH:mm:ss', { timeZone: Intl.DateTimeFormat().resolvedOptions().timeZone })
-
-      tr.insertAdjacentElement('beforeend', diffMinTd)
-      diffMinTd.insertAdjacentElement('beforeend', diffMinDiv)
-      diffMinDiv.insertAdjacentElement('beforeend', plusMinusIcon)
-      diffMinDiv.insertAdjacentText('beforeend', ` ${crash.diff_min} min`)
-
-      tr.insertAdjacentElement('beforeend', diffStepTd)
-      diffStepTd.insertAdjacentText('beforeend', crash.diff_step)
-
-      if (!isLastIndex) {
-        diffMinTd.insertAdjacentElement('beforeend', diffMinReplyBlockDiv)
-        diffMinReplyBlockDiv.insertAdjacentElement('beforeend', diffMinReplyIcon)
-
-        diffStepTd.insertAdjacentElement('beforeend', diffStepReplyBlockDiv)
-        diffStepReplyBlockDiv.insertAdjacentElement('beforeend', diffStepReplyIcon)
-      }
-
-      fragment.appendChild(tr)
-    })
-
+    range.selectNodeContents(tBody)
     tBody.innerHTML = ''
-    tBody.appendChild(fragment)
+    tBody.appendChild(range.createContextualFragment(rowsString))
+
+    this.totalRowsEl.textContent = `Total de linhas: ${advancedCrashList.length}`
+  }
+
+  function getNextCrashRecord(currentIndex, list) {
+    return list.filter((_, index) => index > currentIndex).find(crash => {
+      return (Number(crash.point) >= (this.startLogInput.value || 0) && Number(crash.point) <= (this.endLogInput.value || 1000000))
+    })
   }
 
   function getAdvancedCrashList(data) {
     return data.reduce((acc, crash, index, list) => {
-      const nextRecord = getNextRecord.call(this, index, list)
+      const nextRecord = getNextCrashRecord.call(this, index, list)
 
       if (Number(crash.point) >= (this.startLogInput.value || 0) && Number(crash.point) <= (this.endLogInput.value || 1000000)) {
-
         const newCrashedItem = {
           point: crash.point,
           created_at_server: format(new Date(crash.created_at_server), 'dd/MM/yyyy HH:mm:ss', { timeZone: Intl.DateTimeFormat().resolvedOptions().timeZone }),
@@ -117,14 +73,43 @@ export const {
     }, [])
   }
 
-  function getNextRecord(currentIndex, list) {
-    return list.filter((_, index) => index > currentIndex).find(crash => {
-      return (Number(crash.point) >= (this.startLogInput.value || 0) && Number(crash.point) <= (this.endLogInput.value || 1000000))
-    })
+  function getAdvancedCrashRowsString(acc, crash, index, list) {
+    const isLastIndex = index === (list.length - 1)
+    const pointColor = (crash.point >= 2) ? 'success' : 'secondary'
+
+    return acc += `
+        <tr>
+          <td class="text-center">
+            <div class="badge bg-${pointColor} bg-gradient fs-14">
+              <span class="d-block">${crash.point}</span>
+            </div>
+          </td>
+
+          <td class="text-center">
+            ${crash.created_at_server}
+          </td>
+
+          <td class="position-relative text-center">
+            <div class="d-block">
+              <i class="fa-solid fa-plus-minus"></i> ${crash.diff_min} min
+            </div>
+            <div class="${(!isLastIndex) ? 'd-reply-block' : 'd-none'}">
+              <i class="fa-solid fa-reply fa-rotate-90 fa-xs text-light"></i>
+            </div>
+          </td>
+
+          <td class="position-relative text-center">
+            ${crash.diff_step}
+            <div class="${(!isLastIndex) ? 'd-reply-block' : 'd-none'}">
+              <i class="fa-solid fa-reply fa-rotate-90 fa-xs text-light"></i>
+            </div>
+          </td>
+        </tr>
+      `
   }
 
   return {
-    renderDefaultHistoryView,
-    renderAdvancedHistoryView
+    renderDefaultCrashHistoryView,
+    renderAdvancedCrashHistoryView
   }
 })()

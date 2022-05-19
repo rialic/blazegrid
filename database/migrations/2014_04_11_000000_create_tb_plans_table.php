@@ -17,7 +17,7 @@ class CreateTbPlansTable extends Migration
             $table->bigIncrements('pl_id');
             $table->uuid('pl_uuid');
             $table->string('pl_plan_name', 20);
-            $table->boolean('pl_status')->default(false);
+            $table->boolean('pl_status')->default(true);
 
             $table->engine = 'InnoDB';
             $table->charset = 'utf8mb4';

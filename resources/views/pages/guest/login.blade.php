@@ -37,7 +37,7 @@
         <div class="text-center">
           <p class="fs-18 mt-3 mb-4 text-muted">Entrar com</p>
 
-          <a href="{{route('guest.socialite.login')}}" class="btn btn-sm btn-danger w-50" type="button">
+          <a href="{{route('guest.socialite.login')}}" class="btn btn-sm btn-danger w-50 waves-effect waves-light" type="button">
             <div class="d-flex justify-content-center">
               <span class="me-1 fw-bold">Gmail</span>
 
@@ -48,4 +48,8 @@
       </div>
     </div>
   </div>
+
+  @push('scripts')
+  <script src="{{url(mix('assets/js/login/app.js'))}}"></script>
+  @endpush
 </x-layout.guest>

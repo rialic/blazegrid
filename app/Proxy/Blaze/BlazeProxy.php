@@ -61,7 +61,7 @@ class BlazeProxy
     {
         return Http::pool(fn (Pool $pool) => [
             $pool->as('crash')->crash()
-            // $pool->as('doublw')->double()
+            // $pool->as('double')->double()
         ]);
     }
 
@@ -109,7 +109,7 @@ class BlazeProxy
         $gameModel = $gameRepo->getEntity();
         $gameList = $gameRepo->getData($params);
 
-        $isGameRepoEmpty = empty($gameRepo->getEntity()::count());
+        $isGameRepoEmpty = empty($gameRepo->count());
 
         // Save if the repository is empty
         if ($isGameRepoEmpty) {

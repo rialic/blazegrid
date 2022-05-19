@@ -15,53 +15,38 @@ class CrashController extends Controller
         $this->crashRepo = $crashRepo;
     }
 
-    public function index(Request $request)
+    public function index()
     {
-        // $params = ['limit' => 60];
-        // $crashDefaultHistory = $this->crashRepo->getData($params);
+        $user = optional(auth())->user();
 
-        // $params = ['limit' => 200];
-        // $crashAdvancedHistory = $this->crashRepo->getData($params);
-
-        return view('pages.priv.crash');
+        return view('pages.priv.crash', ['user' => $user]);
     }
 
     public function defaultHistory()
     {
         $user = optional(auth())->user();
-        $params = ['limit' => ($user->plan === 'basic') ? 60 : 100];
+        $params = ['limit' => (lcfirst($user->plan->name) === 'basic') ? 60 : 100];
 
         if (empty($user) || !optional($user)->exists) {
             return response()->json(['error' => ['message' => 'Unauthenticated.']], 401);
         }
 
-        $crashDefaultHistory = $this->crashRepo->getData($params)->all();
+        $crashDefaultHistory = $this->crashRepo->getData($params);
 
-        return response()->json(['data' => ['default_history' => $crashDefaultHistory, 'user' => $user]]);
+        return response()->json(['data' => ['default_history' => $crashDefaultHistory]]);
     }
 
     public function advancedHistory(Request $request, $limit)
     {
         $user = optional(auth())->user();
+        $isBasicPlan = lcfirst($user->plan->name) === 'basic';
 
-        if (empty($user) || !optional($user)->exists) {
+        if ((empty($user) || !optional($user)->exists) || $isBasicPlan) {
             return response()->json(['error' => ['message' => 'Unauthenticated.']], 401);
         }
 
-        if($user->plan === 'premium') {
-            $params = ['limit' => $limit];
-            $crashAdvancedHistory = $this->crashRepo->getData($params)->all();
-            return response()->json(['data' => ['advanced_history' => $crashAdvancedHistory, 'user' => $user]]);
-        }
+        $params = ['limit' => $limit];
+        $crashAdvancedHistory = $this->crashRepo->getData($params);
+        return response()->json(['data' => ['advanced_history' => $crashAdvancedHistory, 'user' => $user]]);
     }
-
-    // private function getLocalTime(){
-
-    //     $ip = file_get_contents("http://ipecho.net/plain");
-    //     $url = 'http://ip-api.com/json/'.$ip;
-    //     $tz = file_get_contents($url);
-    //     $tz = json_decode($tz, true)['timezone'];
-
-    //     return $tz;
-    // }
 }

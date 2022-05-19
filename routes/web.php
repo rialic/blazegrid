@@ -14,6 +14,7 @@ use App\Http\Controllers\Guest\SocialiteController;
  * PRIVATE CONTROLLERS
  *********************************************************/
 
+use App\Http\Controllers\Priv\UserController;
 use App\Http\Controllers\Priv\CrashController;
 
 /*
@@ -43,7 +44,10 @@ Route::group(['as' => 'guest.'], function () {
 });
 
 Route::group(['middleware' => 'auth', 'as' => 'priv.'], function () {
-    // Login Controller
+    // User Controller
+    Route::get('/user', [UserController::class, 'user'])->name('user');
+
+    // Crash Controller
     Route::get('/crash', [CrashController::class, 'index'])->name('crash');
     Route::get('/crash/default-history', [CrashController::class, 'defaultHistory'])->name('crash.default-history');
     Route::get('/crash/advanced-history/{limit}', [CrashController::class, 'advancedHistory'])->name('crash.advanced-history');

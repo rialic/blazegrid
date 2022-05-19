@@ -75,12 +75,10 @@
               </div>
             </div>
 
-            <h4 class="text-light">Temporizador</h4>
+            <h4 class="text-light">Data</h4>
 
             <p class="text-white-50">
-              Temos um temporizador para que você saiba há quanto tempo está esperando pelo seu próximo multiplicador. O nosso temporiazador funciona de acordo com o filtro de
-              velas
-              informado.
+              Nossos históricos mostram a data e hora das operações de acordo com o seu local.
             </p>
           </div>
         </div>
@@ -120,6 +118,7 @@
     </div>
   </section>
 
+  @if(lcfirst(optional(optional($user)->plan)->name) === 'basic' || empty($user))
   <section class="mt-4">
     <div class="container">
       <div class="row justify-content-center">
@@ -130,86 +129,37 @@
         </div>
       </div>
 
-      <div class="row justify-content-center mb-4 px-2">
-        <div class="col-lg-3 p-3 border border-danger rounded">
-          <div class="text-center mb-4">
-            <i class="fas fa-certificate fa-2xl text-muted"></i>
-          </div>
-
-          <h5 class="text-center fs-18 mb-3">Básico</h5>
-
-          <p class="fs-15 text-center text-danger m-0 p-0">* No momento só estamos aceitando pix</small>
-
-            <h2 class="pt-2 text-center">
-              <sup>
-                <span class="fs-18">R$</span>
-              </sup>
-
-              <span class="text-secondary">35</span>
-
-              <span class="fs-18">/ mês</span>
-            </h2>
-
-            <hr class="my-3">
-
-            <div class="text-muted mb-4 px-2">
-              <p><i class="fas fa-check text-white me-2"></i> Histórico Crash</p>
-
-              <p><i class="fas fa-check text-white me-2 me-2"></i> Histórico Double (Em Breve)</p>
-
-              <p><i class="fas fa-check text-white me-2 me-2"></i> Histórico de até 3500 registros</p>
-
-              <p><i class="fas fa-check text-white me-2 me-2"></i> Download em Excel</p>
-
-              <p><i class="fas fa-check text-white me-2 me-2"></i> 30 dias de acesso</p>
-            </div>
-
-            @auth
-            <div class="text-center py-3">
-              <button class="btn btn-sm btn-primary" data-bs-toggle="modal" data-bs-target="#modal_plan">Assinar Plano</button>
-            </div>
-            @endauth
-        </div>
-      </div>
+      <x-miscellaneous.price-table />
     </div>
   </section>
+  @endif
 
   @auth
-  <div id="modal_plan" class="modal fade" tabindex="-1">
-    <div class="modal-dialog">
-      <div class="modal-content">
-        <div class="modal-header">
-          <h5 class="modal-title" id="exampleModalLabel">Pagamento de Plano</h5>
+  @if(lcfirst($user->plan->name) === 'basic')
+  <x-modal.default>
+    <x-slot name="title">
+      Pagameto de Plano
+    </x-slot>
 
-          <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
-        </div>
+    <div class="w-100">
+      <h4 class="text-center mb-3">Use o QR Code do Pix para pagar</h4>
 
-        <div class="modal-body">
-          <div class="w-100">
-            <h4 class="text-center mb-3">Use o QR Code do Pix para pagar</h4>
+      <p>Abra o app em que vai fazer a transferência, escaneie a imagem ou copie o código do QR Code</p>
 
-            <p>Abra o app em que vai fazer a transferência, escaneie a imagem ou copie o código do QR Code</p>
+      <img class="d-block mx-auto img-fluid" src="{{url(mix('assets/images/qr-code-35.png'))}}" alt="qrcode">
 
-            <img class="d-block mx-auto img-fluid" src="{{url(mix('assets/images/qr-code-35.png'))}}" alt="qrcode">
+      <p class="mt-3 text-center">
+        <strong>R$ 35,00</strong>
+      </p>
 
-            <p class="mt-3 text-center">
-              <strong>R$ 35,00</strong>
-            </p>
+      <div class="text-center">
+        <a href="javascript:void(0)" data-clipboard-text="37604520-ec8f-4537-9ced-a43a332462a6">Copiar chave do QR Code</a>
 
-            <div class="text-center">
-              <a href="javascript:void(0)" data-clipboard-text="37604520-ec8f-4537-9ced-a43a332462a6">Copiar chave do QR Code</a>
-
-              <p class="d-none text-white mt-2 mb-0">Código copiado!</p>
-            </div>
-          </div>
-        </div>
-
-        <div class="modal-footer">
-          <button type="button" class="btn btn-sm btn-primary" data-bs-dismiss="modal">Fechar</button>
-        </div>
+        <p class="d-none text-white mt-2 mb-0">Código copiado!</p>
       </div>
     </div>
-  </div>
+  </x-modal.default>
+  @endif
   @endauth
 
   @push('scripts')

@@ -4,8 +4,7 @@ namespace App\Console;
 
 use Illuminate\Console\Scheduling\Schedule;
 use Illuminate\Foundation\Console\Kernel as ConsoleKernel;
-use App\Proxy\Blaze\BlazeProxy;
-use Illuminate\Support\Carbon;
+use Illuminate\Support\Facades\DB;
 
 class Kernel extends ConsoleKernel
 {
@@ -17,7 +16,7 @@ class Kernel extends ConsoleKernel
      */
     protected function schedule(Schedule $schedule)
     {
-        $schedule->call(function () {
+        $schedule->call(function() {
             $blazeProxy = app('App\Proxy\Blaze\BlazeProxy');
             $now = now();
             $futherDate = now()->addMinutes(1);
@@ -32,18 +31,23 @@ class Kernel extends ConsoleKernel
                     $interval = 0;
                 }
 
-                time_sleep_until($now->addSeconds(10)->timestamp);
+                try {
+                    time_sleep_until($now->addSeconds(10)->timestamp);
+                } catch (\Exception $exception) {
+                    $interval = 0;
+                }
             }while ($interval-- > 1);
             var_dump('Saiu fora');
         })->everyMinute();
 
-    }
+        $schedule->call(function() {
+            $count = DB::table('tb_crash')->count();
+            $hasReachedMaxLimit = $count >= 15000;
 
-    protected function getQueueCommand()
-    {
-        $params = implode(' ', ['--tries=3', '--sleep=3', '--queue=' . implode(',', $this->queues)]);
-
-        return sprintf('queue:work %s', $params);
+            if ($hasReachedMaxLimit) {
+                DB::table('tb_crash')->orderBy('cr_created_at_server', 'asc')->limit(5000)->delete();
+            }
+        })->daily();
     }
 
     /**

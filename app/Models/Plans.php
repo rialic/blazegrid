@@ -12,10 +12,8 @@ class Plans extends Model
     public $timestamps = false;
 
     protected $appends = [
-        'plan_id',
         'uuid',
         'name',
-        'status',
     ];
 
     protected $guarded  = ['*'];

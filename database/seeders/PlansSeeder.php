@@ -21,12 +21,10 @@ class PlansSeeder extends Seeder
 
         $plan[Str::random(3)] = Plans::firstOrCreate([
             'pl_plan_name' => 'Premium',
-            'pl_status' => false
         ]);
 
         $plan[Str::random(3)] = Plans::firstOrCreate([
-            'pl_plan_name' => 'Deluxe',
-            'pl_status' => false
+            'pl_plan_name' => 'Deluxe'
         ]);
     }
 }

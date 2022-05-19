@@ -24,6 +24,11 @@ class DBRepositoryImpl implements DBRepositoryInterface
         return app($this->entity());
     }
 
+    public function count()
+    {
+        return $this->entity::count();
+    }
+
     public function findAll()
     {
         return $this->entity::all();

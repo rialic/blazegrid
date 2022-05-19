@@ -2,13 +2,13 @@
 
 namespace App\Http\Controllers\Guest;
 
-use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
-
 class HomeController extends Controller
 {
-    public function index(Request $request)
+    public function index()
     {
-        return view('pages.guest.home');
+        $user = optional(auth())->user();
+
+        return view('pages.guest.home', ['user' => $user]);
     }
 }

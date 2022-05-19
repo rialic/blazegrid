@@ -1,7 +1,8 @@
 @import "../app.scss";
-
+@import "~bootstrap/scss/modal";
 @import "~bootstrap/scss/tables";
 @import "~bootstrap/scss/badge";
+@import "../components/dropdown";
 
 .d-reply-block {
     position: absolute;

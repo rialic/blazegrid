@@ -1,6 +1,5 @@
 export const {
-  defaultHistory,
-  advancedHistory
+  user,
 } = (() => {
   const APP_URL = () => window.location.href.substring(0, window.location.href.lastIndexOf('/'))
 
@@ -14,20 +13,13 @@ export const {
     return { status: 'ok', response: await response.json() }
   }
 
-  async function defaultHistory() {
-    const url = `${APP_URL()}/crash/default-history`
-
-    return await fetchData.call(this, url)
-  }
-
-  async function advancedHistory(limit) {
-    const url = `${APP_URL()}/crash/advanced-history/${limit}`
+  async function user() {
+    const url = `${APP_URL()}/user`
 
     return await fetchData.call(this, url)
   }
 
   return {
-    defaultHistory,
-    advancedHistory
+    user,
   }
 })()

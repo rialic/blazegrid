@@ -1,5 +1,5 @@
 import App from '../app'
-import { Modal } from 'bootstrap'
+import { Modal, Dropdown } from 'bootstrap'
 import { copyTextToClipboard } from '../utilx'
 
 App.Home = (function() {

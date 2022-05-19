@@ -4,6 +4,7 @@ namespace App\Repository\Base;
 
 interface DBRepositoryInterface
 {
+    public function count();
     public function findAll();
     public function findById($id);
     public function findByIdOrNew($id, $array = []);

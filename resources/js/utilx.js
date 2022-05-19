@@ -1,6 +1,15 @@
-export const { userPlan, empty, serialize, cleanFields, parseFilters, copyTextToClipboard, makeElement, space, upperCase, upperCaseFirst, numericKeyboard } = (() => {
-  const userPlan = user => ({ 'basic': 1, 'premium': 2, 'deluxe': 3 }[user.plan])
-
+export const {
+  empty,
+  serialize,
+  cleanFields,
+  parseFilters,
+  copyTextToClipboard,
+  makeElement,
+  space,
+  upperCase,
+  upperCaseFirst,
+  numericKeyboard
+} = (() => {
   /**
        * Return true if variable is empty or false if not.
        * @param {Object} val - Value to be evaluated
@@ -291,7 +300,6 @@ export const { userPlan, empty, serialize, cleanFields, parseFilters, copyTextTo
 
 
   return {
-    userPlan,
     empty,
     serialize,
     cleanForm,
