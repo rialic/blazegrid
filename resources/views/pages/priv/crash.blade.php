@@ -6,7 +6,13 @@
   @endpush
 
   <div class="container-fluid">
-    <h4 class="text-white">Crash</h4>
+    <div class="d-flex justify-content-between">
+      <h4 class="text-white">Crash</h4>
+
+      @if(lcfirst($user->plan->name) !== 'basic')
+      <h6 class="align-self-center text-white">Expira em: {{\Carbon\Carbon::parse($user->expiration_plan_date)->format('d/m/Y')}}</h6>
+      @endif
+    </div>
 
     <div class="card mb-4">
       <div class="d-flex justify-content-between w-100">
@@ -120,6 +126,12 @@
           <a href="javascript:void(0)" data-clipboard-text="37604520-ec8f-4537-9ced-a43a332462a6">Copiar chave do QR Code</a>
 
           <p class="d-none text-white mt-2 mb-0">Código copiado!</p>
+        </div>
+
+        <div class="mt-3 text-white">
+          Ao realizar a transferência, por favor, nos mande o comprovante PIX via <a href="javascript:void(0)" class="fw-bold text-danger">Whatsapp</a> e nos informe seu
+          <span class="fw-bold text-danger">email</span> para que possamos realizar a ativação de sua conta. A ativação de sua conta ocorre em até 24H depois da confirmação
+          da transferência PIX.
         </div>
       </div>
     </x-modal.default>

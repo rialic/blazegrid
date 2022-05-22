@@ -26,7 +26,7 @@ class CreateUsersTable extends Migration
             $table->string('us_password', 500);
             $table->boolean('us_terms_conditions');
             $table->timestamp('us_last_date_visit')->nullable();
-            $table->string('us_ip', 50)->nullable();
+            $table->ipAddress('us_ip')->nullable();
             $table->boolean('us_status')->default(true);
             $table->timestamp('us_inactivation_date')->nullable();
             $table->timestamp('us_expiration_plan_date')->nullable();

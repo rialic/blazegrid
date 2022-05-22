@@ -38,7 +38,11 @@ var _ref = function () {
           switch (_context.prev = _context.next) {
             case 0:
               _context.next = 2;
-              return fetch(url);
+              return fetch(url, {
+                headers: {
+                  'X-Requested-With': 'XMLHttpRequest'
+                }
+              });
 
             case 2:
               response = _context.sent;
@@ -179,7 +183,11 @@ var _ref = function () {
           switch (_context.prev = _context.next) {
             case 0:
               _context.next = 2;
-              return fetch(url);
+              return fetch(url, {
+                headers: {
+                  'X-Requested-With': 'XMLHttpRequest'
+                }
+              });
 
             case 2:
               response = _context.sent;

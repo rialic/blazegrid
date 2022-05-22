@@ -4,7 +4,7 @@ export const {
   const APP_URL = () => window.location.href.substring(0, window.location.href.lastIndexOf('/'))
 
   async function fetchData(url) {
-    const response = await fetch(url)
+    const response = await fetch(url, { headers: { 'X-Requested-With': 'XMLHttpRequest' }})
 
     if (!response?.ok) {
       return { status: 'error', message: response.statusText, code: response.status }

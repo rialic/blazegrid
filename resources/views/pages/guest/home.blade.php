@@ -157,6 +157,12 @@
 
         <p class="d-none text-white mt-2 mb-0">Código copiado!</p>
       </div>
+
+      <div class="mt-3 text-white">
+        Ao realizar a transferência, por favor, nos mande o comprovante PIX via <a href="javascript:void(0)" class="fw-bold text-danger">Whatsapp</a> e nos informe seu
+        <span class="fw-bold text-danger">email</span> para que possamos realizar a ativação de sua conta. A ativação de sua conta ocorre em até 24H depois da confirmação
+        da transferência PIX.
+      </div>
     </div>
   </x-modal.default>
   @endif

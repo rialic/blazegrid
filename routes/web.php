@@ -43,7 +43,7 @@ Route::group(['as' => 'guest.'], function () {
     });
 });
 
-Route::group(['middleware' => 'auth', 'as' => 'priv.'], function () {
+Route::group(['middleware' => ['auth'], 'as' => 'priv.'], function () {
     // User Controller
     Route::get('/user', [UserController::class, 'user'])->name('user');
 

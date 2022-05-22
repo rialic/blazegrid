@@ -31,6 +31,8 @@ class User extends Authenticatable
         'us_email',
         'us_phone',
         'us_whatsapp',
+        'us_ip',
+        'us_last_date_visit',
         'us_status',
         'us_password',
         'us_terms_conditions'
@@ -104,6 +106,21 @@ class User extends Authenticatable
         $this->us_whatsapp = $value;
     }
 
+    public function setIpAttribute($value)
+    {
+        $this->us_ip = $value;
+    }
+
+    public function setExpirationPlanDateAttribute($value)
+    {
+        $this->us_expiration_plan_date = $value;
+    }
+
+    public function setLastDateVisitAttribute($value)
+    {
+        $this->us_last_date_visit = $value;
+    }
+
     public function setStatusAttribute($value)
     {
         $this->us_status = $value;
@@ -153,6 +170,21 @@ class User extends Authenticatable
     public function getWhatsappAttribute()
     {
         return $this->us_whatsapp;
+    }
+
+    public function getIpAttribute()
+    {
+        return $this->us_ip;
+    }
+
+    public function getExpirationPlanDateAttribute()
+    {
+        return $this->us_expiration_plan_date;
+    }
+
+    public function getLastDateVisitAttribute()
+    {
+        return $this->us_last_date_visit;
     }
 
     public function getStatusAttribute()

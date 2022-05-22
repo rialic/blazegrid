@@ -5,6 +5,8 @@ namespace App\Http\Controllers\Priv;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Repository\Interfaces\CrashInterface as CrashRepo;
+use Illuminate\Support\Facades\DB;
+use Carbon\Carbon;
 
 class CrashController extends Controller
 {
@@ -22,13 +24,19 @@ class CrashController extends Controller
         return view('pages.priv.crash', ['user' => $user]);
     }
 
-    public function defaultHistory()
+    public function defaultHistory(Request $request)
     {
-        $user = optional(auth())->user();
-        $params = ['limit' => (lcfirst($user->plan->name) === 'basic') ? 60 : 100];
+        $user = auth()->user();
+        $params = ['limit' => (lcfirst(optional(optional($user)->plan)->name) === 'basic') ? 60 : 100];
+        $isAjaxRequest = $request->ajax();
+        $isUserAthenticated = auth()->check();
 
-        if (empty($user) || !optional($user)->exists) {
-            return response()->json(['error' => ['message' => 'Unauthenticated.']], 401);
+        if (!$isAjaxRequest) {
+            abort(403);
+        }
+
+        if (!$isUserAthenticated) {
+            return response()->json(['error' => ['message' => 'Unauthorized.']], 401);
         }
 
         $crashDefaultHistory = $this->crashRepo->getData($params);
@@ -38,11 +46,21 @@ class CrashController extends Controller
 
     public function advancedHistory(Request $request, $limit)
     {
-        $user = optional(auth())->user();
-        $isBasicPlan = lcfirst($user->plan->name) === 'basic';
+        $user = auth()->user();
+        $isBasicPlan = lcfirst(optional(optional($user)->plan)->name) === 'basic';
+        $isAjaxRequest = $request->ajax();
+        $isUserAthenticated = auth()->check();
 
-        if ((empty($user) || !optional($user)->exists) || $isBasicPlan) {
-            return response()->json(['error' => ['message' => 'Unauthenticated.']], 401);
+        if (!$isAjaxRequest) {
+            abort(403);
+        }
+
+        if (!$isUserAthenticated) {
+            return response()->json(['error' => ['message' => 'Unauthorized.']], 401);
+        }
+
+        if ($isBasicPlan) {
+            return response()->json(['error' => ['message' => 'Forbidden.']], 403);
         }
 
         $params = ['limit' => $limit];
