@@ -2,7 +2,7 @@
   @section('title', 'Blaze Grid')
 
   @push('css')
-  <link href="{{url(mix('assets/css/home/app.css'))}}" rel="stylesheet" />
+  <link href="{{url(mix('assets/css/home/app.min.css'))}}" rel="stylesheet" />
   @endpush
 
   <section class="mt-4 border-bottom border-primary">
@@ -118,6 +118,33 @@
     </div>
   </section>
 
+  <section class="border-bottom border-primary">
+    <div class="container-fluid">
+      <div class="row justify-content-center">
+        <div class="col-lg-7">
+          <div class="text-center my-4">
+            <h3 class="mb-3 text-light">Nosso Histórico do Crash</h3>
+          </div>
+        </div>
+      </div>
+
+      <div class="row mb-4">
+        <div class="col-12 col-sm-4">
+          <img class="my-1 img-fluid img-thumbnail" style="cursor: pointer;" src="{{url(mix('assets/images/demo-1.png'))}}" alt="demo-1">
+        </div>
+
+        <div class="col-12 col-sm-4">
+          <img class="my-1 img-fluid img-thumbnail" style="cursor: pointer;" src="{{url(mix('assets/images/demo-2.png'))}}" alt="demo-2">
+        </div>
+
+        <div class="col-12 col-sm-4">
+          <img class="my-1 img-fluid img-thumbnail" style="cursor: pointer;" src="{{url(mix('assets/images/demo-3.png'))}}" alt="demo-3">
+        </div>
+
+      </div>
+    </div>
+  </section>
+
   @if(lcfirst(optional(optional($user)->plan)->name) === 'basic' || empty($user))
   <section class="mt-4">
     <div class="container">
@@ -159,16 +186,22 @@
       </div>
 
       <div class="mt-3 text-white">
-        Ao realizar a transferência, por favor, nos mande o comprovante PIX via <a href="javascript:void(0)" class="fw-bold text-danger">Whatsapp</a> e nos informe seu
-        <span class="fw-bold text-danger">email</span> para que possamos realizar a ativação de sua conta. A ativação de sua conta ocorre em até 24H depois da confirmação
-        da transferência PIX.
+        Ao realizar a transferência, por favor, nos mande o comprovante PIX via
+        <a href="https://wa.me/5567999316800?text=Olá%20eu%20fiz%20um%20pix%20e%20gostaria%20de%20liberar%20o%20meu%20acesso%20para%20poder%20visualizar%20o%20Histórico%20Avançado%20na%20Blazegrids"
+          target="_blank" class="fw-bold text-danger">Whatsapp</a> e nos informe seu <span class="fw-bold text-danger">email</span> para que possamos realizar a ativação de sua
+        conta. A ativação de sua conta ocorre em até 24H depois da confirmação da transferência PIX.
       </div>
     </div>
   </x-modal.default>
   @endif
   @endauth
 
+  <div class="modal-image">
+    <span class="modal-image-close">&times;</span>
+    <img class="modal-image:content">
+  </div>
+
   @push('scripts')
-  <script src="{{url(mix('assets/js/home/app.js'))}}"></script>
+  <script src="{{url(mix('assets/js/home/app.min.js'))}}"></script>
   @endpush
 </x-layout.guest>

@@ -8,8 +8,7 @@ class UserController extends Controller
 {
     public function user()
     {
-        $user = optional(auth())->user();
-        $user = $user->with('plan')->first();
+        $user = optional(auth())->user()->load('plan');
 
         if (empty($user) || !optional($user)->exists) {
             return response()->json(['error' => ['message' => 'Unauthenticated.']], 401);

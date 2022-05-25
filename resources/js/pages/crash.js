@@ -14,7 +14,8 @@ App.Crash = (function() {
     this.startLogInput = document.querySelector('#start_log')
     this.endLogInput = document.querySelector('#end_log')
     this.limitLogInput = document.querySelector('#limit_log')
-    this.totalRowsEl = document.querySelector('[data-js="total"]')
+    this.defaultTotalRowsEl = document.querySelector('[data-js="default-total"]')
+    this.advancedTotalRowsEl = document.querySelector('[data-js="advanced-total"]')
 
     this.refreshDefaultBtn = document.querySelector('#refresh-default')
     this.refreshAdvancedBtn = document.querySelector('#refresh-advanced')
@@ -49,6 +50,12 @@ App.Crash = (function() {
     refreshDefaultCrashHistory.call(this)
 
     if(this.user.plan.name.toLowerCase() !== 'basic') {
+      this.startLogInput.addEventListener('keyup', event => onTypeCrashPoint.call(this, event))
+      this.startLogInput.addEventListener('blur', event => onBlurCrashPoint.call(this, event))
+      this.endLogInput.addEventListener('keyup', event => onTypeCrashPoint.call(this, event))
+      this.endLogInput.addEventListener('blur', event => onBlurCrashPoint.call(this, event))
+      this.limitLogInput.addEventListener('keyup', event => onTypeLimit.call(this, event))
+
       this.refreshAdvancedBtn.addEventListener('click', event => onRefreshHistory.call(this, event))
       this.exportExcelBtn.addEventListener('click', event => onExportExcelFile.call(this, event, 'excel'))
       this.exportCsvBtn.addEventListener('click', event => onExportExcelFile.call(this, event, 'csv'))
@@ -80,8 +87,44 @@ App.Crash = (function() {
     throw new Error(`message: ${message}, code: ${code}`)
   }
 
+  function onTypeCrashPoint(event) {
+    const crashInput = event.target
+    const crashPattern = /^[1-9]+\d*\.?\d{0,2}$/g
+    const isCorretlyCrashPoint = crashPattern.test(crashInput.value)
+
+    if (!isCorretlyCrashPoint) {
+      const startWithDot = crashInput.value.startsWith('.')
+
+      if(startWithDot) {
+        crashInput.value = crashInput.value.slice(1, )
+
+        return
+      }
+
+      crashInput.value = crashInput.value.slice(0, (crashInput.value.length - 1))
+    }
+  }
+
+  function onBlurCrashPoint(event) {
+    const crashInput = event.target
+    const endsWithDot = crashInput.value.endsWith('.')
+
+    if (endsWithDot) {
+      crashInput.value = crashInput.value.slice(0, (crashInput.value.length - 1))
+    }
+  }
+
+  function onTypeLimit(event) {
+    const limitInput = event.target
+    const limitPattern = /^[1-9]+\d*$/g
+    const isCorretlyLimit = limitPattern.test(limitInput.value)
+
+    if (!isCorretlyLimit) {
+      limitInput.value = limitInput.value.slice(0, (limitInput.value.length - 1))
+    }
+  }
+
   async function refreshAdvancedCrashHistory() {
-    // this.limitLogInput.value = 300
     showContentReloadingButton.call(this)
     const { status, response, message, code } = await advancedHistory.call(this, this.limitLogInput.value = this.limitLogInput.value || 300)
 

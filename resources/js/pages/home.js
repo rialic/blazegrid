@@ -6,6 +6,10 @@ App.Home = (function() {
 
   function Home() {
     this.clipboardLink = document.querySelector('[data-clipboard-text]')
+    this.images = document.querySelectorAll('img.img-thumbnail')
+    this.modalImage = document.querySelector('.modal-image')
+    this.modalImageClose = document.querySelector('.modal-image-close')
+    this.modalImageContent = document.querySelector('.modal-image\\:content')
   }
 
   Home.prototype.init = function() {
@@ -14,6 +18,9 @@ App.Home = (function() {
     if (isClipboardLinkVisible) {
       this.clipboardLink.addEventListener('click', () => onCopyToClipBoard.call(this))
     }
+
+    this.images.forEach(image => image.addEventListener('click', event => onShowImageModal.call(this, event)))
+    this.modalImageClose.addEventListener('click', () => onHideImageModal.call(this))
   }
 
   async function onCopyToClipBoard() {
@@ -27,6 +34,17 @@ App.Home = (function() {
 
       setTimeout(() => resultCopyEl.classList.add('d-none'), 5000)
     }
+  }
+
+  function onShowImageModal(event) {
+    const image = event.target
+
+    this.modalImage.style.display = 'block'
+    this.modalImageContent.src = image.src
+  }
+
+  function onHideImageModal() {
+    this.modalImage.style.display = 'none'
   }
 
   return Home

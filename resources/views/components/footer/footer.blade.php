@@ -18,15 +18,15 @@
 
             <div class="d-flex flex-wrap justify-content-around justify-content-sm-end flex-fill mx-1">
 
-                <a class="d-none text-white-50 text-decoration-none mx-1">
+                {{-- <a class="d-none text-white-50 text-decoration-none mx-1">
                     Quem Somos
-                </a>
+                </a> --}}
 
-                <a class="d-none text-white-50 text-decoration-none mx-1">
+                {{-- <a class="d-none text-white-50 text-decoration-none mx-1">
                     Termos de Uso
-                </a>
+                </a> --}}
 
-                <a class="text-white-50 text-decoration-none mx-1">
+                <a href="https://wa.me/5567999316800" class="text-white-50 text-decoration-none mx-1">
                     Fale Conosco
                 </a>
 

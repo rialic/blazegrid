@@ -2,7 +2,7 @@
   @section('title', 'Login')
 
   @push('css')
-  <link href="{{url(mix('assets/css/login/app.css'))}}" rel="stylesheet" />
+  <link href="{{url(mix('assets/css/login/app.min.css'))}}" rel="stylesheet" />
   @endpush
 
   <div class="d-flex flex-col justify-content-center align-items-center h-100">
@@ -50,6 +50,6 @@
   </div>
 
   @push('scripts')
-  <script src="{{url(mix('assets/js/login/app.js'))}}"></script>
+  <script src="{{url(mix('assets/js/login/app.min.js'))}}"></script>
   @endpush
 </x-layout.guest>

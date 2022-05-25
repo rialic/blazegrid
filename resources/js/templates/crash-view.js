@@ -6,7 +6,7 @@ export const {
   renderDefaultCrashHistoryView,
   renderAdvancedCrashHistoryView
 } = (() => {
-  function renderDefaultCrashHistoryView(data, user) {
+  function renderDefaultCrashHistoryView(data) {
     const fragment = document.createDocumentFragment()
 
     data.forEach(crash => {
@@ -31,6 +31,8 @@ export const {
 
     this.defaultHistoryEl.innerHTML = ''
     this.defaultHistoryEl.appendChild(fragment)
+
+    this.defaultTotalRowsEl.textContent = `Total: ${data.length}`
   }
 
   function renderAdvancedCrashHistoryView(data) {
@@ -43,7 +45,7 @@ export const {
     tBody.innerHTML = ''
     tBody.appendChild(range.createContextualFragment(rowsString))
 
-    this.totalRowsEl.textContent = `Total de linhas: ${advancedCrashList.length}`
+    this.advancedTotalRowsEl.textContent = `Total encontrado: ${advancedCrashList.length}`
   }
 
   function getNextCrashRecord(currentIndex, list) {

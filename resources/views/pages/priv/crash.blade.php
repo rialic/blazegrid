@@ -2,7 +2,7 @@
   @section('title', 'Crash')
 
   @push('css')
-  <link href="{{url(mix('assets/css/crash/app.css'))}}" rel="stylesheet" />
+  <link href="{{url(mix('assets/css/crash/app.min.css'))}}" rel="stylesheet" />
   @endpush
 
   <div class="container-fluid">
@@ -24,6 +24,12 @@
       </div>
 
       <div class="card-body p-3">
+        <div class="d-flex justify-content-between mb-2 p-1 border border-primary rounded">
+          <div class="row">
+            <span data-js="default-total" class="align-self-center text-white">Total: </span>
+          </div>
+        </div>
+
         <div style="max-height: 450px; overflow-y: auto;">
           <div data-js="default-history" class="d-flex flex-row-reverse justify-content-end flex-wrap w-100"></div>
         </div>
@@ -70,7 +76,7 @@
       <div class="card-body p-3">
         <div class="d-flex justify-content-between mb-2 p-1 border border-primary rounded">
           <div class="row">
-            <span data-js="total" class="align-self-center text-white">Total de linhas</span>
+            <span data-js="advanced-total" class="align-self-center text-white">Total encontrado: </span>
           </div>
           <div class="row gx-2">
             <div class="col">
@@ -129,9 +135,10 @@
         </div>
 
         <div class="mt-3 text-white">
-          Ao realizar a transferência, por favor, nos mande o comprovante PIX via <a href="javascript:void(0)" class="fw-bold text-danger">Whatsapp</a> e nos informe seu
-          <span class="fw-bold text-danger">email</span> para que possamos realizar a ativação de sua conta. A ativação de sua conta ocorre em até 24H depois da confirmação
-          da transferência PIX.
+          Ao realizar a transferência, por favor, nos mande o comprovante PIX via
+          <a href="https://wa.me/5567999316800?text=Olá%20eu%20fiz%20um%20pix%20e%20gostaria%20de%20liberar%20o%20meu%20acesso%20para%20poder%20visualizar%20o%20Histórico%20Avançado%20na%20Blazegrids"
+            target="_blank" class="fw-bold text-danger">Whatsapp</a> e nos informe seu <span class="fw-bold text-danger">email</span> para que possamos realizar a ativação de sua conta. A ativação
+             de sua conta ocorre em até 24H depois da confirmação da transferência PIX.
         </div>
       </div>
     </x-modal.default>
@@ -139,6 +146,6 @@
   </div>
 
   @push('scripts')
-  <script src="{{url(mix('assets/js/crash/app.js'))}}"></script>
+  <script src="{{url(mix('assets/js/crash/app.min.js'))}}"></script>
   @endpush
 </x-layout.priv>

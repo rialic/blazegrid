@@ -5,8 +5,6 @@ namespace App\Http\Controllers\Priv;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Repository\Interfaces\CrashInterface as CrashRepo;
-use Illuminate\Support\Facades\DB;
-use Carbon\Carbon;
 
 class CrashController extends Controller
 {
@@ -63,7 +61,7 @@ class CrashController extends Controller
             return response()->json(['error' => ['message' => 'Forbidden.']], 403);
         }
 
-        $params = ['limit' => $limit];
+        $params = ['limit' => ($limit > 3500) ? 3500 : $limit];
         $crashAdvancedHistory = $this->crashRepo->getData($params);
         return response()->json(['data' => ['advanced_history' => $crashAdvancedHistory, 'user' => $user]]);
     }
