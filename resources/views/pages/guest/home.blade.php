@@ -141,8 +141,6 @@
           <img class="my-1 img-fluid img-thumbnail" style="cursor: pointer;" src="{{url(mix('assets/images/demo-3.png'))}}" alt="demo-3">
         </div>
 
-        TESTING
-
       </div>
     </div>
   </section>
