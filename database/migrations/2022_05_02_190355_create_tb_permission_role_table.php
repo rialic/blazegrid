@@ -14,14 +14,13 @@ class CreateTbPermissionRoleTable extends Migration
     public function up()
     {
         Schema::create('tb_permission_role', function (Blueprint $table) {
-            $table->bigIncrements('pr_id');
             $table->unsignedBigInteger('ro_id');
             $table->unsignedBigInteger('pe_id');
 
             $table->foreign('ro_id')->references('ro_id')->on('tb_roles')->onDelete('cascade');
             $table->foreign('pe_id')->references('pe_id')->on('tb_permissions')->onDelete('cascade');
 
-            // $table->primary(['ro_id', 'pe_id']);
+            $table->primary(['ro_id', 'pe_id']);
 
             $table->engine = 'InnoDB';
             $table->charset = 'utf8mb4';

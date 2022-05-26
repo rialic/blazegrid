@@ -30,24 +30,24 @@ class AuthServiceProvider extends ServiceProvider
         $this->registerPolicies();
 
         // CHECK IF USER IS ADMIN, IF SO, THEN RETURN TRUE TO RELEASE ALL ACCESS IN SYSTEM
-        // Gate::before(function ($user, $abiliity) {
-        //     // CHECK IF ABILITY IS A POLICY
-        //     $isPolicy = Str::startsWith($abiliity, 'policy');
+        Gate::before(function ($user, $abiliity) {
+            // CHECK IF ABILITY IS A POLICY
+            $isPolicy = Str::startsWith($abiliity, 'policy');
 
-        //     if (!$isPolicy) {
-        //         if ($user->hasAnyRoles('ADMIN')) {
-        //             return true;
-        //         }
-        //     }
-        // });
+            if (!$isPolicy) {
+                if ($user->hasAnyRoles('ADMIN')) {
+                    return true;
+                }
+            }
+        });
 
         // DEFINE PERMISSION USER
-        // $permissionList = Permission::with('roles')->get();
+        $permissionList = Permission::with('roles')->get();
 
-        // foreach ($permissionList as $permission) {
-        //     Gate::define($permission->name, function ($user) use ($permission) {
-        //         return $user->hasAnyRoles($permission->roles);
-        //     });
-        // }
+        foreach ($permissionList as $permission) {
+            Gate::define($permission->name, function ($user) use ($permission) {
+                return $user->hasAnyRoles($permission->roles);
+            });
+        }
     }
 }

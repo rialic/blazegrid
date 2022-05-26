@@ -25,6 +25,10 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot()
     {
+        if (config('app.env') === 'production') {
+            \URL::forceScheme('https');
+        }
+
         PendingRequest::macro('crash', function () {
             $blazeHeader = new BlazeHeaders();
             $crashUrl = config('app.crash_history_api');
