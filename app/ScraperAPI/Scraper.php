@@ -47,8 +47,7 @@ class Scraper
     private function getGameHistoryApi($game)
     {
         $gameHistoryApiList = [
-            // 'crash' =>  config('app.crash_history_api')
-            'crash' =>  'https://blaze.com/api/crash_games/recent/history?page=1'
+            'crash' =>  config('app.crash_history_api')
         ];
 
         return $gameHistoryApiList[$game];
