@@ -1,6 +1,6 @@
 {
     "private": true,
-    "packageManager": "yarn@3.2.0",
+    "packageManager": "yarn@3.2.2",
     "scripts": {
         "dev": "yarn development",
         "development": "mix",
@@ -10,8 +10,10 @@
         "hot": "mix watch --hot",
         "prod": "yarn production",
         "production": "mix --production",
+
         "vscode": "yarn dlx @yarnpkg/sdks vscode",
-        "destroy-package-manager": "rm -Rf .yarn && rm -Rf .vscode && rm -Rf .editorconfig && rm -Rf .pnp.cjs && rm -Rf .pnp.loader.mjs && rm -f .yarnrc.yml && rm -f yarn.lock && rm -Rf node_modules"
+        "yarn-enable": "corepack enable && yarn set version stable",
+        "yarn-destroy-package": "rm -Rf .yarn && rm -Rf .vscode && rm -Rf .editorconfig && rm -Rf .pnp.cjs && rm -Rf .pnp.loader.mjs && rm -f .yarnrc.yml && rm -f yarn.lock && rm -Rf node_modules"
     },
     "devDependencies": {
         "@babel/core": "^7.17.9",
@@ -39,9 +41,9 @@
         "webpack-cli": "^4.9.2"
     },
     "dependencies": {
-        "@fortawesome/fontawesome-free": "^6.1.1",
+        "@fortawesome/fontawesome-free": "^6.1.2",
         "@popperjs/core": "^2.11.5",
-        "bootstrap": "^5.1.3",
+        "bootstrap": "^5.2.0",
         "date-fns": "^2.28.0",
         "date-fns-tz": "^1.3.4"
     }

@@ -1,8 +1,11 @@
 @import "~bootstrap/scss/functions";
 @import "./custom-style/variables";
 @import "~bootstrap/scss/variables";
+@import "~bootstrap/scss/maps";
 @import "~bootstrap/scss/mixins";
 @import "~bootstrap/scss/utilities";
+@import "~bootstrap/scss/helpers";
+@import "~bootstrap/scss/utilities/api";
 @import "./utilities/utilities";
 
 @import "~bootstrap/scss/root";
@@ -148,15 +151,34 @@ body {
 }
 
 /*--------------------*\
+  LOGO GRID LINE
+\*--------------------*/
+.first-line-logo {
+  position: absolute;
+  top: 33%;
+  left: 0;
+  width: 100%;
+  border: rem(1px) solid #f12c4c;
+}
+
+.second-line-logo {
+  position: absolute;
+  top: 66%;
+  left: 0;
+  width: 100%;
+  border: rem(1px) solid #f12c4c;
+}
+
+/*--------------------*\
   FOOTER
 \*--------------------*/
 .footer {
-    position: absolute;
-    right: 0;
-    left: 0;
-    bottom: 0;
-    padding: 1.1875rem .9375rem 1.25rem;
-    color: #98a6ad;
-    background-color: #38414a;
-    box-shadow: 0 0 .0625rem rgb(50 58 70 / 10%);
+  position: absolute;
+  right: 0;
+  left: 0;
+  bottom: 0;
+  padding: 1.1875rem .9375rem 1.25rem;
+  color: #98a6ad;
+  background-color: #38414a;
+  box-shadow: 0 0 .0625rem rgb(50 58 70 / 10%);
 }

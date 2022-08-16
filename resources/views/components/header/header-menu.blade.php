@@ -15,15 +15,16 @@
 
       <h3 class="mb-0 px-1 border border-start-0 border-2 border-danger rounded-end fw-bold text-light">s</h3>
 
-      <div class="logo-grid-line" style="top: 33%;"></div>
+      <div class="first-line-logo"></div>
 
-      <div class="logo-grid-line" style="top: 66%;"></div>
+      <div class="second-line-logo"></div>
     </div>
   </a>
 
   @guest
   <ul class="nav align-items-stretch">
     <x-menu.nav-link href="{{route('login')}}" text="Cadastre-se" />
+
     <x-menu.nav-link href="{{route('login')}}" text="Entrar" />
   </ul>
   @endguest

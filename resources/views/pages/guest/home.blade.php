@@ -1,5 +1,5 @@
 <x-layout.guest>
-  @section('title', 'Blaze Grid')
+  @section('title', 'Blaze Grids')
 
   @push('css')
   <link href="{{url(mix('assets/css/home/app.min.css'))}}" rel="stylesheet" />

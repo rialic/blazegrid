@@ -1,0 +1,158 @@
+version: "3.9"
+
+networks:
+  app:
+  nginx:
+  db:
+  redis:
+
+services:
+  nginx:
+    build:
+      context: ./.docker/nginx
+      dockerfile: Dockerfile
+    image: nginx
+    container_name: nginx
+    volumes:
+      - ./:/var/www
+    restart: unless-stopped
+    ports:
+      - 80:80
+      - 443:443
+    depends_on:
+      - app
+    networks:
+      - nginx
+
+  app:
+    build:
+      args:
+        UID: 1000
+        GROUP: www-data
+      context: ./.docker/php-fpm
+      dockerfile: Dockerfile
+    image: app
+    container_name: app
+    working_dir: /var/www
+    volumes:
+      - ./:/var/www
+    restart: unless-stopped
+    depends_on:
+      - db
+      - redis
+    networks:
+      - app
+      - nginx
+      - db
+      - redis
+
+  db:
+    image: mysql/mysql-server:8.0.23
+    container_name: db
+    volumes:
+      - ./.docker/mysql:/var/lib/mysql
+    ports:
+      - "3308:3306"
+    environment:
+      MYSQL_DATABASE: ${DB_DATABASE}
+      MYSQL_USER: ${DB_USERNAME}
+      MYSQL_PASSWORD: ${DB_PASSWORD}
+      MYSQL_ROOT_PASSWORD: ${DB_PASSWORD}
+    deploy:
+      resources:
+        limits:
+          cpus: '0.50'
+          memory: 500M
+    networks:
+      - db
+
+  redis:
+    image: redis:7.0.2-alpine
+    container_name: redis
+    command: redis-server --requirepass secret
+    volumes:
+      - ./.docker/redis:/data
+    restart: unless-stopped
+    deploy:
+      resources:
+        limits:
+          cpus: '0.20'
+          memory: 100M
+    networks:
+      - redis
+
+  #CONTAINER SERVICES
+
+  node:
+    image: node:current-alpine3.16
+    container_name: node
+    working_dir: /var/www
+    volumes:
+      - ./:/var/www
+
+  composer:
+    build:
+      context: ./.docker/composer
+      dockerfile: Dockerfile
+    image: composer
+    container_name: composer
+    working_dir: /var/www
+    volumes:
+      - ./:/var/www
+    entrypoint: ["composer"]
+    networks:
+      - app
+
+  artisan:
+    build:
+      args:
+        UID: 1000
+        GROUP: www-data
+      context: ./.docker/php-fpm
+      dockerfile: Dockerfile
+    image: artisan
+    container_name: artisan
+    working_dir: /var/www
+    volumes:
+      - ./:/var/www
+    entrypoint: ["php", "artisan"]
+    depends_on:
+      - db
+    networks:
+      - app
+      - db
+
+  phpunit:
+    build:
+      args:
+        UID: 1000
+        GROUP: www-data
+      context: ./.docker/php-fpm
+      dockerfile: Dockerfile
+    image: phpunit
+    container_name: phpunit
+    working_dir: /var/www
+    volumes:
+      - ./:/var/www
+    entrypoint: ["/var/www/vendor/bin/phpunit"]
+    depends_on:
+      - db
+    networks:
+      - app
+      - db
+
+  # scheduler:
+  #   build:
+  #     args:
+  #       UID: 1000
+  #       GROUP: www-data
+  #     context: ./.docker/php-fpm
+  #     dockerfile: Dockerfile
+  #   image: scheduler
+  #   container_name: scheduler
+  #   working_dir: /var/www
+  #   volumes:
+  #     - ./:/var/www
+  #   entrypoint: ["php", "artisan", "scheduler:work"]
+  #   networks:
+  #     - app
