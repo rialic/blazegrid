@@ -34,7 +34,7 @@
 
       @auth
       <div class="text-center py-3">
-        <button class="btn btn-sm btn-primary waves-effect waves-light" data-bs-toggle="modal" data-bs-target="#modal_plan">Assinar Plano</button>
+        <button class="btn btn-sm btn-primary" data-bs-toggle="modal" data-bs-target="#modal_plan">Assinar Plano</button>
       </div>
       @endauth
   </div>

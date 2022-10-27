@@ -1,6 +1,6 @@
 <header class="header-menu justify-content-between">
   <a href="{{route('guest.init')}}" class="d-flex align-items-center px-1 text-decoration-none">
-    <span class="fs-24 fw-bold text-danger">blaze</span>
+    <span class="fs-24 fw-bold text-white">blaze</span>
 
     &thinsp;
 
@@ -32,7 +32,7 @@
   @auth
   <ul class="nav align-items-stretch">
     <li class="nav-item">
-      <a href="javascript:void(0)" class="d-flex align-items-center dropdown-toggle h-100 waves-effect waves-light" role="button" data-bs-toggle="dropdown">
+      <a href="javascript:void(0)" class="d-flex align-items-center dropdown-toggle h-100" role="button" data-bs-toggle="dropdown">
         {{ Str::limit(auth()->user()->name, 10) }}
       </a>
       <ul class="dropdown-menu dropdown-menu-dark">

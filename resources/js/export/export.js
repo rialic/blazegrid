@@ -1,14 +1,11 @@
 export const {
-  exportFromTable
+  doExport
 } = (() => {
-  const exportFromTable = (table, type) => {
-    const tableContentString = getTableContent.call(this, table)
-    const exportTypeList = {
-      'excel': generateXLSXURILink,
-      'csv': generateCSVURILink
-    }
+  function doExport(type) {
+    const cardContentString = getCardContent.call(this)
+    const exportTypeList = { 'excel': generateXLSXURILink, 'csv': generateCSVURILink }
 
-    return exportTypeList[type].call(this, tableContentString)
+    return exportTypeList[type].call(this, cardContentString)
   }
 
   function generateXLSXURILink(tableContentString) {
@@ -27,40 +24,27 @@ export const {
     return { download, linkURI }
   }
 
-  function getTableContent(table) {
-    const tableRows = Array.from(table.querySelectorAll('tr'))
-    const tableContentString = tableRows.map((row, index) => {
+  function getCardContent() {
+    const crashCardListEl = Array.from(this.advancedHistoryEl.querySelectorAll('.card'))
+    const dataContentString = crashCardListEl.map((card, index) => {
       const isFirstIndex = index === 0
+      const crashPoint = card.querySelector('[data-js="crash-point"]').textContent.trim()
+      const crashDate = card.querySelector('[data-js="crash-date"]').textContent.trim()
+      const crashDiffMin = card.querySelector('[data-js="crash-diff-min"]').textContent.trim()
+      const crashDiffStep = card.querySelector('[data-js="crash-diff-step"]').textContent.trim()
 
       if (isFirstIndex) {
-        return Array.from(row.cells).map((cell, index) => {
-          const isSecondIndex = index === 1
-          const isThirdIndex = index === 2
-          const isFourthIndex = index === 3
-
-          if (isSecondIndex) {
-            return 'Data'
-          }
-
-          if (isThirdIndex) {
-            return 'Diferença em minutos'
-          }
-
-          if (isFourthIndex) {
-            return 'Diferença em operações'
-          }
-
-          return cell.textContent.trim()
-        }).join(',')
+        const contentHeader = 'Crash,Data,Diferença em minutos,Diferença em jogadas'
+        return `${contentHeader}\n${crashPoint},${crashDate},${crashDiffMin},${crashDiffStep}`
       }
 
-      return Array.from(row.cells).map(cell => cell.textContent.trim()).join(',')
+      return `${crashPoint},${crashDate},${crashDiffMin},${crashDiffStep}`
     }).join('\n')
 
-    return tableContentString
+    return dataContentString
   }
 
   return {
-    exportFromTable
+    doExport
   }
 })()

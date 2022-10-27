@@ -1,9 +1,11 @@
 const mix = require('laravel-mix')
+const path = require('path')
+
 require('laravel-mix-purgecss')
 
 mix.alias({
     '@': path.join(__dirname, 'resources/js')
-});
+})
 
 // CSS
 mix.sass('resources/scss/pages/home.scss', 'assets/css/home/app.min.css')
@@ -13,9 +15,8 @@ mix.sass('resources/scss/pages/home.scss', 'assets/css/home/app.min.css')
     .purgeCss()
 
 // JS
-mix.js(['resources/js/pages/home/index.js', 'resources/js/components/waves.js'], 'assets/js/home/app.min.js')
-    .js(['resources/js/components/waves.js'], 'assets/js/login/app.min.js')
-    .js(['resources/js/pages/crash/index.js', 'resources/js/components/waves.js'], 'assets/js/crash/app.min.js')
+mix.js(['resources/js/pages/home/index.js'], 'assets/js/home/app.min.js')
+    .js(['resources/js/pages/crash/crash.js'], 'assets/js/crash/app.min.js')
 
 // OTHERS
 mix.copyDirectory("resources/webfonts", "public/assets/webfonts")

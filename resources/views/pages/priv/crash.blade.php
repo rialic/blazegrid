@@ -5,18 +5,20 @@
   <link href="{{url(mix('assets/css/crash/app.min.css'))}}" rel="stylesheet" />
   @endpush
 
+  <div datajs="maintain-css" class="d-none border-success text-success"></div>
+
   <div class="container-fluid">
     <div class="d-flex justify-content-between">
-      <h4 class="text-white">Crash</h4>
+      <h4 class="text-white fw-semibold">Crash</h4>
 
       @if(lcfirst($user->plan->name) !== 'basic')
-      <h6 class="align-self-center text-white">Expira em: {{\Carbon\Carbon::parse($user->expiration_plan_date)->format('d/m/Y')}}</h6>
+      <div class="align-self-center text-white fw-semibold fs:min-14:max-16">Expira em: {{\Carbon\Carbon::parse($user->expiration_plan_date)->format('d/m/Y')}}</div>
       @endif
     </div>
 
     <div class="card mb-4">
       <div class="d-flex justify-content-between w-100">
-        <h5 class="card-title px-3 pt-2 text-white">Histórico Padrão</h5>
+        <div class="card-title px-3 pt-2 text-white fw-semibold fs:min-16:max-20">Histórico Padrão</div>
 
         <button id="refresh-default" type="button" class="btn btn-sm btn-danger bg-gradient mt-2 me-3 fw-bold">
           Atualizar <i class="fa-solid fa-arrows-rotate"></i>
@@ -26,7 +28,7 @@
       <div class="card-body p-3">
         <div class="d-flex justify-content-between mb-2 p-1 border border-primary rounded">
           <div class="row">
-            <span data-js="default-total" class="align-self-center text-white">Total: </span>
+            <span data-js="default-total" class="align-self-center text-white fw-semibold fs:min-14:max-16">Total: </span>
           </div>
         </div>
 
@@ -40,13 +42,13 @@
     <x-miscellaneous.price-table />
     @else
     <div class="card mb-4">
-      <h5 class="card-title px-3 pt-2 text-white">Histórico Avançado</h5>
+      <h5 class="card-title px-3 pt-2 text-white fw-semibold fs:min-16:max-20">Histórico Avançado</h5>
       <div class="d-none bg-success"></div>
       <div class="d-none bg-secondary"></div>
 
       <div class="d-flex justify-content-center px-3">
-        <span class="text-white px-1"><i class="fa-solid fa-hourglass"></i> - Diferença em minutos</span>
-        <span class="text-white px-1"><i class="fa-solid fa-dice"></i> - Diferença entre jogadas</span>
+        <span class="text-white px-1 fs:min-14:max-16"><i class="fa-solid fa-hourglass"></i> - Diferença em minutos</span>
+        <span class="text-white px-1 fs:min-14:max-16"><i class="fa-solid fa-dice"></i> - Diferença entre jogadas</span>
       </div>
 
       <form action="#" method="GET" class="px-3 mt-3">
@@ -74,39 +76,28 @@
       </form>
 
       <div class="card-body p-3">
-        <div class="d-flex justify-content-between mb-2 p-1 border border-primary rounded">
+        <div class="d-flex justify-content-between mb-2 p-1 border border-2 border-primary rounded">
           <div class="row">
-            <span data-js="advanced-total" class="align-self-center text-white">Total encontrado: </span>
+            <span data-js="advanced-total" class="align-self-center text-white fw-semibold fs:min-14:max-16">
+              Total encontrado:
+            </span>
           </div>
           <div class="row gx-2">
             <div class="col">
-              <a id="export-excel" class="btn btn-sm btn-outline-success">
+              <a id="export-excel" class="btn btn-sm btn-success">
                 <i class="fa-solid fa-file-excel fa-lg"></i>
               </a>
             </div>
 
             <div class="col">
-              <a id="export-csv" class="btn btn-sm btn-outline-success">
+              <a id="export-csv" class="btn btn-sm btn-success">
                 <i class="fa-solid fa-file-csv fa-lg"></i>
               </a>
             </div>
           </div>
         </div>
 
-        <div class="table-responsive" style="max-height: 450px; overflow-y: auto;">
-          <table data-js="table-crash" class="table table-striped table-bordered table-hover">
-            <thead>
-              <tr>
-                <th>Crash</th>
-                <th class="text-center"><i class="fa-solid fa-clock"></i></th>
-                <th class="text-center"><i class="fa-solid fa-hourglass"></i></th>
-                <th class="text-center"><i class="fa-solid fa-dice"></i></th>
-              </tr>
-            </thead>
-            <tbody>
-            </tbody>
-          </table>
-        </div>
+        <div data-js="advanced-history" class="d-flex flex-column vh-50 pe-2 gap-2 overflow-auto"></div>
       </div>
     </div>
     @endif

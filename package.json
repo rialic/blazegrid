@@ -10,10 +10,9 @@
         "hot": "mix watch --hot",
         "prod": "yarn production",
         "production": "mix --production",
-
-        "vscode": "yarn dlx @yarnpkg/sdks vscode",
         "yarn-enable": "corepack enable && yarn set version stable",
-        "yarn-destroy-package": "rm -Rf .yarn && rm -Rf .vscode && rm -Rf .editorconfig && rm -Rf .pnp.cjs && rm -Rf .pnp.loader.mjs && rm -f .yarnrc.yml && rm -f yarn.lock && rm -Rf node_modules"
+        "yarn-enable-vscode": "yarn dlx @yarnpkg/sdks vscode",
+        "yarn-destroy": "rm -Rf .yarn && rm -Rf .vscode && rm -Rf .editorconfig && rm -Rf .pnp.cjs && rm -Rf .pnp.loader.mjs && rm -f .yarnrc.yml && rm -f yarn.lock && rm -Rf node_modules"
     },
     "devDependencies": {
         "@babel/core": "^7.17.9",
@@ -27,7 +26,7 @@
         "autoprefixer": "^10.4.2",
         "cssnano": "^5.1.7",
         "eslint": "^8.13.0",
-        "eslint-config-eslintx": "^1.0.3",
+        "eslint-config-eslintx": "^1.0.4",
         "laravel-mix": "^6.0.43",
         "laravel-mix-purgecss": "^6.0.0",
         "postcss": "^8.4.6",

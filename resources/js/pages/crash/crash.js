@@ -1,13 +1,14 @@
-import App from '../../app'
+import App from '@/app'
 import { Modal, Dropdown } from 'bootstrap'
-import { exportFromTable } from '../../export/export'
-import { defaultHistory, advancedHistory } from '../../api/crash-api'
-import { user } from '../../api/user-api'
-import { renderDefaultCrashHistoryView, renderAdvancedCrashHistoryView } from '../../templates/crash-view'
+import { doExport } from '@/export/export'
+import { indexDefaultHistory, indexAdvancedHistory } from '@/api/crash'
+import { indexUser } from '@/api/user'
+import { renderDefaultCrashHistoryView, renderAdvancedCrashHistoryView } from '@/pages/crash/crash-view'
 
 App.Crash = (function() {
   function Crash() {
     this.defaultHistoryEl = document.querySelector('[data-js="default-history"]')
+    this.advancedHistoryEl = document.querySelector('[data-js="advanced-history"]')
 
     this.user = null
 
@@ -22,8 +23,6 @@ App.Crash = (function() {
 
     this.exportExcelBtn = document.querySelector('#export-excel')
     this.exportCsvBtn = document.querySelector('#export-csv')
-
-    this.crashTable = document.querySelector('[data-js="table-crash"]')
   }
 
   Crash.prototype.init = function() {
@@ -33,7 +32,7 @@ App.Crash = (function() {
   }
 
   async function initCrashPage() {
-    const { status, response, message, code } = await user()
+    const { status, response, message, code } = await indexUser()
 
     if (status === 'ok') {
       this.user = response?.data?.user
@@ -74,7 +73,7 @@ App.Crash = (function() {
 
   async function refreshDefaultCrashHistory() {
     showCountDownButton.call(this, this.refreshDefaultBtn)
-    const { status, response, message, code } = await defaultHistory()
+    const { status, response, message, code } = await indexDefaultHistory()
 
     if (status === 'ok') {
       const defaultCrashHistoryList = response?.data?.default_history
@@ -126,7 +125,7 @@ App.Crash = (function() {
 
   async function refreshAdvancedCrashHistory() {
     showContentReloadingButton.call(this)
-    const { status, response, message, code } = await advancedHistory.call(this, this.limitLogInput.value = this.limitLogInput.value || 300)
+    const { status, response, message, code } = await indexAdvancedHistory.call(this, this.limitLogInput.value = this.limitLogInput.value || 300)
 
     if (status === 'ok') {
       const advancedCrashHistoryList = response?.data?.advanced_history
@@ -144,7 +143,7 @@ App.Crash = (function() {
 
   function onExportExcelFile(event, type) {
     const exportBtn = event.currentTarget
-    const { download, linkURI } = exportFromTable.call(this, this.crashTable, type)
+    const { download, linkURI } = doExport.call(this, type)
 
     exportBtn.removeAttribute('href')
     exportBtn.removeAttribute('target')

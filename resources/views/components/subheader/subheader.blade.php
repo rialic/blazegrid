@@ -1,6 +1,6 @@
 <div class="nav-scroller mb-3 border-bottom border-primary">
   <div class="d-flex justify-content-center p-2">
-    <a href="{{route('priv.crash')}}" class="btn btn-sm btn-danger bg-gradient px-4 mx-2 fw-bold waves-effect waves-light">
+    <a href="{{route('priv.crash')}}" class="btn btn-sm btn-danger bg-gradient px-4 mx-2 fw-bold">
       <div class="d-flex">
         <span class="me-2">Crash</span>
 
@@ -16,7 +16,7 @@
       </div>
     </a>
 
-    <a href="javascript:void(0)" class="btn btn-sm btn-danger bg-gradient px-4 mx-2 fw-bold waves-effect waves-light disabled">
+    <a href="javascript:void(0)" class="btn btn-sm btn-danger bg-gradient px-4 mx-2 fw-bold disabled">
       <div class="d-flex">
         <span class="me-2">Double</span>
 

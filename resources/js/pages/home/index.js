@@ -3,7 +3,6 @@ import { Modal, Dropdown } from 'bootstrap'
 import { copyTextToClipboard } from '../../utilx'
 
 App.Home = (function() {
-
   function Home() {
     this.clipboardLink = document.querySelector('[data-clipboard-text]')
     this.images = document.querySelectorAll('img.img-thumbnail')

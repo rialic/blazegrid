@@ -5,16 +5,25 @@ export const {
   parseFilters,
   copyTextToClipboard,
   makeElement,
+  APP_URL,
   space,
   upperCase,
   upperCaseFirst,
   numericKeyboard
 } = (() => {
+  const APP_URL = () => {
+    const protocol = window.location.href.slice(0, window.location.href.indexOf(':'))
+    const protocolIndex = protocol === 'https' ? 8 : 7
+    const baseURl = window.location.href.slice(protocolIndex).slice(0, window.location.href.slice(protocolIndex).indexOf('/'))
+
+    return `${protocol}://${baseURl}`
+  }
+
   /**
-       * Return true if variable is empty or false if not.
-       * @param {Object} val - Value to be evaluated
-       * @returns {boolean}
-       */
+   * Return true if variable is empty or false if not.
+   * @param {Object} val - Value to be evaluated
+   * @returns {boolean}
+   */
   const empty = val => {
     if (typeof val === 'object') {
       if (val !== null) {
@@ -58,10 +67,10 @@ export const {
   }
 
   /**
-     * Serialize a json and return.
-     * @param {Object} object - JSON to be serialized
-     * @returns {string} - String serialized from object
-     */
+   * Serialize a json and return.
+   * @param {Object} object - JSON to be serialized
+   * @returns {string} - String serialized from object
+   */
   const serialize = obj => {
     let encodedString = ''
 
@@ -79,9 +88,9 @@ export const {
   }
 
   /**
-     * Clear all fields inside a form
-     * @param {Object} form - HTML Form to clear all fields
-     */
+   * Clear all fields inside a form
+   * @param {Object} form - HTML Form to clear all fields
+   */
   const cleanForm = form => {
     const isFormTag = form.tagName === 'FORM'
 
@@ -103,11 +112,11 @@ export const {
 
 
   /**
-       * Return Promise with value true or false.
-       * @typedef {Boolean} - true or false
-       * @param {string} text - Given text to copy to clipboard.
-       * @returns {Promise} - Promise
-       */
+   * Return Promise with value true or false.
+   * @typedef {Boolean} - true or false
+   * @param {string} text - Given text to copy to clipboard.
+   * @returns {Promise} - Promise
+   */
   const copyTextToClipboard = (text) => {
     return new Promise((resolve, reject) => {
       if (!navigator.clipboard) {
@@ -152,12 +161,12 @@ export const {
   }
 
   /**
-     * Return HTML element with attributes and return it.
-     * @typedef {Object} HTML - HTML
-     * @param {string} elementName - Given name to html element.
-     * @param {Object.<string, string|number>} attributes - Attributes from HTML element.
-     * @returns {HTML} - HTML element made
-     */
+   * Return HTML element with attributes and return it.
+   * @typedef {Object} HTML - HTML
+   * @param {string} elementName - Given name to html element.
+   * @param {Object.<string, string|number>} attributes - Attributes from HTML element.
+   * @returns {HTML} - HTML element made
+   */
   const makeElement = (elementName, attributes = {}) => {
     const isValidStringEl = typeof elementName === 'string' && Boolean(elementName)
     const isValidObjectAttr = typeof attributes === 'object' && Boolean(attributes)
@@ -176,8 +185,8 @@ export const {
   }
 
   /**
-     * It convert the first letter of text in Upper Case
-     */
+   * It convert the first letter of text in Upper Case
+   */
   const upperCaseFirst = () => {
     const inputsEl = document.querySelectorAll('[data-js="first-uppercase"]')
 
@@ -213,8 +222,8 @@ export const {
   }
 
   /**
-     * It convert all text in Upper Case letters
-     */
+   * It convert all text in Upper Case letters
+   */
   const upperCase = () => {
     const inputsEl = document.querySelectorAll('[data-js="uppercase"]')
     const hasUpperCaseInputs = inputsEl.length !== 0
@@ -236,8 +245,8 @@ export const {
   }
 
   /**
-     * It show numeric keyboard on mobile phones
-     */
+   * It show numeric keyboard on mobile phones
+   */
   const numericKeyboard = () => {
     const inputsEl = document.querySelectorAll('[data-js="numeric-keyboard"]')
 
@@ -272,8 +281,8 @@ export const {
   }
 
   /**
-     * It remove spaces in the begin and end of input text and textarea while typing.
-     */
+   * It remove spaces in the begin and end of input text and textarea while typing.
+   */
   const space = () => {
     const inputsEl = document.querySelectorAll('textarea, input[type="text"]')
 
@@ -306,10 +315,10 @@ export const {
     parseFilters,
     copyTextToClipboard,
     makeElement,
+    APP_URL: APP_URL(),
     space: space(),
     upperCase: upperCase(),
     upperCaseFirst: upperCaseFirst(),
     numericKeyboard: numericKeyboard()
   }
-
 })()

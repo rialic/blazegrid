@@ -62,7 +62,7 @@ class SocialiteController extends Controller
             return redirect()->route('priv.crash');
         }
 
-        if(!$isUserActve) {
+        if (!$isUserActve) {
             auth()->logout();
             $request->session()->invalidate();
             return redirect()->route('login');
@@ -71,7 +71,7 @@ class SocialiteController extends Controller
         if (!$isBasicPlan) {
             $hasPlanExpired = Carbon::parse($user->expiration_plan_date)->lte(now());
 
-            if($hasPlanExpired) {
+            if ($hasPlanExpired) {
                 $plan = $this->plansRepo->findByName('Basic');
                 $user->plan()->associate($plan->pl_id);
                 $user->expiration_plan_date = null;
