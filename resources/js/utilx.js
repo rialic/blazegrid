@@ -1,7 +1,6 @@
 export const {
   empty,
   serialize,
-  cleanFields,
   parseFilters,
   copyTextToClipboard,
   makeElement,
@@ -74,12 +73,11 @@ export const {
   const serialize = obj => {
     let encodedString = ''
 
-    for (let prop in obj) {
+    for (const prop in obj) {
       if (obj.hasOwnProperty(prop)) {
-        if (encodedString.length > 0) {
-          encodedString += '&'
-        }
+        const isEncodedStringEmpty = (encodedString.length === 0)
 
+        encodedString += (isEncodedStringEmpty) ? '?' : '&'
         encodedString += encodeURI(prop + '=' + obj[prop])
       }
     }
@@ -102,12 +100,16 @@ export const {
     const parsedFilters = {}
 
     keys.forEach(key => {
-      if (!empty(filters[key])) {
+      if (key !== 'limit' || key !== 'page') {
+        parsedFilters[key] = filters[key]
+      }
+
+      if (!empty(filters[key]) && key !== 'limit' && key !== 'page') {
         parsedFilters[`filter:${key}`] = filters[key]
       }
     })
 
-    return parsedFilters
+    return serialize(parsedFilters)
   }
 
 
@@ -315,10 +317,10 @@ export const {
     parseFilters,
     copyTextToClipboard,
     makeElement,
-    APP_URL: APP_URL(),
-    space: space(),
-    upperCase: upperCase(),
-    upperCaseFirst: upperCaseFirst(),
-    numericKeyboard: numericKeyboard()
+    APP_URL: APP_URL,
+    space: space,
+    upperCase: upperCase,
+    upperCaseFirst: upperCaseFirst,
+    numericKeyboard: numericKeyboard
   }
 })()

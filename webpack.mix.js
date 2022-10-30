@@ -11,7 +11,17 @@ mix.alias({
 mix.sass('resources/scss/pages/home.scss', 'assets/css/home/app.min.css')
     .sass('resources/scss/pages/login.scss', 'assets/css/login/app.min.css')
     .sass('resources/scss/pages/crash.scss', 'assets/css/crash/app.min.css')
-    .options({ processCssUrls: false, autoprefixer: { options: { browsers: ['cover 99.5%'] } }, postCss: [require('cssnano')({ discardComments: { removeAll: true, } })] })
+    .options({
+        processCssUrls: false,
+        autoprefixer: {
+            options: {
+                browsers: ['cover 99.5%']
+            }
+        },
+        postCss: [
+            require('cssnano')({ discardComments: { removeAll: true, } })
+        ]
+    })
     .purgeCss()
 
 // JS

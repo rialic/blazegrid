@@ -3,6 +3,7 @@ import { Modal, Dropdown } from 'bootstrap'
 import { doExport } from '@/export/export'
 import { indexDefaultHistory, indexAdvancedHistory } from '@/api/crash'
 import { indexUser } from '@/api/user'
+import { empty, space, numericKeyboard, parseFilters } from '@/utilx'
 import { renderDefaultCrashHistoryView, renderAdvancedCrashHistoryView } from '@/pages/crash/crash-view'
 
 App.Crash = (function() {
@@ -14,7 +15,6 @@ App.Crash = (function() {
 
     this.startLogInput = document.querySelector('#start_log')
     this.endLogInput = document.querySelector('#end_log')
-    this.limitLogInput = document.querySelector('#limit_log')
     this.defaultTotalRowsEl = document.querySelector('[data-js="default-total"]')
     this.advancedTotalRowsEl = document.querySelector('[data-js="advanced-total"]')
 
@@ -23,9 +23,18 @@ App.Crash = (function() {
 
     this.exportExcelBtn = document.querySelector('#export-excel')
     this.exportCsvBtn = document.querySelector('#export-csv')
+
+    this.advancedHistoryPage = 0
+    this.advancedHistoryLength = 0
+    this.advancedHistoryLimit = 3500
+
+    this.pgLoaderEl = document.querySelector('.pg-loader')
   }
 
   Crash.prototype.init = function() {
+    space()
+    numericKeyboard()
+
     initCrashPage.call(this)
 
     this.refreshDefaultBtn.addEventListener('click', event => onRefreshHistory.call(this, event))
@@ -53,13 +62,33 @@ App.Crash = (function() {
       this.startLogInput.addEventListener('blur', event => onBlurCrashPoint.call(this, event))
       this.endLogInput.addEventListener('keyup', event => onTypeCrashPoint.call(this, event))
       this.endLogInput.addEventListener('blur', event => onBlurCrashPoint.call(this, event))
-      this.limitLogInput.addEventListener('keyup', event => onTypeLimit.call(this, event))
 
       this.refreshAdvancedBtn.addEventListener('click', event => onRefreshHistory.call(this, event))
+
       this.exportExcelBtn.addEventListener('click', event => onExportExcelFile.call(this, event, 'excel'))
       this.exportCsvBtn.addEventListener('click', event => onExportExcelFile.call(this, event, 'csv'))
 
       refreshAdvancedCrashHistory.call(this)
+    }
+  }
+
+  function initAdvancedHistoryObserver() {
+    const observerEl = this.advancedHistoryEl.querySelector('div.card:last-child')
+    const intersectionObserver = new IntersectionObserver(onObserveAdvancedHistory.call(this), { root: this.advancedHistoryEl, rootMargin: '0px', threshold: 0.3 })
+
+    intersectionObserver.observe(observerEl)
+  }
+
+  function onObserveAdvancedHistory() {
+    return (entries, observer) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          showPgLoader.call(this)
+          getNextPage.call(this)
+
+          observer.unobserve(entry.target)
+        }
+      })
     }
   }
 
@@ -113,31 +142,56 @@ App.Crash = (function() {
     }
   }
 
-  function onTypeLimit(event) {
-    const limitInput = event.target
-    const limitPattern = /^[1-9]+\d*$/g
-    const isCorretlyLimit = limitPattern.test(limitInput.value)
+  async function refreshAdvancedCrashHistory(clearList = true) {
+    const params = { limit: getLimit.call(this), page: ((clearList) ? this.advancedHistoryPage = 1 : this.advancedHistoryPage) }
+    const { data } = await getAdvancedHistoryData.call(this, params)
+    const advancedCrashHistoryList = data
 
-    if (!isCorretlyLimit) {
-      limitInput.value = limitInput.value.slice(0, (limitInput.value.length - 1))
+    renderAdvancedCrashHistoryView.call(this, advancedCrashHistoryList, clearList)
+    hideContentReloadingButton.call(this)
+    hidePgLoader.call(this)
+
+    if (!empty(data) && this.advancedHistoryLength < 3500) {
+      initAdvancedHistoryObserver.call(this)
     }
   }
 
-  async function refreshAdvancedCrashHistory() {
+  function getNextPage() {
+    const clearList = false
+
+    this.advancedHistoryPage += 1
+    refreshAdvancedCrashHistory.call(this, clearList)
+  }
+
+  function getLimit(){
+    const gt = (element, num) => (Number(element.value) > num && Number(element.value) !== 0) // Greater Than
+    const lte = (element, num) => (Number(element.value) <= num && Number(element.value) !== 0) // Less Than or Equal
+
+    if (empty(this.startLogInput.value) && empty(this.endLogInput.value)) {
+      return 350
+    }
+
+    if (lte(this.startLogInput, 10) || lte(this.endLogInput, 10)) {
+      return 875
+    }
+
+    if ((gt(this.startLogInput, 10) && lte(this.startLogInput, 20)) || (gt(this.endLogInput, 10) && lte(this.endLogInput, 20))) {
+      return 1750
+    }
+
+    return this.advancedHistoryLimit
+  }
+
+  async function getAdvancedHistoryData(params) {
     showContentReloadingButton.call(this)
-    const { status, response, message, code } = await indexAdvancedHistory.call(this, this.limitLogInput.value = this.limitLogInput.value || 300)
+    const { status, response, message, code } = await indexAdvancedHistory.call(this, parseFilters(params))
 
     if (status === 'ok') {
-      const advancedCrashHistoryList = response?.data?.advanced_history
-
-      renderAdvancedCrashHistoryView.call(this, advancedCrashHistoryList)
-      hideContentReloadingButton.call(this)
-
-      return
+      return response?.data.advanced_history
     }
 
     hideContentReloadingButton.call(this)
-
+    hidePgLoader.call(this)
     throw new Error(`message: ${message}, code: ${code}`)
   }
 
@@ -186,6 +240,14 @@ App.Crash = (function() {
     this.refreshAdvancedBtn.classList.toggle('disabled')
     this.refreshAdvancedBtn.removeAttribute('disabled')
     this.innerHTML = null
+  }
+
+  function showPgLoader() {
+    this.pgLoaderEl.classList.add('pg-loader--show')
+  }
+
+  function hidePgLoader() {
+    this.pgLoaderEl.classList.remove('pg-loader--show')
   }
 
   return Crash

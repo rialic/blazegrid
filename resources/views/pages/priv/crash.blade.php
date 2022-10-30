@@ -62,10 +62,6 @@
               <input id="end_log" type="text" class="form-control form-control-sm" placeholder="Vela final">
             </div>
 
-            <div class="col-2 col-sm-3">
-              <input id="limit_log" type="text" class="form-control form-control-sm" placeholder="Limite da consulta">
-            </div>
-
             <div class="d-flex justify-content-end col-2 col-sm-3">
               <button id="refresh-advanced" type="button" class="btn btn-sm btn-danger bg-gradient w-100 fw-bold">
                 <span class="d-none d-sm-inline-block">Atualizar</span> <i class="fa-solid fa-arrows-rotate"></i>
@@ -134,6 +130,12 @@
       </div>
     </x-modal.default>
     @endif
+
+    <div class="pg-loader">
+      <div class="pg-loader:circle"></div>
+      <div class="pg-loader:circle"></div>
+      <div class="pg-loader:circle"></div>
+    </div>
   </div>
 
   @push('scripts')

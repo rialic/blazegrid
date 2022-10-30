@@ -35,17 +35,23 @@ export const {
     this.defaultTotalRowsEl.textContent = `Total: ${data.length}`
   }
 
-  function renderAdvancedCrashHistoryView(data) {
+  function renderAdvancedCrashHistoryView(data, clearList) {
+    if (clearList) {
+      this.advancedHistoryEl.scrollTop = 0
+      this.advancedHistoryEl.innerHTML = ''
+      this.advancedHistoryLength = 0
+    }
+
     const advancedCrashList = getAdvancedCrashList.call(this, data)
     const cardsString = advancedCrashList.reduce(getAdvancedCrashCardsString, '')
 
-    this.advancedHistoryEl.innerHTML = ''
     this.advancedHistoryEl.insertAdjacentHTML('beforeend', cardsString)
-    this.advancedTotalRowsEl.textContent = `Total encontrado: ${advancedCrashList.length}`
+    this.advancedHistoryLength += advancedCrashList.length
+    this.advancedTotalRowsEl.textContent = `Total encontrado: ${this.advancedHistoryLength}`
   }
 
   function getAdvancedCrashList(data) {
-    return data.reduce((acc, crash, index, list) => {
+    let advancedCrashList = data.reduce((acc, crash, index, list) => {
       const nextRecord = getNextCrashRecord.call(this, index, list)
 
       if (Number(crash.point) >= (this.startLogInput.value || 0) && Number(crash.point) <= (this.endLogInput.value || 1000000)) {
@@ -64,6 +70,16 @@ export const {
 
       return acc
     }, [])
+
+    // Cut of limit to not exceed 3500
+    if ((this.advancedHistoryLength + advancedCrashList.length) > this.advancedHistoryLimit) {
+      const acceptableLimit = this.advancedHistoryLimit - this.advancedHistoryLength
+      const cutOfLimit =  acceptableLimit - advancedCrashList.length
+
+      advancedCrashList = advancedCrashList.slice(0, cutOfLimit)
+    }
+
+    return advancedCrashList
   }
 
   function getNextCrashRecord(currentIndex, list) {
@@ -88,18 +104,6 @@ export const {
         continue
       }
 
-      // if (Number(currentExternalCrash.point) >= 2 && Number(currentListCrash.point) >= 2) {
-      //   sequence += 1
-
-      //   continue
-      // }
-
-      // if (Number(currentExternalCrash.point) < 2 && Number(currentListCrash.point) < 2) {
-      //   sequence += 1
-
-      //   continue
-      // }
-
       break
     }
 
@@ -107,6 +111,7 @@ export const {
   }
 
   function getAdvancedCrashCardsString(acc, crash) {
+    const {point, created_at_server, diff_min, diff_step, sequence } = crash
     const crashPointColor = (crash.point >= 2) ? 'success' : 'danger'
 
     return acc += `
@@ -116,7 +121,7 @@ export const {
           <div class="d-flex flex-column">
             <div class="d-flex justify-content-center align-items-center w-75 mx-auto border border-2 border-${crashPointColor} rounded">
               <div data-js="crash-point" class="mb-0 text-${crashPointColor} fw-semibold fs:min-14:max-18">
-                ${crash.point}
+                ${point}
               </div>
 
               <i class="fa-solid ${crashPointColor === 'success' ? 'fa-arrow-trend-up' : 'fa-xmark'} fa-lg ms-2 text-${crashPointColor}"></i>
@@ -126,7 +131,7 @@ export const {
               <i class="fa-solid fa-clock me-1 fw-semibold fs:min-14:max-16"></i>
 
               <div data-js="crash-date" class="ms-1 fw-semibold fs:min-14:max-16">
-                ${crash.created_at_server}
+                ${created_at_server}
               </div>
             </div>
           </div>
@@ -136,8 +141,8 @@ export const {
               <i class="fa-solid fa-plus-minus me-1 fw-semibold"></i>
 
               <div class="ms-1 fw-semibold fs:min-14:max-16">
-                <div data-js="crash-diff-min" class="d-none">${crash.diff_min}</div>
-                ${crash.diff_min} minutos de diferença do crash anterior
+                <div data-js="crash-diff-min" class="d-none">${diff_min}</div>
+                ${diff_min} minutos de diferença do crash anterior
                 </div>
                 </div>
 
@@ -145,18 +150,20 @@ export const {
                 <i class="fa-solid fa-dice me-1 fw-semibold fs:min-14:max-16"></i>
 
                 <div data-js="crash-diff-steps" class="ms-1 fw-semibold fs:min-14:max-16">
-                  <div data-js="crash-diff-step" class="d-none">${crash.diff_step}</div>
-                  ${crash.diff_step} jogada(s) anterior(es) até esse crash
+                  <div data-js="crash-diff-step" class="d-none">${diff_step}</div>
+                  ${diff_step} jogada(s) anterior(es) até esse crash
               </div>
             </div>
           </div>
         </div>
       </div>
       <div class="card-footer bg-transparent">
-        <div class="d-flex justify-content-end">
-          <span class="fw-bold fs:min-14:max-16">Nº ${crash.sequence}</span>
+        <div class="d-flex justify-content-around">
+          <span class="fw-bold fs:min-14:max-16">
+            ${sequence - 1} crash ${crashPointColor === 'success' ? 'positivo(s)' : 'negativo(s)'} anterior(es) a este
+          </span>
 
-          <i class="fa-solid fa-circle mt-1 ms-1 text-${crashPointColor}"></i>
+          <span class="fw-bold fs:min-14:max-16">Sequência de Nº ${sequence} <i class="fa-solid fa-circle mt-1 ms-1 text-${crashPointColor}"></i></span>
         </div>
       </div>
     </div>

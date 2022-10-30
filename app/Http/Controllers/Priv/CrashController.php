@@ -42,8 +42,9 @@ class CrashController extends Controller
         return response()->json(['data' => ['default_history' => $crashDefaultHistory]]);
     }
 
-    public function advancedHistory(Request $request, $limit)
+    public function advancedHistory(Request $request)
     {
+        $params = $request->only(['limit', 'page']);
         $user = auth()->user();
         $isBasicPlan = lcfirst(optional(optional($user)->plan)->name) === 'basic';
         $isAjaxRequest = $request->ajax();
@@ -61,7 +62,6 @@ class CrashController extends Controller
             return response()->json(['error' => ['message' => 'Forbidden.']], 403);
         }
 
-        $params = ['limit' => ($limit > 3500) ? 3500 : $limit];
         $crashAdvancedHistory = $this->crashRepo->getData($params);
         return response()->json(['data' => ['advanced_history' => $crashAdvancedHistory, 'user' => $user]]);
     }
