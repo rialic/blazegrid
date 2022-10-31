@@ -26,6 +26,7 @@ App.Crash = (function() {
 
     this.advancedHistoryPage = 0
     this.advancedHistoryLength = 0
+    this.previousAdvancedHistoryList = null
     this.advancedHistoryLimit = 3500
 
     this.pgLoaderEl = document.querySelector('.pg-loader')
@@ -76,7 +77,9 @@ App.Crash = (function() {
     const observerEl = this.advancedHistoryEl.querySelector('div.card:last-child')
     const intersectionObserver = new IntersectionObserver(onObserveAdvancedHistory.call(this), { root: this.advancedHistoryEl, rootMargin: '0px', threshold: 0.3 })
 
-    intersectionObserver.observe(observerEl)
+    if (!empty(observerEl)) {
+      intersectionObserver.observe(observerEl)
+    }
   }
 
   function onObserveAdvancedHistory() {
@@ -142,14 +145,18 @@ App.Crash = (function() {
     }
   }
 
-  async function refreshAdvancedCrashHistory(clearList = true) {
-    const params = { limit: getLimit.call(this), page: ((clearList) ? this.advancedHistoryPage = 1 : this.advancedHistoryPage) }
+  async function refreshAdvancedCrashHistory(hasToClearList = true) {
+    const params = { limit: getLimit.call(this), page: ((hasToClearList) ? this.advancedHistoryPage = 1 : this.advancedHistoryPage) }
     const { data } = await getAdvancedHistoryData.call(this, params)
     const advancedCrashHistoryList = data
 
-    renderAdvancedCrashHistoryView.call(this, advancedCrashHistoryList, clearList)
+    renderAdvancedCrashHistoryView.call(this, advancedCrashHistoryList, hasToClearList)
     hideContentReloadingButton.call(this)
     hidePgLoader.call(this)
+
+    if (this.advancedHistoryEl.querySelectorAll('div.card').length <= 5) {
+      return
+    }
 
     if (!empty(data) && this.advancedHistoryLength < 3500) {
       initAdvancedHistoryObserver.call(this)
@@ -157,10 +164,10 @@ App.Crash = (function() {
   }
 
   function getNextPage() {
-    const clearList = false
+    const hasToClearList = false
 
     this.advancedHistoryPage += 1
-    refreshAdvancedCrashHistory.call(this, clearList)
+    refreshAdvancedCrashHistory.call(this, hasToClearList)
   }
 
   function getLimit(){
