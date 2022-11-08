@@ -6,10 +6,9 @@ interface DBRepositoryInterface
 {
     public function count();
     public function findAll();
-    public function findById($id);
-    public function findByIdOrNew($id, $array = []);
-    public function findFirstOrNew($search, $array = null);
-    public function findFirstOrCreate($search, $array = null);
-    public function query($params);
+    public function findByUuid($id);
+    public function findByUuidOrNew($id);
+    public function getFirstData($params);
     public function getData($params);
+    public function query($params);
 }

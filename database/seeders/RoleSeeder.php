@@ -30,6 +30,7 @@ class RoleSeeder extends Seeder
         ]);
 
         $role[Str::random(5)] = Role::firstOrCreate([
+            'ro_uuid' => (string) Str::uuid()->toString(),
             'ro_name' => 'ADVANCED_PUNTER',
         ]);
 

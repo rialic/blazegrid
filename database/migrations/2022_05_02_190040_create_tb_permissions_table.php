@@ -14,10 +14,11 @@ class CreateTbPermissionsTable extends Migration
     public function up()
     {
         Schema::create('tb_permissions', function (Blueprint $table) {
-            $table->bigIncrements('pe_id');
-            $table->uuid('pe_uuid');
+            $table->uuid('pe_uuid')->primary();
             $table->string('pe_name', 100);
             $table->boolean('pe_status')->default(true);
+            $table->timestamp('created_at')->useCurrent();
+            $table->timestamp('updated_at')->nullable()->useCurrentOnUpdate();
 
             $table->engine = 'InnoDB';
             $table->charset = 'utf8mb4';

@@ -3,12 +3,15 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Support\Str;
+use App\Traits\GenerateUuid;
 
 class Plans extends Model
 {
+    use GenerateUuid;
+
     protected $table = 'tb_plans';
-    protected $primaryKey = 'pl_id';
+    protected $tableColumnPrefix = 'pl';
+    protected $primaryKey = 'pl_uuid';
     public $timestamps = false;
 
     protected $appends = [
@@ -16,32 +19,19 @@ class Plans extends Model
         'name',
     ];
 
-    protected $guarded  = ['*'];
-
-    protected $hidden = [
-        'pl_id',
+    protected $fillable  = [
         'pl_uuid',
         'pl_plan_name',
-        'pl_status',
+        'pl_status'
     ];
 
-    protected static function boot()
-    {
-        parent::boot();
-
-        static::creating(function ($model) {
-            if (empty($model->pl_uuid)) {
-                $model->pl_uuid = Str::uuid();
-            }
-        });
-    }
+    protected $hidden = [
+        'pl_uuid',
+        'pl_plan_name',
+        'pl_status'
+    ];
 
     // GETTER
-    public function getPlanIdAttribute()
-    {
-        return $this->pl_id;
-    }
-
     public function getUuidAttribute()
     {
         return $this->pl_uuid;
@@ -58,8 +48,8 @@ class Plans extends Model
     }
 
     // TRANSIENTS METHODS
-    public function getPrimaryKeyAttribute()
+    public function getTableColumnPrefixAttribute()
     {
-        return $this->primaryKey;
+        return $this->tableColumnPrefix;
     }
 }

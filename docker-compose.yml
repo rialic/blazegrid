@@ -14,7 +14,7 @@ services:
     image: nginx
     container_name: nginx
     volumes:
-      - ./:/var/www
+      - ./:/var/www:ro
     restart: unless-stopped
     ports:
       - 80:80
@@ -45,19 +45,19 @@ services:
       - redis
 
   db:
-    image: mariadb/server:latest
+    image: mysql/mysql-server:latest
     container_name: db
     volumes:
-      - ./.docker/mariadb/:/var/lib/mysql
+      - ./.docker/mysql/:/var/lib/mysql
     ports:
       - "3306:3306"
     command:
         ['--character-set-server=utf8mb4', '--collation-server=utf8mb4_unicode_ci']
     environment:
-      MARIADB_DATABASE: "${DB_DATABASE}"
-      MARIADB_USER: "${DB_USERNAME}"
-      MARIADB_PASSWORD: "${DB_PASSWORD}"
-      MARIADB_ROOT_PASSWORD: "${DB_PASSWORD}"
+      MYSQL_DATABASE: "${DB_DATABASE}"
+      MYSQL_USER: "${DB_USERNAME}"
+      MYSQL_PASSWORD: "${DB_PASSWORD}"
+      MYSQL_ROOT_PASSWORD: "${DB_PASSWORD}"
     deploy:
       resources:
         limits:
@@ -138,19 +138,19 @@ services:
       - app
       - db
 
-  # scheduler:
-  #   user: "${UID}:${GID}"
-  #   build:
-  #     context: ./.docker/php-fpm
-  #     dockerfile: Dockerfile
-  #   image: scheduler
-  #   container_name: scheduler
-  #   working_dir: /var/www
-  #   volumes:
-  #     - ./:/var/www
-  #   entrypoint: ["php", "artisan", "schedule:work"]
-  #   networks:
-  #     - app
-  #     - nginx
-  #     - db
-  #     - redis
+  scheduler:
+    user: "${UID}:${GID}"
+    build:
+      context: ./.docker/php-fpm
+      dockerfile: Dockerfile
+    image: scheduler
+    container_name: scheduler
+    working_dir: /var/www
+    volumes:
+      - ./:/var/www
+    entrypoint: ["php", "artisan", "schedule:work"]
+    networks:
+      - app
+      - nginx
+      - db
+      - redis

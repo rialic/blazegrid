@@ -5,15 +5,16 @@ namespace App\Models;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
-use Illuminate\Support\Str;
 use Illuminate\Support\Facades\Hash;
+use App\Traits\GenerateUuid;
 
 class User extends Authenticatable
 {
-    use Notifiable;
+    use Notifiable, GenerateUuid;
 
     protected $table = 'tb_users';
-    protected $primaryKey = 'us_id';
+    protected $tableColumnPrefix = 'us';
+    protected $primaryKey = 'us_uuid';
 
     protected $appends = [
         'uuid',
@@ -39,7 +40,6 @@ class User extends Authenticatable
     ];
 
     protected $hidden = [
-        'us_id',
         'us_uuid',
         'us_socialite_id',
         'us_name',
@@ -55,7 +55,7 @@ class User extends Authenticatable
         'us_expiration_plan_date',
         'us_ip',
         'us_inactivation_date',
-        'pl_id',
+        'pl_uuid',
         'created_at',
         'updated_at'
     ];
@@ -63,17 +63,6 @@ class User extends Authenticatable
     protected $casts = [
         'email_verified_at' => 'datetime:Y-m-d H:i:s',
     ];
-
-    protected static function boot()
-    {
-        parent::boot();
-
-        static::creating(function ($model) {
-            if (empty($model->us_uuid)) {
-                $model->us_uuid = Str::uuid();
-            }
-        });
-    }
 
     // SETTERS
     public function setSocialiteIdAttribute($value)
@@ -195,12 +184,12 @@ class User extends Authenticatable
     // RELATIONSHIPS
     public function plan()
     {
-        return $this->belongsTo(Plans::class, 'pl_id', 'pl_id');
+        return $this->belongsTo(Plans::class, 'pl_uuid', 'pl_uuid');
     }
 
     public function roles()
     {
-        return $this->belongsToMany(Role::class, 'tb_role_user', 'us_id', 'ro_id');
+        return $this->belongsToMany(Role::class, 'tb_role_user', 'us_uuid', 'ro_uuid');
     }
 
     // TRANSIENTS METHODS
@@ -218,14 +207,14 @@ class User extends Authenticatable
     public function hasAnyRoles($roles)
     {
         if (is_array($roles) || is_object($roles)) {
-            return !! $roles->intersect($this->roles)->count();
+            return !!$roles->intersect($this->roles)->count();
         }
 
         return $this->roles->contains('name', $roles);
     }
 
-    public function getPrimaryKeyAttribute()
+    public function getTableColumnPrefixAttribute()
     {
-        return $this->primaryKey;
+        return $this->tableColumnPrefix;
     }
 }

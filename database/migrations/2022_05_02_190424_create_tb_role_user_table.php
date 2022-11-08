@@ -14,12 +14,14 @@ class CreateTbRoleUserTable extends Migration
     public function up()
     {
         Schema::create('tb_role_user', function (Blueprint $table) {
-            $table->bigIncrements('ru_id');
-            $table->unsignedBigInteger('ro_id');
-            $table->unsignedBigInteger('us_id');
+            $table->uuid('ru_uuid')->primary();
+            $table->uuid('ro_uuid');
+            $table->uuid('us_uuid');
+            $table->timestamp('created_at')->useCurrent();
+            $table->timestamp('updated_at')->nullable()->useCurrentOnUpdate();
 
-            $table->foreign('ro_id')->references('ro_id')->on('tb_roles')->onDelete('cascade');
-            $table->foreign('us_id')->references('us_id')->on('tb_users')->onDelete('cascade');
+            $table->foreign('ro_uuid')->references('ro_uuid')->on('tb_roles')->onDelete('cascade');
+            $table->foreign('us_uuid')->references('us_uuid')->on('tb_users')->onDelete('cascade');
 
             $table->engine = 'InnoDB';
             $table->charset = 'utf8mb4';

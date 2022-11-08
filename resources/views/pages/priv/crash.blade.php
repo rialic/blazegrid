@@ -20,7 +20,7 @@
       <div class="d-flex justify-content-between w-100">
         <div class="card-title px-3 pt-2 text-white fw-semibold fs:min-16:max-20">Histórico Padrão</div>
 
-        <button id="refresh-default" type="button" class="btn btn-sm btn-danger bg-gradient mt-2 me-3 fw-bold">
+        <button id="refresh-default" type="button" class="btn btn-sm btn-danger mt-2 me-3 fw-bold">
           Atualizar <i class="fa-solid fa-arrows-rotate"></i>
         </button>
       </div>
@@ -32,9 +32,7 @@
           </div>
         </div>
 
-        <div style="max-height: 450px; overflow-y: auto;">
-          <div data-js="default-history" class="d-flex flex-row-reverse justify-content-end flex-wrap w-100"></div>
-        </div>
+        <div data-js="default-history" class="d-flex flex-row-reverse w-100 py-2 gap-1 overflow-auto"></div>
       </div>
     </div>
 
@@ -55,15 +53,15 @@
         <div class="d-flex justify-content-center">
           <div class="row gx-2 gx-sm-3">
             <div class="col-4 col-sm-3">
-              <input id="start_log" type="text" class="form-control form-control-sm" placeholder="Vela inicial">
+              <input id="start_log" type="text" class="form-control form-control-sm" placeholder="Crash inicial">
             </div>
 
             <div class="col-4 col-sm-3">
-              <input id="end_log" type="text" class="form-control form-control-sm" placeholder="Vela final">
+              <input id="end_log" type="text" class="form-control form-control-sm" placeholder="Crash final">
             </div>
 
             <div class="d-flex justify-content-end col-2 col-sm-3">
-              <button id="refresh-advanced" type="button" class="btn btn-sm btn-danger bg-gradient w-100 fw-bold">
+              <button id="refresh-advanced" type="button" class="btn btn-sm btn-danger w-100 fw-bold">
                 <span class="d-none d-sm-inline-block">Atualizar</span> <i class="fa-solid fa-arrows-rotate"></i>
               </button>
             </div>

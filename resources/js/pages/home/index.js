@@ -1,8 +1,8 @@
-import App from '../../app'
+import App from '@/app'
 import { Modal, Dropdown } from 'bootstrap'
-import { copyTextToClipboard } from '../../utilx'
+import { copyTextToClipboard } from '@/utilx'
 
-App.Home = (function() {
+App.Home = (() => {
   function Home() {
     this.clipboardLink = document.querySelector('[data-clipboard-text]')
     this.images = document.querySelectorAll('img.img-thumbnail')

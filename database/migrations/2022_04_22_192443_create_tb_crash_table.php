@@ -15,7 +15,7 @@ class CreateTbCrashTable extends Migration
     public function up()
     {
         Schema::create('tb_crash', function (Blueprint $table) {
-            $table->bigIncrements('cr_id');
+            $table->uuid('cr_uuid')->primary();
             $table->decimal('cr_point', 11, 2);
             $table->string('cr_id_server')->nullable();
             $table->timestamp('cr_created_at_server');

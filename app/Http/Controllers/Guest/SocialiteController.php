@@ -25,6 +25,21 @@ class SocialiteController extends Controller
 
     public function redirectToProvider()
     {
+        // $func = new \ReflectionMethod(User::class, 'getNameAttribute');
+        // $filename = $func->getFileName();
+        // $start_line = $func->getStartLine() - 1; // it's actually - 1, otherwise you wont get the function() block
+        // $end_line = $func->getEndLine();
+        // $length = $end_line - $start_line;
+
+        // $source = file($filename);
+        // $body = implode("", array_slice($source, $start_line, $length));
+
+        // dd(str_replace(array("\r","\n"), "", trim($body)));
+
+
+        // dd('Here', (new \App\Models\Role)::where('ro_name', 'ADMIN')->get());
+
+        // dd((new \App\Models\Role)->where('name', 'PREMIUM_PUNTER')->first());
         return Socialite::driver('google')->redirect();
     }
 
@@ -35,14 +50,21 @@ class SocialiteController extends Controller
         }
 
         $providerUser = Socialite::driver('google')->user();
-        $user = $this->userRepo->findFirstOrNew(['us_socialite_id' => $providerUser->id]);
-        $isBasicPlan = lcfirst(optional(optional($user)->plan)->name) === 'basic';
+
+        $planParams = ['filter:plan_name' => 'Basic'];
+        $roleParams = ['filter:name' => 'DEFAULT_PUNTER'];
+        $userParams = ['filter:socialite_id' => $providerUser->id];
+
+        $user = $this->userRepo->getFirstData($userParams);
+
         $isUserActve = !!optional($user)->status;
+        $isBasicPlan = lcfirst(optional(optional($user)->plan)->name) === 'basic';
+
         $password = ('xr2_' . substr($providerUser->email, '0', strpos($providerUser->email, '@')));
 
         if (!$user->exists) {
-            $plan = $this->plansRepo->findByName('Basic');
-            $defaultPunterRole = $this->roleRepo->findByName('DEFAULT_PUNTER');
+            $plan = $this->plansRepo->getFirstData($planParams);
+            $defaultPunterRole = $this->roleRepo->getFirstData($roleParams);
 
             $user->forceFill([
                 'socialite_id' => $providerUser->id,
@@ -53,9 +75,9 @@ class SocialiteController extends Controller
                 'password' => $password,
                 'terms_conditions' => true
             ]);
-            $user->plan()->associate($plan->pl_id);
+            $user->plan()->associate($plan->pl_uuid);
             $user->save();
-            $user->roles()->attach($defaultPunterRole->role_id);
+            $user->roles()->attach($defaultPunterRole->role_uuid);
 
             auth()->login($user);
 
@@ -72,8 +94,8 @@ class SocialiteController extends Controller
             $hasPlanExpired = Carbon::parse($user->expiration_plan_date)->lte(now());
 
             if ($hasPlanExpired) {
-                $plan = $this->plansRepo->findByName('Basic');
-                $user->plan()->associate($plan->pl_id);
+                $plan = $this->plansRepo->getFirstData($planParams);
+                $user->plan()->associate($plan->pl_uuid);
                 $user->expiration_plan_date = null;
             }
         }

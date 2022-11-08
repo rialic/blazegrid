@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateTbPlansTable extends Migration
+class CreateTbRolePermissionTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,12 +13,15 @@ class CreateTbPlansTable extends Migration
      */
     public function up()
     {
-        Schema::create('tb_plans', function (Blueprint $table) {
-            $table->uuid('pl_uuid')->primary();
-            $table->string('pl_plan_name', 20);
-            $table->boolean('pl_status')->default(true);
+        Schema::create('tb_role_permission', function (Blueprint $table) {
+            $table->uuid('rp_uuid')->primary();
+            $table->uuid('ro_uuid');
+            $table->uuid('pe_uuid');
             $table->timestamp('created_at')->useCurrent();
             $table->timestamp('updated_at')->nullable()->useCurrentOnUpdate();
+
+            $table->foreign('ro_uuid')->references('ro_uuid')->on('tb_roles')->onDelete('cascade');
+            $table->foreign('pe_uuid')->references('pe_uuid')->on('tb_permissions')->onDelete('cascade');
 
             $table->engine = 'InnoDB';
             $table->charset = 'utf8mb4';
@@ -33,6 +36,6 @@ class CreateTbPlansTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('tb_plans');
+        Schema::dropIfExists('tb_role_permission');
     }
 }

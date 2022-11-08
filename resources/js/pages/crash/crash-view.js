@@ -9,12 +9,14 @@ export const {
   function renderDefaultCrashHistoryView(data) {
     const fragment = document.createDocumentFragment()
 
-    data.forEach(crash => {
+    data.forEach((crash, index, list) => {
+      const isFirstData = index === 0
       const crashPointColor = (crash.point >= 2) ? 'success' : 'secondary'
-      const parentDiv = makeElement('div', { class: 'my-1 me-1 fs-20' })
-      const badgeDiv = makeElement('div', { class: `badge bg-${crashPointColor} bg-gradient` })
+      const parentDiv = makeElement('div', { class: `position-relative mt-1 ${isFirstData ? ' ms-1 me-3' : 'mx-1'} fs-20` })
+      const badgeDiv = makeElement('div', { class: `px-1 badge bg-${crashPointColor} bg-gradient` })
       const pointSpan = makeElement('span', { class: 'd-block' })
       const dateSpan = makeElement('span', { class: 'd-block mt-1' })
+      const sequenceDiv = makeElement('div', { class: `position-absolute top-0 start-100 translate-middle fw-bold text-white bg-${crashPointColor} border border-2 border-white px-1 rounded fs-12 border-${crashPointColor}` })
 
       parentDiv.insertAdjacentElement('beforeend', badgeDiv)
       badgeDiv.insertAdjacentElement('beforeend', pointSpan)
@@ -22,8 +24,11 @@ export const {
       pointSpan.textContent = `${crash.point}X`
 
       if (this.user.plan.name.toLowerCase() !== 'basic') {
+        parentDiv.insertAdjacentElement('beforeend', sequenceDiv)
         badgeDiv.insertAdjacentElement('beforeend', dateSpan)
+
         dateSpan.textContent = format(new Date(crash.created_at_server), 'HH:mm:ss', { timeZone: Intl.DateTimeFormat().resolvedOptions().timeZone })
+        sequenceDiv.textContent = getNextCrashSequence.call(this, index, list)
       }
 
       fragment.appendChild(parentDiv)
@@ -55,7 +60,7 @@ export const {
       return
     }
 
-    if (Number(this.startLogInput.value) < 2) {
+    if (!empty(data)) {
       this.previousAdvancedHistoryList.forEach(crash => data.unshift(crash))
       this.previousAdvancedHistoryList.forEach(crash => this.advancedHistoryEl.querySelector(`[data-js="cr-${crash.id}"]`)?.remove())
       this.advancedHistoryLength = this.advancedHistoryLength - this.previousAdvancedHistoryList.length
@@ -66,15 +71,16 @@ export const {
 
   function getAdvancedCrashList(data) {
     let advancedCrashList = data.reduce((acc, crash, index, list) => {
-      const nextRecord = getNextCrashRecord.call(this, index, list)
+      const nextData = getNextCrashRecord.call(this, index, list)
+      const isCrashFilterApproved = (Number(crash.point) >= (Number(this.startLogInput.value)) && Number(crash.point) <= (this.endLogInput.value || 1000000))
 
-      if (Number(crash.point) >= (Number(this.startLogInput.value)) && Number(crash.point) <= (this.endLogInput.value || 1000000)) {
+      if (isCrashFilterApproved) {
         const newCrashedItem = {
           id: crash.id,
           point: crash.point,
           created_at_server: format(new Date(crash.created_at_server), 'dd/MM/yyyy HH:mm:ss', { timeZone: Intl.DateTimeFormat().resolvedOptions().timeZone }),
-          diff_min: (!nextRecord) ? 0 : differenceInMinutes(new Date(crash.created_at_server), new Date(nextRecord.created_at_server)),
-          diff_step: (!nextRecord) ? 0 : list.findIndex(recordItem => recordItem.id === nextRecord.id) - index,
+          diff_min: (!nextData) ? 0 : differenceInMinutes(new Date(crash.created_at_server), new Date(nextData.created_at_server)),
+          diff_step: (!nextData) ? 0 : list.findIndex(recordItem => recordItem.id === nextData.id) - index,
           sequence: getNextCrashSequence.call(this, index, list)
         }
 
@@ -193,26 +199,27 @@ export const {
 
             <div class="d-flex flex-column">
               <div class="d-flex align-items-center p-1 border border-2 border-primary rounded">
-                <i class="fa-solid fa-plus-minus me-1 fw-semibold"></i>
+                <i class="fa-solid fa-hourglass me-1 fw-semibold me-1"></i>
+                <i class="fa-solid fa-plus-minus fa-xs me-1 fw-semibold ms-1"></i>
 
                 <div class="ms-1 fw-semibold fs:min-14:max-16">
                   <div data-js="crash-diff-min" class="d-none">${diff_min}</div>
                   ${diff_min} minutos de diferença do crash anterior
-                  </div>
-                  </div>
+                </div>
+              </div>
 
-                  <div class="d-flex mt-1 align-items-center p-1 border border-2 border-primary rounded">
-                  <i class="fa-solid fa-dice me-1 fw-semibold fs:min-14:max-16"></i>
+              <div class="d-flex mt-1 align-items-center p-1 border border-2 border-primary rounded">
+                <i class="fa-solid fa-dice me-1 fw-semibold fs:min-14:max-16"></i>
 
-                  <div data-js="crash-diff-steps" class="ms-1 fw-semibold fs:min-14:max-16">
-                    <div data-js="crash-diff-step" class="d-none">${diff_step}</div>
-                    ${diff_step} jogada(s) anterior(es) até esse crash
+                <div data-js="crash-diff-steps" class="ms-1 fw-semibold fs:min-14:max-16">
+                  <div data-js="crash-diff-step" class="d-none">${diff_step}</div>
+                  ${diff_step} jogada(s) anterior(es) até esse crash
                 </div>
               </div>
             </div>
           </div>
         </div>
-        <div class="card-footer ${!empty(this.startLogInput.value) ? 'd-none' : ''} bg-transparent">
+        <div class="card-footer ${!empty(this.startLogInput.value) || !empty(this.endLogInput.value) ? 'd-none' : ''} bg-transparent">
           <div class="d-flex justify-content-around">
             <span class="fw-bold fs:min-14:max-16">
               ${sequence - 1} crash ${crashPointColor === 'success' ? 'positivo(s)' : 'negativo(s)'} anterior(es) a este

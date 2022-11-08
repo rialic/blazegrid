@@ -6,7 +6,7 @@ import { indexUser } from '@/api/user'
 import { empty, space, numericKeyboard, parseFilters } from '@/utilx'
 import { renderDefaultCrashHistoryView, renderAdvancedCrashHistoryView } from '@/pages/crash/crash-view'
 
-App.Crash = (function() {
+App.Crash = (() => {
   function Crash() {
     this.defaultHistoryEl = document.querySelector('[data-js="default-history"]')
     this.advancedHistoryEl = document.querySelector('[data-js="advanced-history"]')
