@@ -15,8 +15,8 @@ class CreateTbRoleUserTable extends Migration
     {
         Schema::create('tb_role_user', function (Blueprint $table) {
             $table->uuid('ru_uuid')->primary();
-            $table->uuid('ro_uuid');
-            $table->uuid('us_uuid');
+            $table->foreignUuid('ro_uuid');
+            $table->foreignUuid('us_uuid');
             $table->timestamp('created_at')->useCurrent();
             $table->timestamp('updated_at')->nullable()->useCurrentOnUpdate();
 

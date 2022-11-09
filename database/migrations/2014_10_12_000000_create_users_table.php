@@ -32,7 +32,7 @@ class CreateUsersTable extends Migration
             $table->timestamp('created_at')->useCurrent();
             $table->timestamp('updated_at')->nullable()->useCurrentOnUpdate();
 
-            $table->uuid('pl_uuid')->nullable();
+            $table->foreignUuid('pl_uuid')->nullable();
 
             $table->foreign('pl_uuid')->references('pl_uuid')->on('tb_plans');
 

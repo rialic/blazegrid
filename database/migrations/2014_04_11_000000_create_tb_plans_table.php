@@ -14,7 +14,7 @@ class CreateTbPlansTable extends Migration
     public function up()
     {
         Schema::create('tb_plans', function (Blueprint $table) {
-            $table->uuid('pl_uuid');
+            $table->uuid('pl_uuid')->primary();
             $table->string('pl_plan_name', 20);
             $table->boolean('pl_status')->default(true);
             $table->timestamp('created_at')->useCurrent();

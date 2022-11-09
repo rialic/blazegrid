@@ -1,6 +1,6 @@
 {
     "/assets/js/home/app.min.js": "/assets/js/home/app.min.js?id=6dc92f8b0250c9d680f71c54bbe3ff88",
-    "/assets/js/crash/app.min.js": "/assets/js/crash/app.min.js?id=868b6e0dea10f898165558a66748ca27",
+    "/assets/js/crash/app.min.js": "/assets/js/crash/app.min.js?id=f8f41fa479701d21f2fd6340e7e37ae5",
     "/assets/css/crash/app.min.css": "/assets/css/crash/app.min.css?id=e69263f22449cb7da8cdf238224ab946",
     "/assets/css/login/app.min.css": "/assets/css/login/app.min.css?id=34e9cf05f6dc421d10f98d3b1e9c61a3",
     "/assets/css/home/app.min.css": "/assets/css/home/app.min.css?id=8d9cab8931ade710e7f4172d3096c8e3",
@@ -15,5 +15,8 @@
     "/assets/images/demo-1.png": "/assets/images/demo-1.png?id=181f1d9b40bacb7e3c1844ef32ca43eb",
     "/assets/images/demo-2.png": "/assets/images/demo-2.png?id=8d4ac50d018b980484208afc0f3a14f3",
     "/assets/images/demo-3.png": "/assets/images/demo-3.png?id=10d98f3163dd17fca1ae1f56d7e88afb",
+    "/assets/images/img-1.png": "/assets/images/img-1.png?id=740d127b292b633e234bb82cb8fed5b3",
+    "/assets/images/img-2.png": "/assets/images/img-2.png?id=3f1a2c85edc05cf5bb8c2363fe47570f",
+    "/assets/images/img-3.png": "/assets/images/img-3.png?id=4879c35ee540e754ef322a08cb3a1d02",
     "/assets/images/qr-code-35.png": "/assets/images/qr-code-35.png?id=fb3270ee14eb7157332b8347ddeab3c8"
 }

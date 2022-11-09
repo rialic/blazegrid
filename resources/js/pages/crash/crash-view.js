@@ -76,11 +76,11 @@ export const {
 
       if (isCrashFilterApproved) {
         const newCrashedItem = {
-          id: crash.id,
+          id: crash.uuid,
           point: crash.point,
           created_at_server: format(new Date(crash.created_at_server), 'dd/MM/yyyy HH:mm:ss', { timeZone: Intl.DateTimeFormat().resolvedOptions().timeZone }),
           diff_min: (!nextData) ? 0 : differenceInMinutes(new Date(crash.created_at_server), new Date(nextData.created_at_server)),
-          diff_step: (!nextData) ? 0 : list.findIndex(recordItem => recordItem.id === nextData.id) - index,
+          diff_step: (!nextData) ? 0 : list.findIndex(recordItem => recordItem.uuid === nextData.uuid) - index,
           sequence: getNextCrashSequence.call(this, index, list)
         }
 

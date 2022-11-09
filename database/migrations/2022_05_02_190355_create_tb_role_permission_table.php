@@ -15,8 +15,8 @@ class CreateTbRolePermissionTable extends Migration
     {
         Schema::create('tb_role_permission', function (Blueprint $table) {
             $table->uuid('rp_uuid')->primary();
-            $table->uuid('ro_uuid');
-            $table->uuid('pe_uuid');
+            $table->foreignUuid('ro_uuid');
+            $table->foreignUuid('pe_uuid');
             $table->timestamp('created_at')->useCurrent();
             $table->timestamp('updated_at')->nullable()->useCurrentOnUpdate();
 
