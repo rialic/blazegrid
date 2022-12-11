@@ -12,6 +12,10 @@ class DbConfigurations extends Migration
      */
     public function up()
     {
-        DB::statement('set session sql_require_primary_key = 0;');
+        $isProductionEnv = config('app.env') === 'production';
+
+        if ($isProductionEnv) {
+            DB::statement('set session sql_require_primary_key = 0;');
+        }
     }
 }

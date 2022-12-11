@@ -4,11 +4,13 @@ import { copyTextToClipboard } from '@/utilx'
 
 App.Home = (() => {
   function Home() {
-    this.clipboardLink = document.querySelector('[data-clipboard-text]')
     this.images = document.querySelectorAll('img.img-thumbnail')
-    this.modalImage = document.querySelector('.modal-image')
-    this.modalImageClose = document.querySelector('.modal-image-close')
-    this.modalImageContent = document.querySelector('.modal-image\\:content')
+    this.gallery = document.querySelector('.gallery')
+    this.imageViewer = document.querySelector('.image-viewer')
+    this.imageViewerContent = document.querySelector('.image-viewer\\:content')
+    this.imageViewerClose = document.querySelector('.image-viewer .close')
+
+    this.clipboardLink = document.querySelector('[data-clipboard-text]')
   }
 
   Home.prototype.init = function() {
@@ -18,8 +20,8 @@ App.Home = (() => {
       this.clipboardLink.addEventListener('click', () => onCopyToClipBoard.call(this))
     }
 
-    this.images.forEach(image => image.addEventListener('click', event => onShowImageModal.call(this, event)))
-    this.modalImageClose.addEventListener('click', () => onHideImageModal.call(this))
+    this.gallery.addEventListener('click', (event) => onShowViewer.call(this, event))
+    this.imageViewerClose.addEventListener('click', () => onHideViewer.call(this))
   }
 
   async function onCopyToClipBoard() {
@@ -35,15 +37,20 @@ App.Home = (() => {
     }
   }
 
-  function onShowImageModal(event) {
-    const image = event.target
+  function onShowViewer(event) {
+    const element = event.target
+    const isGalleryImage = Array.from(element.classList).includes('gallery:image')
 
-    this.modalImage.style.display = 'block'
-    this.modalImageContent.src = image.src
+    if (isGalleryImage) {
+      const sourceImageURl = element.getAttribute('src')
+
+      this.imageViewer.classList.add('image-viewer--show')
+      this.imageViewerContent.setAttribute('src', sourceImageURl)
+    }
   }
 
-  function onHideImageModal() {
-    this.modalImage.style.display = 'none'
+  function onHideViewer() {
+    this.imageViewer.classList.remove('image-viewer--show')
   }
 
   return Home

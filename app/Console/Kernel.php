@@ -16,7 +16,7 @@ class Kernel extends ConsoleKernel
      */
     protected function schedule(Schedule $schedule)
     {
-        $schedule->call(function () {
+        $schedule->call(function() {
             $blazeProxy = app('App\Proxy\Blaze\BlazeProxy');
             $now = now();
             $futherDate = now()->addMinutes(1);
@@ -37,22 +37,22 @@ class Kernel extends ConsoleKernel
             } while ($interval-- > 1);
         })->everyMinute();
 
-        $schedule->call(function () {
+        $schedule->call(function() {
             $count = DB::table('tb_crash')->count();
             $hasReachedMaxLimit = $count >= 15000;
 
             if ($hasReachedMaxLimit) {
                 DB::table('tb_crash')->orderBy('cr_created_at_server', 'asc')->limit(5000)->delete();
             }
-        })->daily();
+        })->everyMinute();
 
-        $schedule->call(function () {
+        $schedule->call(function() {
             DB::table('tb_users')
-            ->join('tb_plans', 'tb_users.pl_id', '=', 'tb_plans.pl_id')
+            ->join('tb_plans', 'tb_users.pl_uuid', '=', 'tb_plans.pl_uuid')
             ->where('tb_users.us_expiration_plan_date', '<=', now())
             ->where('tb_plans.pl_plan_name', '!=', 'Basic')
-            ->update([ 'tb_users.us_expiration_plan_date' => null, 'tb_users.pl_id' => DB::table('tb_plans')->where('pl_plan_name', 'Basic')->first()->pl_id]);
-        })->daily();
+            ->update(['tb_users.us_expiration_plan_date' => null, 'tb_users.pl_uuid' => DB::table('tb_plans')->where('pl_plan_name', 'Basic')->first()->pl_uuid]);
+        })->everyMinute();
     }
 
     /**

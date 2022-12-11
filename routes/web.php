@@ -6,16 +6,13 @@ use Illuminate\Support\Facades\Route;
  * GUEST CONTROLLERS
  *********************************************************/
 
-use App\Http\Controllers\Guest\HomeController;
-use App\Http\Controllers\Guest\LoginController;
-use App\Http\Controllers\Guest\SocialiteController;
+use App\Http\Controllers\Guest\{HomeController, LoginController, SocialiteController};
 
 /*********************************************************
  * PRIVATE CONTROLLERS
  *********************************************************/
 
-use App\Http\Controllers\Priv\UserController;
-use App\Http\Controllers\Priv\CrashController;
+use App\Http\Controllers\Priv\{UserController, CrashController, WSController};
 
 /*
 |--------------------------------------------------------------------------

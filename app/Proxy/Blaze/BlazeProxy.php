@@ -37,7 +37,7 @@ class BlazeProxy
         $responses = $this->fetchByHttpClient();
 
         foreach ($responses as $game => $gameResponse) {
-            $isResponsNotOk = !$gameResponse->successful() && !$gameResponse->ok();
+            $isResponsNotOk = !optional($gameResponse)->successful() && !optional($gameResponse)->ok();
 
             if ($isResponsNotOk) {
                 $exception = new stdClass();
@@ -45,6 +45,8 @@ class BlazeProxy
                 $exception->statusCode = $gameResponse->status();
 
                 $this->blazeException->handleException($exception, $game);
+
+                $this->fetchByScraperApi($game);
 
                 continue;
             }

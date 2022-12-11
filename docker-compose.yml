@@ -138,19 +138,19 @@ services:
       - app
       - db
 
-  scheduler:
-    user: "${UID}:${GID}"
-    build:
-      context: ./.docker/php-fpm
-      dockerfile: Dockerfile
-    image: scheduler
-    container_name: scheduler
-    working_dir: /var/www
-    volumes:
-      - ./:/var/www
-    entrypoint: ["php", "artisan", "schedule:work"]
-    networks:
-      - app
-      - nginx
-      - db
-      - redis
+  # scheduler:
+  #   user: "${UID}:${GID}"
+  #   build:
+  #     context: ./.docker/php-fpm
+  #     dockerfile: Dockerfile
+  #   image: scheduler
+  #   container_name: scheduler
+  #   working_dir: /var/www
+  #   volumes:
+  #     - ./:/var/www
+  #   entrypoint: ["php", "artisan", "schedule:work"]
+  #   networks:
+  #     - app
+  #     - nginx
+  #     - db
+  #     - redis
