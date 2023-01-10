@@ -9,7 +9,17 @@ use App\Repository\Interfaces\PlansInterface as PlansRepo;
 use App\Repository\Interfaces\UserInterface as UserRepo;
 use App\Repository\Interfaces\RoleInterface as RoleRepo;
 use Carbon\Carbon;
+use Symfony\Component\HttpFoundation\RedirectResponse;
 
+/**
+ * Essa classe utiliza o service Socialite do Laravel framework
+ * A estrutura padrão do Laravel Socialite devem ter os métodos redirectToProvider() e handleProviderCallback()
+ * Para mais informações sobre o Laravel Socialite deve ser consultado o link a seguir
+ * https://laravel.com/docs/8.x/socialite
+ *
+ * As variáveis GOOGLE_CLIENT_ID e GOOGLE_CLIENT_SECRET no arquivo .ENV devem ser preenchidas com o ID e o Secret do Google login, para mais informações acessar o link a seguir
+ * https://console.cloud.google.com/
+ */
 class SocialiteController extends Controller
 {
     private $userRepo;
@@ -23,45 +33,41 @@ class SocialiteController extends Controller
         $this->roleRepo = $roleRepo;
     }
 
+    /**
+     * Método que faz um request para o serviço do google e na qual o Google pede login e senha do google para o usuário visitante
+     */
     public function redirectToProvider()
     {
-        // $func = new \ReflectionMethod(User::class, 'getNameAttribute');
-        // $filename = $func->getFileName();
-        // $start_line = $func->getStartLine() - 1; // it's actually - 1, otherwise you wont get the function() block
-        // $end_line = $func->getEndLine();
-        // $length = $end_line - $start_line;
-
-        // $source = file($filename);
-        // $body = implode("", array_slice($source, $start_line, $length));
-
-        // dd(str_replace(array("\r","\n"), "", trim($body)));
-
-
-        // dd('Here', (new \App\Models\Role)::where('ro_name', 'ADMIN')->get());
-
-        // dd((new \App\Models\Role)->where('name', 'PREMIUM_PUNTER')->first());
         return Socialite::driver('google')->redirect();
     }
 
+    /**
+     * Recupera o retorno da resposta do Google em caso de sucesso ou falha no Login do Usuário
+     */
     public function handleProviderCallback(Request $request)
     {
         if ($request->has('error')) {
             return redirect()->route('guest.login');
         }
 
+        // Recuperar os dados do usuário logado no Google
         $providerUser = Socialite::driver('google')->user();
 
+        // Seta parametros de filtro, Plano Basic, Papel Default Punter, Socialite ID do Google
         $planParams = ['filter:plan_name' => 'Basic'];
         $roleParams = ['filter:name' => 'DEFAULT_PUNTER'];
         $userParams = ['filter:socialite_id' => $providerUser->id];
 
+        // Busca o usuário
         $user = $this->userRepo->getFirstData($userParams);
 
         $isUserActve = !!optional($user)->status;
         $isBasicPlan = lcfirst(optional(optional($user)->plan)->name) === 'basic';
 
+        // Seta um password no sistema aleatório já que o usuário acessa apenas pelo login do google
         $password = ('xr2_' . substr($providerUser->email, '0', strpos($providerUser->email, '@')));
 
+        // Verifica se o usuário não existe no sistema, e cadastra um novo com configurações básicas
         if (!$user->exists) {
             $plan = $this->plansRepo->getFirstData($planParams);
             $defaultPunterRole = $this->roleRepo->getFirstData($roleParams);
@@ -79,17 +85,21 @@ class SocialiteController extends Controller
             $user->save();
             $user->roles()->attach($defaultPunterRole->role_uuid);
 
+            // Faz login do usuário após o cadastro no banco de dados
             auth()->login($user);
 
+            // Envia o usuário logado para a tela de históricos do crash
             return redirect()->route('priv.crash');
         }
 
+        // Verifica se o não é ativo e devolve o mesmo para a tela de login
         if (!$isUserActve) {
             auth()->logout();
             $request->session()->invalidate();
             return redirect()->route('login');
         }
 
+        // Verifica se o usuário é do plano premium ou deluxe e verifica a validade do plano deste, caso o plano do usuário tenha expirado, esse volta a ser usuário do plano básico
         if (!$isBasicPlan) {
             $hasPlanExpired = Carbon::parse($user->expiration_plan_date)->lte(now());
 
@@ -100,6 +110,7 @@ class SocialiteController extends Controller
             }
         }
 
+        // As verificações acima deram negativa, o usuário ainda é premium ou deluxe e então terá acesso a tudo
         $user->ip = $request->ip();
         $user->last_date_visit = now();
         $user->save();

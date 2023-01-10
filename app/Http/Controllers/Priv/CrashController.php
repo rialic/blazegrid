@@ -6,6 +6,9 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Repository\Interfaces\CrashInterface as CrashRepo;
 
+/**
+ * Controller que apresenta as informações de histórico básico e do histórico avançado do crash
+ */
 class CrashController extends Controller
 {
     private $crashRepo;
@@ -22,6 +25,10 @@ class CrashController extends Controller
         return view('pages.priv.crash', ['user' => $user]);
     }
 
+    /**
+     * Retorna informações do histórico básico do crash
+     * O limite máximo é de 60 registros para o plano básico e 100 para o plano avançado
+     */
     public function defaultHistory(Request $request)
     {
         $user = auth()->user();
@@ -42,6 +49,11 @@ class CrashController extends Controller
         return response()->json(['data' => ['default_history' => $crashDefaultHistory]]);
     }
 
+    /**
+     * Retorna informações do histórico avançado do crash
+     * Usuário de plano básico não tem acesso ao histórico avançado
+     * O limite máximo que é recebido no request é de 3500 registros
+     */
     public function advancedHistory(Request $request)
     {
         $params = $request->only(['limit', 'page']);

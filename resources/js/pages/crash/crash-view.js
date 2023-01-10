@@ -2,10 +2,15 @@ import { format } from 'date-fns-tz'
 import { differenceInMinutes } from 'date-fns'
 import { empty, makeElement } from '@/utilx'
 
+/*--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------*\
+  Classe JS que renderiza o histórico padrão e o histórico avançado
+  Recoemenda-se não mexer nesse arquivo a não ser que você sabia o que está fazendo
+\*--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------*/
 export const {
   renderDefaultCrashHistoryView,
   renderAdvancedCrashHistoryView
 } = (() => {
+  // Renderiza o histórico padrão com toda lógica para apresentar os horários, cores e sequências de crash
   function renderDefaultCrashHistoryView(data) {
     const fragment = document.createDocumentFragment()
 
@@ -40,6 +45,8 @@ export const {
     this.defaultTotalRowsEl.textContent = `Total: ${data.length}`
   }
 
+  // Renderiza o histórico avançado com toda lógica para apresentar os horários, cores e sequências de crash
+  // Essa função ainda é mais sensível pois refatora a lista de crash para trazer toda sequência, quantidade de jogadas e atrasos que existem entre as jodadas
   function renderAdvancedCrashHistoryView(data, hasToClearList) {
     handleAdvancedCrashHistoryHTML.call(this, data, hasToClearList)
     const advancedCrashList = getAdvancedCrashList.call(this, data)
@@ -69,6 +76,7 @@ export const {
     }
   }
 
+  // Função que trata literalmente de todas sequências, diferenças de tempo, diferença de passos, cores e horários apresentados no histórico avançado
   function getAdvancedCrashList(data) {
     let advancedCrashList = data.reduce((acc, crash, index, list) => {
       const nextData = getNextCrashRecord.call(this, index, list)

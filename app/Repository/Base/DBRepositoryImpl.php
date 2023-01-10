@@ -77,7 +77,7 @@ class DBRepositoryImpl implements DBRepositoryInterface
         $isFilterable = $params->contains(fn ($_, $key) => Str::startsWith($key, 'filter:'));
 
         if ($isFilterable) {
-            // Collect all parameters that begin with "filter:"
+            // Verifica se o parâmetro começa com "filter:"
             $filters = $params->flatMap(function ($value, $key) {
                 $isStringFilter = Str::startsWith($key, 'filter:');
 
@@ -93,7 +93,7 @@ class DBRepositoryImpl implements DBRepositoryInterface
             $entity = $filters->reduce(function ($accEntity, $value, $field) {
                 $method = 'filterBy' . Str::studly($field);
 
-                // Check for a custom filterByField method
+                // Verifica por algum método filterBYMethod
                 if (method_exists($this, $method)) {
                     $accEntity = $this->{$method}($accEntity, $value);
 

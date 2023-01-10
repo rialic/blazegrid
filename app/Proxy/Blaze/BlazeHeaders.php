@@ -2,6 +2,10 @@
 
 namespace App\Proxy\Blaze;
 
+/**
+ * Essa é a classe que na qual carrega todos headers padrões para se fazer um request no site da blaze.com
+ * Recomenda-se não alterar essa classe a não ser tiver incluir mais headers para se fazer a request
+ */
 class BlazeHeaders
 {
     public function getCrashHeader()

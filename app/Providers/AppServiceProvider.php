@@ -29,6 +29,9 @@ class AppServiceProvider extends ServiceProvider
             \URL::forceScheme('https');
         }
 
+        /**
+         * Client HTTP Request do crash para ser utilizada no arquivo BlazeProxy
+         */
         PendingRequest::macro('crash', function () {
             $blazeHeader = new BlazeHeaders();
             $crashUrl = config('app.crash_history_api');

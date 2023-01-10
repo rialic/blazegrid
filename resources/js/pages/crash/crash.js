@@ -6,7 +6,12 @@ import { indexUser } from '@/api/user'
 import { empty, space, numericKeyboard, parseFilters } from '@/utilx'
 import { renderDefaultCrashHistoryView, renderAdvancedCrashHistoryView } from '@/pages/crash/crash-view'
 
+/*--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------*\
+  Classe JS que trata os dados a serem apresentados na tela de crash no arquivo crash.blade.php
+\*--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------*/
 App.Crash = (() => {
+
+  // Seletores e variáveis globais recomenda-se colocar aqui
   function Crash() {
     this.defaultHistoryEl = document.querySelector('[data-js="default-history"]')
     this.advancedHistoryEl = document.querySelector('[data-js="advanced-history"]')
@@ -32,6 +37,7 @@ App.Crash = (() => {
     this.pgLoaderEl = document.querySelector('.pg-loader')
   }
 
+  // Essa function é o Run inicial desse arquivo
   Crash.prototype.init = function() {
     space()
     numericKeyboard()
@@ -41,6 +47,7 @@ App.Crash = (() => {
     this.refreshDefaultBtn.addEventListener('click', event => onRefreshHistory.call(this, event))
   }
 
+  // Faz o init e já chama a API de user e armazena em uma variável global
   async function initCrashPage() {
     const { status, response, message, code } = await indexUser()
 
@@ -55,6 +62,7 @@ App.Crash = (() => {
     throw new Error(`message: ${message}, code: ${code}`)
   }
 
+  // Função que chama o carregamento do histórico padrão e do histórico avançado caso o usuário seja avanaçado ou premium
   function initCrashHistory() {
     refreshDefaultCrashHistory.call(this)
 
@@ -73,6 +81,7 @@ App.Crash = (() => {
     }
   }
 
+  // Função que faz o carregamento do infinity scroll do histórico avançado
   function initAdvancedHistoryObserver() {
     const observerEl = this.advancedHistoryEl.querySelector('div.card:last-child')
     const intersectionObserver = new IntersectionObserver(onObserveAdvancedHistory.call(this), { root: this.advancedHistoryEl, rootMargin: '0px', threshold: 0.3 })
@@ -82,6 +91,7 @@ App.Crash = (() => {
     }
   }
 
+  // Função que faz parte da função acima de infinity scroll
   function onObserveAdvancedHistory() {
     return (entries, observer) => {
       entries.forEach(entry => {
@@ -95,6 +105,7 @@ App.Crash = (() => {
     }
   }
 
+  // Função parent que pode chamar o Histórico Avançado ou Histórico padrão, depedendo do botão que foi clicado pelo usuário
   function onRefreshHistory(event) {
     const refreshButton = event.currentTarget
     const refreshButtonName = refreshButton.getAttribute('id')
@@ -103,6 +114,7 @@ App.Crash = (() => {
     refreshList[refreshButtonName]?.call(this) || null
   }
 
+  // Função que chama a API de carregamento do Histórico padrão do Crash
   async function refreshDefaultCrashHistory() {
     showCountDownButton.call(this, this.refreshDefaultBtn)
     const { status, response, message, code } = await indexDefaultHistory()
@@ -110,6 +122,8 @@ App.Crash = (() => {
     if (status === 'ok') {
       const defaultCrashHistoryList = response?.data?.default_history
 
+      // Função chamada simplesmente para renderizar na tela os dados obtidos pela API do Histórico Padrão
+      // Na renderização que é feito todo cálculo de horas e passos e cores dos points do crash
       renderDefaultCrashHistoryView.call(this, defaultCrashHistoryList)
 
       return
@@ -145,11 +159,14 @@ App.Crash = (() => {
     }
   }
 
+  // Função que chama a API de carregamento do Histórico avançado do Crash
   async function refreshAdvancedCrashHistory(hasToClearList = true) {
     const params = { limit: getLimit.call(this), page: ((hasToClearList) ? this.advancedHistoryPage = 1 : this.advancedHistoryPage) }
     const { data } = await getAdvancedHistoryData.call(this, params)
     const advancedCrashHistoryList = data
 
+    // Função chamada simplesmente para renderizar na tela os dados obtidos pela API do Histórico Padrão
+    // Na renderização que é feito todo cálculo de horas e passos e cores dos points do crash
     renderAdvancedCrashHistoryView.call(this, advancedCrashHistoryList, hasToClearList)
     hideContentReloadingButton.call(this)
     hidePgLoader.call(this)
@@ -163,6 +180,7 @@ App.Crash = (() => {
     }
   }
 
+  // Próxima página a ser carregada no infinity scroll
   function getNextPage() {
     const hasToClearList = false
 
@@ -170,6 +188,7 @@ App.Crash = (() => {
     refreshAdvancedCrashHistory.call(this, hasToClearList)
   }
 
+  // Retorna o limite de página que podem ser recuperadas de acordo com o que o usuário informou na pesquisa do crash
   function getLimit(){
     const gt = (element, num) => (Number(element.value) > num && Number(element.value) !== 0) // Greater Than
     const lte = (element, num) => (Number(element.value) <= num && Number(element.value) !== 0) // Less Than or Equal
@@ -189,6 +208,7 @@ App.Crash = (() => {
     return this.advancedHistoryLimit
   }
 
+  // Função que faz a busca na API de históricos avançados e retorna esses dados
   async function getAdvancedHistoryData(params) {
     showContentReloadingButton.call(this)
     const { status, response, message, code } = await indexAdvancedHistory.call(this, parseFilters(params))
