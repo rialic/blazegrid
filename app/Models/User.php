@@ -34,6 +34,7 @@ class User extends Authenticatable
         'us_whatsapp',
         'us_ip',
         'us_last_date_visit',
+        'us_expiration_plan_date',
         'us_status',
         'us_password',
         'us_terms_conditions'

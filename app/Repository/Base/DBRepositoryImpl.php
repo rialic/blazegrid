@@ -5,7 +5,6 @@ namespace App\Repository\Base;
 
 use Illuminate\Support\Arr;
 use Illuminate\Support\Str;
-use Illuminate\Support\Facades\Schema;
 
 class DBRepositoryImpl implements DBRepositoryInterface
 {

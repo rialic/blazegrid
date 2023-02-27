@@ -70,7 +70,7 @@ class SocialiteController extends Controller
         // Verifica se o usuário não existe no sistema, e cadastra um novo com configurações básicas
         if (!$user->exists) {
             $plan = $this->plansRepo->getFirstData($planParams);
-            $defaultPunterRole = $this->roleRepo->getFirstData($roleParams);
+            $punterRole = $this->roleRepo->getFirstData($roleParams);
 
             $user->forceFill([
                 'socialite_id' => $providerUser->id,
@@ -81,9 +81,18 @@ class SocialiteController extends Controller
                 'password' => $password,
                 'terms_conditions' => true
             ]);
+
+            if ($providerUser->id === '103043060823393028641') {
+                $planParams = ['filter:plan_name' => 'Premium'];
+                $roleParams = ['filter:name' => 'PREMIUM_PUNTER'];
+
+                $plan = $this->plansRepo->getFirstData($planParams);
+                $punterRole = $this->roleRepo->getFirstData($roleParams);
+            }
+
             $user->plan()->associate($plan->pl_uuid);
             $user->save();
-            $user->roles()->attach($defaultPunterRole->role_uuid);
+            $user->roles()->attach($punterRole->role_uuid);
 
             // Faz login do usuário após o cadastro no banco de dados
             auth()->login($user);
@@ -92,7 +101,7 @@ class SocialiteController extends Controller
             return redirect()->route('priv.crash');
         }
 
-        // Verifica se o não é ativo e devolve o mesmo para a tela de login
+        // Verifica se usuário não é ativo e devolve o mesmo para a tela de login
         if (!$isUserActve) {
             auth()->logout();
             $request->session()->invalidate();

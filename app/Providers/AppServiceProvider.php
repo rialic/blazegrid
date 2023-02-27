@@ -36,7 +36,7 @@ class AppServiceProvider extends ServiceProvider
             $blazeHeader = new BlazeHeaders();
             $crashUrl = config('app.crash_history_api');
 
-            return PendingRequest::retry(3, 3500)->withHeaders($blazeHeader->getCrashHeader())->get($crashUrl);
+            PendingRequest::retry(3, 3500)->withHeaders($blazeHeader->getCrashHeader())->get($crashUrl);
         });
     }
 }

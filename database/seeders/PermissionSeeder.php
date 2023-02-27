@@ -18,23 +18,15 @@ class PermissionSeeder extends Seeder
         /*********************************************************
         * ADMIN PERMISSION
         *********************************************************/
-        $permission[Str::random(5)] = Permission::firstOrCreate([
-            'pe_name' => 'OBJ_ADMIN',
-        ]);
+        Permission::firstOrCreate(['pe_name' => 'OBJ_ADMIN']);
 
         /*********************************************************
         * PUNTER PERMISSION
         *********************************************************/
-        $permission[Str::random(5)] = Permission::firstOrCreate([
-            'pe_name' => 'OBJ_PUNTER.VIEW.DEFAULT_GRID',
-        ]);
+        Permission::firstOrCreate(['pe_name' => 'OBJ_PUNTER.VIEW.DEFAULT_GRID']);
 
-        $permission[Str::random(5)] = Permission::firstOrCreate([
-            'pe_name' => 'OBJ_PUNTER.VIEW.ADVANCED_GRID',
-        ]);
+        Permission::firstOrCreate(['pe_name' => 'OBJ_PUNTER.VIEW.ADVANCED_GRID']);
 
-        $permission[Str::random(5)] = Permission::firstOrCreate([
-            'pe_name' => 'OBJ_PUNTER.VIEW.PREMIUM_GRID',
-        ]);
+        Permission::firstOrCreate(['pe_name' => 'OBJ_PUNTER.VIEW.PREMIUM_GRID']);
     }
 }

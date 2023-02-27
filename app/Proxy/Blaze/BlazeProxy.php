@@ -130,7 +130,7 @@ class BlazeProxy
         }
 
         // Seta os parâmetros para buscar os últimos 25 registros que foram salvaos no banco de dados
-        $params = ['limit' => 25];
+        $params = ['limit' => 50, 'orderBy' => 'cr_created_at_server', 'direction' => 'desc'];
         $gameRepo = $this->getRepo($game);
         $gameModel = $gameRepo->getEntity();
         $gameList = $gameRepo->getData($params);

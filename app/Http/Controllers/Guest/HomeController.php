@@ -13,4 +13,10 @@ class HomeController extends Controller
 
         return view('pages.guest.home', ['user' => $user]);
     }
+
+    public function teste()
+    {
+        $blazeProxy = app('App\Proxy\Blaze\BlazeProxy');
+        $blazeProxy->fetch();
+    }
 }

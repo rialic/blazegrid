@@ -21,8 +21,8 @@ class Crash extends Model
     ];
 
     protected $guarded  = [
-        'cr_created_at',
-        'cr_update_at'
+        'created_at',
+        'update_at'
     ];
 
     protected $hidden = [
@@ -32,10 +32,6 @@ class Crash extends Model
         'cr_created_at_server',
         'created_at',
         'updated_at'
-    ];
-
-    protected $casts = [
-        'cr_created_at_server' => 'datetime:Y-m-d H:i:s'
     ];
 
     // SETTERS

@@ -33,6 +33,7 @@ class CrashController extends Controller
     {
         $user = auth()->user();
         $params = ['limit' => (lcfirst(optional(optional($user)->plan)->name) === 'basic') ? 60 : 100];
+        $params = array_merge($params, ['orderBy' => 'cr_created_at_server', 'direction' => 'desc']);
         $isAjaxRequest = $request->ajax();
         $isUserAthenticated = auth()->check();
 
@@ -57,6 +58,7 @@ class CrashController extends Controller
     public function advancedHistory(Request $request)
     {
         $params = $request->only(['limit', 'page']);
+        $params = array_merge($params, ['orderBy' => 'cr_created_at_server', 'direction' => 'desc']);
         $user = auth()->user();
         $isBasicPlan = lcfirst(optional(optional($user)->plan)->name) === 'basic';
         $isAjaxRequest = $request->ajax();

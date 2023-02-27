@@ -18,24 +18,15 @@ class RoleSeeder extends Seeder
         /*********************************************************
         * ADMIN ROLE
         *********************************************************/
-        $role[Str::random(5)] = Role::firstOrCreate([
-            'ro_name' => 'ADMIN',
-        ]);
+        Role::firstOrCreate(['ro_name' => 'ADMIN']);
 
         /*********************************************************
         * PUNTER ROLE
         *********************************************************/
-        $role[Str::random(5)] = Role::firstOrCreate([
-            'ro_name' => 'DEFAULT_PUNTER',
-        ]);
+        Role::firstOrCreate(['ro_name' => 'DEFAULT_PUNTER']);
 
-        $role[Str::random(5)] = Role::firstOrCreate([
-            'ro_uuid' => (string) Str::uuid()->toString(),
-            'ro_name' => 'ADVANCED_PUNTER',
-        ]);
+        Role::firstOrCreate(['ro_name' => 'ADVANCED_PUNTER']);
 
-        $role[Str::random(5)] = Role::firstOrCreate([
-            'ro_name' => 'PREMIUM_PUNTER',
-        ]);
+        Role::firstOrCreate(['ro_name' => 'PREMIUM_PUNTER']);
     }
 }

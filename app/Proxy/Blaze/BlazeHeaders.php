@@ -10,7 +10,7 @@ class BlazeHeaders
 {
     public function getCrashHeader()
     {
-        $crashHeader['path'] = config('app.crash_api_path');
+        // $crashHeader['path'] = config('app.crash_api_path');
         $crashHeader['referer'] = config('app.crash_api_referer');
 
         return array_merge($this->getHeader(), $crashHeader);
@@ -19,16 +19,14 @@ class BlazeHeaders
     private function getHeader()
     {
         $header = array_change_key_case(getallheaders());
+
         $header['authority'] = 'blaze.com';
-        $header['accept'] = 'application/json, text/plain, */*';
-        $header['accept-encoding'] = 'gzip, deflate, br';
+        $header['method'] = 'GET';
         $header['scheme'] = 'https';
-        $header['x-client-language'] = 'pt';
-        $header['sec-fetch-site'] = 'same-origin';
-        $header['sec-ch-ua'] = 'same-origin';
+        $header['accept'] = 'application/json, text/plain, */*';
         $header['sec-fetch-dest'] = 'empty';
         $header['sec-fetch-mode'] = 'cors';
-        $header['cache-control'] = 'no-cache';
+        $header['sec-fetch-site'] = 'same-origin';
 
         $header = array_diff_key($header, array_flip($this->getIgnoreHeaders()));
 
@@ -38,10 +36,15 @@ class BlazeHeaders
     private function getIgnoreHeaders()
     {
         return [
+            'cookie',
             'host',
             'connection',
             'upgrade-insecure-requests',
-            'sec-fetch-user'
+            'sec-fetch-user',
+            'content-length',
+            'content-type',
+            'upgrade-insecure-requests',
+            'cache-control'
         ];
     }
 }

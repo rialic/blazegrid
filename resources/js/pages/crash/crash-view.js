@@ -1,4 +1,4 @@
-import { format } from 'date-fns-tz'
+import { format, zonedTimeToUtc, formatInTimeZone } from 'date-fns-tz'
 import { differenceInMinutes } from 'date-fns'
 import { empty, makeElement } from '@/utilx'
 
@@ -15,6 +15,7 @@ export const {
     const fragment = document.createDocumentFragment()
 
     data.forEach((crash, index, list) => {
+      const utcDate = new Date(zonedTimeToUtc(crash.created_at_server, 'America/Sao_Paulo'))
       const isFirstData = index === 0
       const crashPointColor = (crash.point >= 2) ? 'success' : 'secondary'
       const parentDiv = makeElement('div', { class: `position-relative mt-1 ${isFirstData ? ' ms-1 me-3' : 'mx-1'} fs-20` })
@@ -22,6 +23,10 @@ export const {
       const pointSpan = makeElement('span', { class: 'd-block' })
       const dateSpan = makeElement('span', { class: 'd-block mt-1' })
       const sequenceDiv = makeElement('div', { class: `position-absolute top-0 start-100 translate-middle fw-bold text-white bg-${crashPointColor} border border-2 border-white px-1 rounded fs-12 border-${crashPointColor}` })
+
+    //   function convertTZ(date, tzString) {
+    //     return new Date((typeof date === "string" ? new Date(date) : date).toLocaleString("en-US", {timeZone: tzString}));
+    // }
 
       parentDiv.insertAdjacentElement('beforeend', badgeDiv)
       badgeDiv.insertAdjacentElement('beforeend', pointSpan)
@@ -32,7 +37,9 @@ export const {
         parentDiv.insertAdjacentElement('beforeend', sequenceDiv)
         badgeDiv.insertAdjacentElement('beforeend', dateSpan)
 
-        dateSpan.textContent = format(new Date(crash.created_at_server), 'HH:mm:ss', { timeZone: Intl.DateTimeFormat().resolvedOptions().timeZone })
+
+        // dateSpan.textContent = format(new Date(crash.created_at_server), 'HH:mm:ss', { timeZone: Intl.DateTimeFormat().resolvedOptions().timeZone })
+        dateSpan.textContent = format(utcDate, 'HH:mm:ss', { timeZone: 'America/Acre' })
         sequenceDiv.textContent = getNextCrashSequence.call(this, index, list)
       }
 
@@ -79,6 +86,7 @@ export const {
   // Função que trata literalmente de todas sequências, diferenças de tempo, diferença de passos, cores e horários apresentados no histórico avançado
   function getAdvancedCrashList(data) {
     let advancedCrashList = data.reduce((acc, crash, index, list) => {
+      const utcDate = zonedTimeToUtc(crash.created_at_server, 'America/Sao_Paulo')
       const nextData = getNextCrashRecord.call(this, index, list)
       const isCrashFilterApproved = (Number(crash.point) >= (Number(this.startLogInput.value)) && Number(crash.point) <= (this.endLogInput.value || 1000000))
 
@@ -86,7 +94,7 @@ export const {
         const newCrashedItem = {
           id: crash.uuid,
           point: crash.point,
-          created_at_server: format(new Date(crash.created_at_server), 'dd/MM/yyyy HH:mm:ss', { timeZone: Intl.DateTimeFormat().resolvedOptions().timeZone }),
+          created_at_server: format(new Date(utcDate.toISOString()), 'dd/MM/yyyy HH:mm:ss', { timeZone: Intl.DateTimeFormat().resolvedOptions().timeZone }),
           diff_min: (!nextData) ? 0 : differenceInMinutes(new Date(crash.created_at_server), new Date(nextData.created_at_server)),
           diff_step: (!nextData) ? 0 : list.findIndex(recordItem => recordItem.uuid === nextData.uuid) - index,
           sequence: getNextCrashSequence.call(this, index, list)

@@ -31,6 +31,7 @@ Route::get('/login', [LoginController::class, 'index'])->middleware('guest')->na
 Route::group(['as' => 'guest.'], function () {
     // Home Controller
     Route::get('/', [HomeController::class, 'index'])->name('init');
+    Route::get('/teste', [HomeController::class, 'teste']);
 
     Route::group(['middleware' => 'guest'], function () {
 
