@@ -1,5 +1,5 @@
 import Fetch from '@/fetch'
-import { APP_URL } from '@/utilx'
+import { APP_URL } from '@/helper'
 
 export const {
   indexDefaultHistory,

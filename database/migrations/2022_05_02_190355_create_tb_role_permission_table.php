@@ -14,14 +14,14 @@ class CreateTbRolePermissionTable extends Migration
     public function up()
     {
         Schema::create('tb_role_permission', function (Blueprint $table) {
-            $table->uuid('rp_uuid')->primary();
-            $table->foreignUuid('ro_uuid');
-            $table->foreignUuid('pe_uuid');
+            $table->id('rp_id');
+            $table->unsignedBigInteger('ro_id');
+            $table->unsignedBigInteger('pe_id');
             $table->timestamp('created_at')->useCurrent();
             $table->timestamp('updated_at')->nullable()->useCurrentOnUpdate();
 
-            $table->foreign('ro_uuid')->references('ro_uuid')->on('tb_roles')->onDelete('cascade');
-            $table->foreign('pe_uuid')->references('pe_uuid')->on('tb_permissions')->onDelete('cascade');
+            $table->foreign('ro_id')->references('ro_id')->on('tb_roles')->onDelete('cascade');
+            $table->foreign('pe_id')->references('pe_id')->on('tb_permissions')->onDelete('cascade');
 
             $table->engine = 'InnoDB';
             $table->charset = 'utf8mb4';

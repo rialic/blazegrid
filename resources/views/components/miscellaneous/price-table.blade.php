@@ -13,7 +13,7 @@
           <span class="fs-18">R$</span>
         </sup>
 
-        <span class="text-secondary">35</span>
+        <span class="text-secondary">40</span>
 
         <span class="fs-18">/ mês</span>
       </h2>

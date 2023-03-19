@@ -2,17 +2,20 @@
 
 namespace App\Models;
 
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class RolePermission extends Model
+class RoleUser extends Model
 {
-    protected $table = 'tb_role_permission';
-    protected $tableColumnPrefix = 'rp';
-    protected $primaryKey = 'rp_id';
+    use HasFactory;
+
+    protected $table = 'tb_role_user';
+    protected $tableColumnPrefix = 'ru';
+    protected $primaryKey = 'ru_id';
 
     protected $fillable = [
         'ro_id',
-        'pe_id'
+        'us_id'
     ];
 
     // TRANSIENTS METHODS

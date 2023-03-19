@@ -3,6 +3,7 @@
     "/assets/js/crash/app.min.js": "/assets/js/crash/app.min.js",
     "/assets/css/crash/app.min.css": "/assets/css/crash/app.min.css",
     "/assets/css/login/app.min.css": "/assets/css/login/app.min.css",
+    "/assets/css/privacy-policy/app.min.css": "/assets/css/privacy-policy/app.min.css",
     "/assets/css/home/app.min.css": "/assets/css/home/app.min.css",
     "/assets/webfonts/fa-brands-400.ttf": "/assets/webfonts/fa-brands-400.ttf",
     "/assets/webfonts/fa-brands-400.woff2": "/assets/webfonts/fa-brands-400.woff2",
@@ -12,10 +13,10 @@
     "/assets/webfonts/fa-solid-900.woff2": "/assets/webfonts/fa-solid-900.woff2",
     "/assets/webfonts/fa-v4compatibility.ttf": "/assets/webfonts/fa-v4compatibility.ttf",
     "/assets/webfonts/fa-v4compatibility.woff2": "/assets/webfonts/fa-v4compatibility.woff2",
-    "/assets/images/MentionList.vue": "/assets/images/MentionList.vue",
     "/assets/images/Suggestions.js": "/assets/images/Suggestions.js",
     "/assets/images/img-1.png": "/assets/images/img-1.png",
     "/assets/images/img-2.png": "/assets/images/img-2.png",
     "/assets/images/img-3.png": "/assets/images/img-3.png",
-    "/assets/images/qr-code-35.png": "/assets/images/qr-code-35.png"
+    "/assets/images/qr-code-35.png": "/assets/images/qr-code-35.png",
+    "/assets/images/qr-code-40.png": "/assets/images/qr-code-40.png"
 }

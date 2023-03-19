@@ -14,7 +14,7 @@ class User extends Authenticatable
 
     protected $table = 'tb_users';
     protected $tableColumnPrefix = 'us';
-    protected $primaryKey = 'us_uuid';
+    protected $primaryKey = 'us_id';
 
     protected $appends = [
         'uuid',
@@ -41,6 +41,7 @@ class User extends Authenticatable
     ];
 
     protected $hidden = [
+        'us_id',
         'us_uuid',
         'us_socialite_id',
         'us_name',
@@ -56,7 +57,7 @@ class User extends Authenticatable
         'us_expiration_plan_date',
         'us_ip',
         'us_inactivation_date',
-        'pl_uuid',
+        'pl_id',
         'created_at',
         'updated_at'
     ];
@@ -185,12 +186,12 @@ class User extends Authenticatable
     // RELATIONSHIPS
     public function plan()
     {
-        return $this->belongsTo(Plans::class, 'pl_uuid', 'pl_uuid');
+        return $this->belongsTo(Plans::class, 'pl_id', 'pl_id');
     }
 
     public function roles()
     {
-        return $this->belongsToMany(Role::class, 'tb_role_user', 'us_uuid', 'ro_uuid');
+        return $this->belongsToMany(Role::class, 'tb_role_user', 'us_id', 'ro_id');
     }
 
     // TRANSIENTS METHODS

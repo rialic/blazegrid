@@ -11,8 +11,7 @@ class Permission extends Model
 
     protected $table = 'tb_permissions';
     protected $tableColumnPrefix = 'pe';
-    protected $primaryKey = 'pe_uuid';
-    public $timestamps = false;
+    protected $primaryKey = 'pe_id';
 
     protected $appends = [
         'uuid',
@@ -21,12 +20,12 @@ class Permission extends Model
     ];
 
     protected $fillable = [
-        'pe_uuid',
         'pe_name',
         'pe_status'
     ];
 
     protected $hidden = [
+        'pe_id',
         'pe_uuid',
         'pe_name',
         'pe_status'
@@ -51,7 +50,7 @@ class Permission extends Model
     // RELATIONSHIPS
     public function roles()
     {
-        return $this->belongsToMany(Role::class, 'tb_permission_role', 'pe_uuid', 'ro_uuid');
+        return $this->belongsToMany(Role::class, 'tb_permission_role', 'pe_id', 'ro_id');
     }
 
     // TRANSIENTS METHODS

@@ -11,7 +11,7 @@
     <div class="d-flex justify-content-between">
       <h4 class="text-white fw-semibold">Crash</h4>
 
-      @if(lcfirst($user->plan->name) !== 'basic')
+      @if(lcfirst($user->plan->name) === 'premium')
       <div class="align-self-center text-white fw-semibold fs:min-14:max-16">Expira em: {{\Carbon\Carbon::parse($user->expiration_plan_date)->format('d/m/Y')}}</div>
       @endif
     </div>
@@ -107,10 +107,10 @@
 
         <p>Abra o app em que vai fazer a transferência, escaneie a imagem ou copie o código do QR Code</p>
 
-        <img class="d-block mx-auto img-fluid" src="{{url(mix('assets/images/qr-code-35.png'))}}" alt="qrcode">
+        <img class="d-block mx-auto img-fluid" src="{{url(mix('assets/images/qr-code-40.png'))}}" alt="qrcode">
 
         <p class="mt-3 text-center">
-          <strong>R$ 35,00</strong>
+          <strong>R$ 40,00</strong>
         </p>
 
         <div class="text-center">

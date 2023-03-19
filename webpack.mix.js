@@ -9,6 +9,7 @@ mix.alias({
 
 // CSS
 mix.sass('resources/scss/pages/home.scss', 'assets/css/home/app.min.css')
+mix.sass('resources/scss/pages/privacy-policy.scss', 'assets/css/privacy-policy/app.min.css')
    .sass('resources/scss/pages/login.scss', 'assets/css/login/app.min.css')
    .sass('resources/scss/pages/crash.scss', 'assets/css/crash/app.min.css')
    .options({
@@ -25,7 +26,7 @@ mix.sass('resources/scss/pages/home.scss', 'assets/css/home/app.min.css')
 
 // JS
 mix.js(['resources/js/pages/home/index.js'], 'assets/js/home/app.min.js')
-   .js(['resources/js/pages/crash/crash.js'], 'assets/js/crash/app.min.js')
+   .js(['resources/js/pages/crash/index.js'], 'assets/js/crash/app.min.js')
 
 // OTHERS
 mix.copyDirectory("resources/webfonts", "public/assets/webfonts")

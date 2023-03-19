@@ -156,8 +156,10 @@ class BlazeProxy
         // Lógica para salvar caso o banco de dados NÃO esteja vazio
         // Nesse loop verificamos todos os itens recuperados do banco de dados e conferimos o último registro e salvamos os novos registros a partir do último, dado uma sequêcia
         // nos dados
-        collect($records)->each(function ($record) use ($gameModel, $gameList) {
-            $isItemAlreadyInList = $gameList->contains('id_server', $record['id']);
+        $records = collect($records)->slice(0, $params['limit']);
+
+        $records->each(function ($record) use ($gameModel, $gameList) {
+            $isItemAlreadyInList = $gameList->contains('cr_id_server', $record['id']);
 
             if (!$isItemAlreadyInList) {
                 $gameModel->forceFill([

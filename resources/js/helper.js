@@ -1,3 +1,5 @@
+import { format } from 'date-fns-tz'
+
 export const {
   empty,
   serialize,
@@ -5,6 +7,7 @@ export const {
   copyTextToClipboard,
   makeElement,
   APP_URL,
+  dateTimeZone,
   space,
   upperCase,
   upperCaseFirst,
@@ -16,6 +19,10 @@ export const {
     const baseURl = window.location.href.slice(protocolIndex).slice(0, window.location.href.slice(protocolIndex).indexOf('/'))
 
     return `${protocol}://${baseURl}`
+  }
+
+  const dateTimeZone = (date, dateFormat) => {
+    return format(new Date(`${date} +0000`), dateFormat, { timeZone: Intl.DateTimeFormat().resolvedOptions().timeZone })
   }
 
   /**
@@ -317,6 +324,7 @@ export const {
     parseFilters,
     copyTextToClipboard,
     makeElement,
+    dateTimeZone,
     APP_URL: APP_URL,
     space: space,
     upperCase: upperCase,

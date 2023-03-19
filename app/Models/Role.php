@@ -11,8 +11,7 @@ class Role extends Model
 
     protected $table = 'tb_roles';
     protected $tableColumnPrefix = 'ro';
-    protected $primaryKey = 'ro_uuid';
-    public $timestamps = false;
+    protected $primaryKey = 'ro_id';
 
     protected $appends = [
         'uuid',
@@ -21,12 +20,12 @@ class Role extends Model
     ];
 
     protected $fillable = [
-        'ro_uuid',
         'ro_name',
         'ro_status'
     ];
 
     protected $hidden = [
+        'ro_id',
         'ro_uuid',
         'ro_name',
         'ro_status',
@@ -51,12 +50,12 @@ class Role extends Model
     // RELATIONSHIPS
     public function users()
     {
-        return $this->belongsToMany(User::class, 'tb_role_user', 'ro_uuid', 'us_uuid');
+        return $this->belongsToMany(User::class, 'tb_role_user', 'ro_id', 'us_id');
     }
 
     public function permissions()
     {
-        return $this->belongsToMany(Permission::class, 'tb_permission_role', 'ro_uuid', 'pe_uuid');
+        return $this->belongsToMany(Permission::class, 'tb_permission_role', 'ro_id', 'pe_id');
     }
 
     // TRANSIENTS METHODS

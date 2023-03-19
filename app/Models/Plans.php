@@ -11,32 +11,26 @@ class Plans extends Model
 
     protected $table = 'tb_plans';
     protected $tableColumnPrefix = 'pl';
-    protected $primaryKey = 'pl_uuid';
-    public $timestamps = false;
+    protected $primaryKey = 'pl_id';
 
     protected $appends = [
-        'uuid',
         'name',
+        'status',
     ];
 
     protected $fillable  = [
-        'pl_uuid',
         'pl_plan_name',
         'pl_status'
     ];
 
     protected $hidden = [
+        'pl_id',
         'pl_uuid',
         'pl_plan_name',
         'pl_status'
     ];
 
     // GETTER
-    public function getUuidAttribute()
-    {
-        return $this->pl_uuid;
-    }
-
     public function getNameAttribute()
     {
         return $this->pl_plan_name;

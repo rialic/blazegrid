@@ -3,13 +3,12 @@ version: "3.9"
 networks:
   app:
   nginx:
-  db:
 
 services:
   nginx:
     build:
       context: ./.docker/nginx
-      dockerfile: dockerfile
+      dockerfile: nginx.prod.dockerfile
     image: nginx
     container_name: nginx
     volumes:
@@ -18,11 +17,13 @@ services:
     ports:
       - 80:80
       - 443:443
+    command: >
+      sh -c "crond -l 8 -d 8 -L /var/log/crond/crond.log && nginx -g 'daemon off;'"
     deploy:
       resources:
         limits:
-          cpus: '0.90'
-          memory: 700M
+          cpus: '0.50'
+          memory: 500M
     depends_on:
       - app
     networks:
@@ -38,31 +39,16 @@ services:
     volumes:
       - ./:/var/www
     restart: unless-stopped
-    depends_on:
-      - db
+    deploy:
+      resources:
+        limits:
+          cpus: '0.80'
+          memory: 700M
     networks:
       - app
       - nginx
-      - db
-
-  db:
-    image: linuxserver/mariadb:latest
-    container_name: db
-    volumes:
-      - ./.docker/mariadb/:/config
-    ports:
-      - 3306:3306
-    environment:
-      TZ: 'America/Sao_Paulo'
-      MYSQL_DATABASE: "${DB_DATABASE}"
-      MYSQL_USER: "${DB_USERNAME}"
-      MYSQL_PASSWORD: "${DB_PASSWORD}"
-      MYSQL_ROOT_PASSWORD: "${DB_PASSWORD}"
-    networks:
-      - db
 
   #CONTAINER SERVICES
-
   node:
     image: node:current-alpine3.16
     container_name: node
@@ -93,39 +79,24 @@ services:
     volumes:
       - ./:/var/www
     entrypoint: ["php", "artisan"]
-    depends_on:
-      - db
     networks:
       - app
-      - db
 
-  phpunit:
+  scheduler:
     build:
       context: ./.docker/php-fpm
       dockerfile: dockerfile
-    image: phpunit
-    container_name: phpunit
+    image: scheduler
+    container_name: scheduler
     working_dir: /var/www
     volumes:
       - ./:/var/www
-    entrypoint: ["/var/www/vendor/bin/phpunit"]
-    depends_on:
-      - db
+    deploy:
+      resources:
+        limits:
+          cpus: '0.30'
+          memory: 100M
+    entrypoint: ["php", "artisan", "schedule:work"]
     networks:
       - app
-      - db
-
-  # scheduler:
-  #   build:
-  #     context: ./.docker/php-fpm
-  #     dockerfile: Dockerfile
-  #   image: scheduler
-  #   container_name: scheduler
-  #   working_dir: /var/www
-  #   volumes:
-  #     - ./:/var/www
-  #   entrypoint: ["php", "artisan", "schedule:work"]
-  #   networks:
-  #     - app
-  #     - nginx
-  #     - db
+      - nginx

@@ -41,7 +41,9 @@ class Kernel extends ConsoleKernel
                     $interval = 0;
                 }
             } while ($interval-- > 1);
-        })->everyMinute();
+        })
+        ->everyMinute()
+        ->appendOutputTo(storage_path() . '/queue.log');
 
         /**
          * Essa call verifica se o banco de dados ultrapssou os 15 mil registros
@@ -62,10 +64,10 @@ class Kernel extends ConsoleKernel
          */
         $schedule->call(function() {
             DB::table('tb_users')
-            ->join('tb_plans', 'tb_users.pl_uuid', '=', 'tb_plans.pl_uuid')
+            ->join('tb_plans', 'tb_users.pl_id', '=', 'tb_plans.pl_id')
             ->where('tb_users.us_expiration_plan_date', '<=', now())
             ->where('tb_plans.pl_plan_name', '!=', 'Basic')
-            ->update(['tb_users.us_expiration_plan_date' => null, 'tb_users.pl_uuid' => DB::table('tb_plans')->where('pl_plan_name', 'Basic')->first()->pl_uuid]);
+            ->update(['tb_users.us_expiration_plan_date' => null, 'tb_users.pl_id' => DB::table('tb_plans')->where('pl_plan_name', 'Basic')->first()->pl_id]);
         })->everyMinute();
     }
 

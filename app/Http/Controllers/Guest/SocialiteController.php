@@ -82,17 +82,9 @@ class SocialiteController extends Controller
                 'terms_conditions' => true
             ]);
 
-            if ($providerUser->id === '103043060823393028641') {
-                $planParams = ['filter:plan_name' => 'Premium'];
-                $roleParams = ['filter:name' => 'PREMIUM_PUNTER'];
-
-                $plan = $this->plansRepo->getFirstData($planParams);
-                $punterRole = $this->roleRepo->getFirstData($roleParams);
-            }
-
-            $user->plan()->associate($plan->pl_uuid);
+            $user->plan()->associate($plan->pl_id);
             $user->save();
-            $user->roles()->attach($punterRole->role_uuid);
+            $user->roles()->attach($punterRole->role_id);
 
             // Faz login do usuário após o cadastro no banco de dados
             auth()->login($user);
@@ -110,12 +102,16 @@ class SocialiteController extends Controller
 
         // Verifica se o usuário é do plano premium ou deluxe e verifica a validade do plano deste, caso o plano do usuário tenha expirado, esse volta a ser usuário do plano básico
         if (!$isBasicPlan) {
-            $hasPlanExpired = Carbon::parse($user->expiration_plan_date)->lte(now());
+            $isDeluxePlan = lcfirst(optional(optional($user)->plan)->name) === 'deluxe';
 
-            if ($hasPlanExpired) {
-                $plan = $this->plansRepo->getFirstData($planParams);
-                $user->plan()->associate($plan->pl_uuid);
-                $user->expiration_plan_date = null;
+            if (!$isDeluxePlan) {
+                $hasPlanExpired = Carbon::parse($user->expiration_plan_date)->lte(now());
+
+                if ($hasPlanExpired) {
+                    $plan = $this->plansRepo->getFirstData($planParams);
+                    $user->plan()->associate($plan->pl_id);
+                    $user->expiration_plan_date = null;
+                }
             }
         }
 

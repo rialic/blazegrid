@@ -6,7 +6,7 @@ use Illuminate\Support\Facades\Route;
  * GUEST CONTROLLERS
  *********************************************************/
 
-use App\Http\Controllers\Guest\{HomeController, LoginController, SocialiteController};
+use App\Http\Controllers\Guest\{HomeController, LoginController, SocialiteController, PrivacyPolicyController};
 
 /*********************************************************
  * PRIVATE CONTROLLERS
@@ -31,7 +31,7 @@ Route::get('/login', [LoginController::class, 'index'])->middleware('guest')->na
 Route::group(['as' => 'guest.'], function () {
     // Home Controller
     Route::get('/', [HomeController::class, 'index'])->name('init');
-    Route::get('/teste', [HomeController::class, 'teste']);
+    Route::get('/politica-privacidade', [PrivacyPolicyController::class, 'index'])->name('privacy-policy');
 
     Route::group(['middleware' => 'guest'], function () {
 

@@ -46,17 +46,17 @@ class RolePermissionSeeder extends Seeder
 
     private function hasRolePermission($role, $permission)
     {
-        $roleId = Role::where('ro_name', $role)->value('ro_uuid');
-        $permissionId = Permission::where('pe_name', $permission)->value('pe_uuid');
+        $roleId = Role::where('ro_name', $role)->value('ro_id');
+        $permissionId = Permission::where('pe_name', $permission)->value('pe_id');
 
-        $roleQuery = Role::select('ro_uuid')->where('ro_name', $role);
-        $permissionQuery = Permission::select('pe_uuid')->where('pe_name', $permission);
+        $roleQuery = Role::select('ro_id')->where('ro_name', $role);
+        $permissionQuery = Permission::select('pe_id')->where('pe_name', $permission);
 
         $count = RolePermission::joinSub($roleQuery, 'role', function ($join) {
-            $join->on('tb_role_permission.ro_uuid', '=', 'role.ro_uuid');
+            $join->on('tb_role_permission.ro_id', '=', 'role.ro_id');
         })
         ->joinSub($permissionQuery, 'permission', function ($join) {
-            $join->on('tb_role_permission.pe_uuid', '=', 'permission.pe_uuid');
+            $join->on('tb_role_permission.pe_id', '=', 'permission.pe_id');
         })->count();
 
         return array('register' => ($count > 0), 'role' => $roleId, 'permission' => $permissionId);
@@ -65,7 +65,7 @@ class RolePermissionSeeder extends Seeder
     private function createRolePermission($rolePermission)
     {
         if ($rolePermission['register'] == false) {
-            RolePermission::create(['ro_uuid' => $rolePermission['role'], 'pe_uuid' => $rolePermission['permission']]);
+            RolePermission::create(['ro_id' => $rolePermission['role'], 'pe_id' => $rolePermission['permission']]);
         }
     }
 }

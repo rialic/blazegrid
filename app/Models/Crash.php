@@ -12,20 +12,23 @@ class Crash extends Model
 
     protected $table = 'tb_crash';
     protected $tableColumnPrefix = 'cr';
-    protected $primaryKey = 'cr_uuid';
+    protected $primaryKey = 'cr_id';
 
     protected $appends = [
         'uuid',
+        'id_server',
         'point',
         'created_at_server',
     ];
 
-    protected $guarded  = [
-        'created_at',
-        'update_at'
+    protected $fillable  = [
+        'cr_point',
+        'cr_id_server',
+        'cr_created_at_server',
     ];
 
     protected $hidden = [
+        'cr_id',
         'cr_uuid',
         'cr_id_server',
         'cr_point',
@@ -47,7 +50,7 @@ class Crash extends Model
 
     public function setCreatedAtServerAttribute($value)
     {
-        $this->cr_created_at_server = Carbon::parse($value)->setTimezone('America/Sao_Paulo');
+        $this->cr_created_at_server = Carbon::parse($value);
     }
 
     // GETTERS

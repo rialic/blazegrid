@@ -12,15 +12,10 @@ trait GenerateUuid
 
         static::creating(function($model) {
             if (empty($model->{$model->getKeyName()})) {
-                $model->{$model->getKeyName()} = (string) Str::uuid()->toString();
+                $model->{str_replace('_id', '_uuid', $model->getKeyName())} = (string) Str::uuid()->toString();
             }
         });
   }
-
-    public function getIncrementing ()
-    {
-        return false;
-    }
 
     public function getKeyType ()
     {

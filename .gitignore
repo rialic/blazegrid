@@ -17,6 +17,6 @@ yarn-error.log
 .yarn
 .pnp.cjs
 .pnp.loader.mjs
-.docker/mysql/*
+.docker/mariadb
 .docker/redis/*
-.docker/nginx/certs/*
+.docker/nginx/certs

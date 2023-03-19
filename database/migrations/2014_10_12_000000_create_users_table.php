@@ -14,7 +14,8 @@ class CreateUsersTable extends Migration
     public function up()
     {
         Schema::create('tb_users', function (Blueprint $table) {
-            $table->uuid('us_uuid')->primary();
+            $table->id('us_id');
+            $table->uuid('us_uuid');
             $table->string('us_socialite_id');
             $table->string('us_name');
             $table->string('us_cpf', 11)->nullable()->unique();
@@ -32,9 +33,9 @@ class CreateUsersTable extends Migration
             $table->timestamp('created_at')->useCurrent();
             $table->timestamp('updated_at')->nullable()->useCurrentOnUpdate();
 
-            $table->foreignUuid('pl_uuid')->nullable();
+            $table->unsignedBigInteger('pl_id')->nullable();
 
-            $table->foreign('pl_uuid')->references('pl_uuid')->on('tb_plans');
+            $table->foreign('pl_id')->references('pl_id')->on('tb_plans');
 
             $table->engine = 'InnoDB';
             $table->charset = 'utf8mb4';

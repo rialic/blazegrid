@@ -1,6 +1,6 @@
 import App from '@/app'
 import { Modal, Dropdown } from 'bootstrap'
-import { copyTextToClipboard } from '@/utilx'
+import { copyTextToClipboard } from '@/helper'
 
 App.Home = (() => {
   function Home() {
@@ -27,6 +27,8 @@ App.Home = (() => {
   async function onCopyToClipBoard() {
     const code = this.clipboardLink.dataset.clipboardText
     const hasTextBeenCopied = await copyTextToClipboard(code)
+
+    console.log(hasTextBeenCopied)
 
     if (hasTextBeenCopied) {
       const resultCopyEl = this.clipboardLink.nextElementSibling
