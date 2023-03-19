@@ -22,7 +22,7 @@ jobs:
         #     REMOTE_USER: ${{ secrets.SSH_USER }}
         #     TARGET: /home/${{ secrets.SSH_USER }}/ci-cd
 
-        - name: Execute comands SSH
+        - name: Execute commands SSH
           uses: appleboy/ssh-action@master
         #   env:
         #     USER_PASS: "${{ secrets.USER_PASS }}"
