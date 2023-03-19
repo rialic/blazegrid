@@ -13,10 +13,13 @@ npm-debug.log
 yarn-error.log
 .idea
 .vscode
-.vscode
 .yarn
 .pnp.cjs
 .pnp.loader.mjs
-.docker/mariadb
-.docker/redis/*
-.docker/nginx/certs
+.docker
+.bladeformatterrc.json
+.eslintignore
+.eslintrc.js
+.yarnrc.yml
+docker-compose.prod.yml
+docker-compose.yml
