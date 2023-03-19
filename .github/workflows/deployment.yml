@@ -16,7 +16,7 @@ jobs:
         - name: Set Up Node
           uses: actions/setup-node@v1
           with:
-            node-version: "12.x"
+            node-version: "19.x"
         - run: yarn
         - run: yarn production
 
