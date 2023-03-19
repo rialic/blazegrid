@@ -1,4 +1,4 @@
-name: Laravel CI/CD
+name: blazeGrids CI/CD
 
 on:
   push:
@@ -29,18 +29,18 @@ jobs:
         #     REMOTE_USER: ${{ secrets.SSH_USER }}
         #     TARGET: /home/${{ secrets.SSH_USER }}/ci-cd
 
-        # - name: Execute commands SSH
-        #   uses: appleboy/ssh-action@master
-        # #   env:
-        # #     USER_PASS: "${{ secrets.USER_PASS }}"
-        #   with:
-        #     host: ${{ secrets.SSH_HOST }}
-        #     username: ${{ secrets.SSH_USER }}
-        #     port: ${{ secrets.SSH_PORT }}
-        #     key: ${{ secrets.SSH_KEY }}
-        # #     envs: USER_PASS
-        #     script: |
-        #         ls -lah
+        - name: Execute commands SSH
+          uses: appleboy/ssh-action@master
+        #   env:
+        #     USER_PASS: "${{ secrets.USER_PASS }}"
+          with:
+            host: ${{ secrets.SSH_HOST }}
+            username: ${{ secrets.SSH_USER }}
+            port: ${{ secrets.SSH_PORT }}
+            key: ${{ secrets.SSH_KEY }}
+        #     envs: USER_PASS
+            script: |
+                pwd
         #       cd ci-cd/
         #       echo $USER_PASS | sudo -S docker-compose up -d
         #       echo $USER_PASS | sudo -S docker-compose exec -T curso_api_cache composer install
