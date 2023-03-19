@@ -1,11 +1,121 @@
 /*--------------------*\
-  PIXEL TO REM
+  FONT-SIZE
 \*--------------------*/
+$utilities: map-merge(
+  $utilities,
+  (
+    "font-size": (
+      property: font-size,
+      class: fs,
+      values: (
+        12: 0.75rem,
+        13: 0.8125rem,
+        14: 0.875rem,
+        15: 0.9375rem,
+        16: 1rem,
+        17: 1.0625rem,
+        18: 1.125rem,
+        19: 1.1875rem,
+        20: 1.25rem,
+        21: 1.3125rem,
+        22: 1.375rem,
+        23: 1.4375rem,
+        24: 1.5rem,
+      ),
+    ),
+  )
+);
 
-@function stripUnit($value) {
-  @return $value / ($value * 0 + 1);
+/*--------------------*\
+  RESPONSIVE FONT SIZE
+\*--------------------*/
+// Min Screen - Max Screen
+$minWidth: 375px;
+$maxWidth: 1440px;
+
+@mixin fluidType($minVw, $maxVw, $minFontSize, $maxFontSize) {
+  $u1: unit($minVw);
+  $u2: unit($maxVw);
+  $u3: unit($minFontSize);
+  $u4: unit($maxFontSize);
+
+  @if $u1 == $u2 and $u1 == $u3 and $u1 == $u4 {
+    & {
+      font-size: rem($minFontSize);
+
+      @media screen and (min-width: $minVw) {
+        font-size: calc(#{rem($minFontSize)} + #{stripUnit($maxFontSize - $minFontSize)} * ((100vw - #{rem($minVw)}) / #{stripUnit($maxVw - $minVw)}));
+      }
+
+      @media screen and (min-width: $maxVw) {
+        font-size: rem($maxFontSize);
+      }
+    }
+  }
 }
 
-@function rem($value) {
-  @return #{stripUnit($value) / stripUnit(16px)}rem;
+@mixin responsiveFonts {
+  $fonts: (
+    12px: (16px, 17px, 18px, 19px, 20px, 21px, 22px, 23px, 24px),
+    13px: (16px, 17px, 18px, 19px, 20px, 21px, 22px, 23px, 24px),
+    14px: (16px, 17px, 18px, 19px, 20px, 21px, 22px, 23px, 24px),
+    15px: (17px, 18px, 19px, 20px, 21px, 22px, 23px, 24px),
+    16px: (18px, 19px, 20px, 21px, 22px, 23px, 24px),
+    17px: (19px, 20px, 21px, 22px, 23px, 24px),
+    18px: (20px, 21px, 22px, 23px, 24px)
+  );
+
+  @each $minFontSize, $maxFontSizeList in $fonts {
+    @each $maxFontSize in $maxFontSizeList {
+      .fs\:min-#{stripUnit($minFontSize)}\:max-#{stripUnit($maxFontSize)} {
+        @include fluidType($minWidth, $maxWidth, $minFontSize, $maxFontSize);
+      }
+    }
+  }
 }
+
+@include responsiveFonts;
+
+/*---------------------*\
+  WIDTH AND HEIGHT
+\*---------------------*/
+$utilities: map-merge(
+  $utilities,
+  (
+    "viewport-height": (
+      property: height,
+      class: vh,
+      values: (
+        25: 25vh,
+        50: 50vh,
+        75: 75vh,
+        100: 100vh,
+      ),
+    ),
+  )
+);
+
+/*--------------------*\
+  Z-INDEX
+\*--------------------*/
+$utilities: map-merge(
+  $utilities,
+  (
+    "z-index": (
+      property: z-index,
+      class: zindex,
+      values: (
+        1: 1,
+        2: 2,
+        3: 3,
+        4: 4,
+        5: 5,
+        10: 10,
+        50: 50,
+        100: 100,
+        500: 500,
+        999: 999,
+      ),
+    ),
+  )
+);

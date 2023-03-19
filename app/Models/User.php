@@ -5,14 +5,15 @@ namespace App\Models;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
-use Illuminate\Support\Str;
 use Illuminate\Support\Facades\Hash;
+use App\Traits\GenerateUuid;
 
 class User extends Authenticatable
 {
-    use Notifiable;
+    use Notifiable, GenerateUuid;
 
     protected $table = 'tb_users';
+    protected $tableColumnPrefix = 'us';
     protected $primaryKey = 'us_id';
 
     protected $appends = [
@@ -33,6 +34,7 @@ class User extends Authenticatable
         'us_whatsapp',
         'us_ip',
         'us_last_date_visit',
+        'us_expiration_plan_date',
         'us_status',
         'us_password',
         'us_terms_conditions'
@@ -63,17 +65,6 @@ class User extends Authenticatable
     protected $casts = [
         'email_verified_at' => 'datetime:Y-m-d H:i:s',
     ];
-
-    protected static function boot()
-    {
-        parent::boot();
-
-        static::creating(function ($model) {
-            if (empty($model->us_uuid)) {
-                $model->us_uuid = Str::uuid();
-            }
-        });
-    }
 
     // SETTERS
     public function setSocialiteIdAttribute($value)
@@ -218,14 +209,14 @@ class User extends Authenticatable
     public function hasAnyRoles($roles)
     {
         if (is_array($roles) || is_object($roles)) {
-            return !! $roles->intersect($this->roles)->count();
+            return !!$roles->intersect($this->roles)->count();
         }
 
         return $this->roles->contains('name', $roles);
     }
 
-    public function getPrimaryKeyAttribute()
+    public function getTableColumnPrefixAttribute()
     {
-        return $this->primaryKey;
+        return $this->tableColumnPrefix;
     }
 }

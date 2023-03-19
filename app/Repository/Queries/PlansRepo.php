@@ -12,9 +12,4 @@ class PlansRepo extends DBRepositoryImpl implements PlansInterface
     {
         return Plans::class;
     }
-
-    public function findByName($name)
-    {
-        return $this->entity::where('pl_plan_name', $name)->first();
-    }
 }

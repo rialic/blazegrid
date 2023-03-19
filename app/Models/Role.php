@@ -3,22 +3,26 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Support\Str;
+use App\Traits\GenerateUuid;
 
 class Role extends Model
 {
+    use GenerateUuid;
+
     protected $table = 'tb_roles';
+    protected $tableColumnPrefix = 'ro';
     protected $primaryKey = 'ro_id';
-    public $timestamps = false;
 
     protected $appends = [
-        'role_id',
         'uuid',
         'name',
         'status',
     ];
 
-    protected $guarded = ['*'];
+    protected $fillable = [
+        'ro_name',
+        'ro_status'
+    ];
 
     protected $hidden = [
         'ro_id',
@@ -27,23 +31,7 @@ class Role extends Model
         'ro_status',
     ];
 
-    protected static function boot()
-    {
-        parent::boot();
-
-        static::creating(function ($model) {
-            if (empty($model->ro_uuid)) {
-                $model->ro_uuid = Str::uuid();
-            }
-        });
-    }
-
     // GETTERS
-    public function getRoleIdAttribute()
-    {
-        return $this->ro_id;
-    }
-
     public function getUuidAttribute()
     {
         return $this->ro_uuid;
@@ -71,8 +59,8 @@ class Role extends Model
     }
 
     // TRANSIENTS METHODS
-    public function getPrimaryKeyAttribute()
+    public function getTableColumnPrefixAttribute()
     {
-        return $this->primaryKey;
+        return $this->tableColumnPrefix;
     }
 }

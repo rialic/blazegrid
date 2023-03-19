@@ -13,7 +13,7 @@
           <span class="fs-18">R$</span>
         </sup>
 
-        <span class="text-secondary">35</span>
+        <span class="text-secondary">40</span>
 
         <span class="fs-18">/ mês</span>
       </h2>
@@ -34,7 +34,7 @@
 
       @auth
       <div class="text-center py-3">
-        <button class="btn btn-sm btn-primary waves-effect waves-light" data-bs-toggle="modal" data-bs-target="#modal_plan">Assinar Plano</button>
+        <button class="btn btn-sm btn-primary" data-bs-toggle="modal" data-bs-target="#modal_plan">Assinar Plano</button>
       </div>
       @endauth
   </div>

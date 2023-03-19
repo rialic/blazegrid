@@ -3,13 +3,15 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Support\Str;
+use App\Traits\GenerateUuid;
 
 class Permission extends Model
 {
+    use GenerateUuid;
+
     protected $table = 'tb_permissions';
+    protected $tableColumnPrefix = 'pe';
     protected $primaryKey = 'pe_id';
-    public $timestamps = false;
 
     protected $appends = [
         'uuid',
@@ -17,7 +19,10 @@ class Permission extends Model
         'status',
     ];
 
-    protected $guarded = ['*'];
+    protected $fillable = [
+        'pe_name',
+        'pe_status'
+    ];
 
     protected $hidden = [
         'pe_id',
@@ -25,17 +30,6 @@ class Permission extends Model
         'pe_name',
         'pe_status'
     ];
-
-    protected static function boot()
-    {
-        parent::boot();
-
-        static::creating(function ($model) {
-            if (empty($model->pe_uuid)) {
-                $model->pe_uuid = Str::uuid();
-            }
-        });
-    }
 
     // GETTERS
     public function getUuidAttribute()
@@ -60,8 +54,8 @@ class Permission extends Model
     }
 
     // TRANSIENTS METHODS
-    public function getPrimaryKeyAttribute()
+    public function getTableColumnPrefixAttribute()
     {
-        return $this->primaryKey;
+        return $this->tableColumnPrefix;
     }
 }

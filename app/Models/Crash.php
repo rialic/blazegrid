@@ -4,35 +4,37 @@ namespace App\Models;
 
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Model;
+use App\Traits\GenerateUuid;
 
 class Crash extends Model
 {
+    use GenerateUuid;
+
     protected $table = 'tb_crash';
+    protected $tableColumnPrefix = 'cr';
     protected $primaryKey = 'cr_id';
 
     protected $appends = [
-        'id',
+        'uuid',
+        'id_server',
         'point',
         'created_at_server',
     ];
 
-    protected $guarded  = [
-        'cr_id',
-        'cr_created_at',
-        'cr_update_at'
+    protected $fillable  = [
+        'cr_point',
+        'cr_id_server',
+        'cr_created_at_server',
     ];
 
     protected $hidden = [
         'cr_id',
+        'cr_uuid',
         'cr_id_server',
         'cr_point',
         'cr_created_at_server',
         'created_at',
         'updated_at'
-    ];
-
-    protected $casts = [
-        'cr_created_at_server' => 'datetime:Y-m-d H:i:s'
     ];
 
     // SETTERS
@@ -48,13 +50,13 @@ class Crash extends Model
 
     public function setCreatedAtServerAttribute($value)
     {
-        $this->cr_created_at_server = Carbon::parse($value)->setTimezone('America/Sao_Paulo');
+        $this->cr_created_at_server = Carbon::parse($value);
     }
 
     // GETTERS
-    public function getIdAttribute()
+    public function getUuidAttribute()
     {
-        return $this->cr_id;
+        return $this->cr_uuid;
     }
 
     public function getPointAttribute()
@@ -73,8 +75,8 @@ class Crash extends Model
     }
 
     // TRANSIENTS METHODS
-    public function getPrimaryKeyAttribute()
+    public function getTableColumnPrefixAttribute()
     {
-        return $this->primaryKey;
+        return $this->tableColumnPrefix;
     }
 }

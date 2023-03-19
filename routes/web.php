@@ -6,16 +6,13 @@ use Illuminate\Support\Facades\Route;
  * GUEST CONTROLLERS
  *********************************************************/
 
-use App\Http\Controllers\Guest\HomeController;
-use App\Http\Controllers\Guest\LoginController;
-use App\Http\Controllers\Guest\SocialiteController;
+use App\Http\Controllers\Guest\{HomeController, LoginController, SocialiteController, PrivacyPolicyController};
 
 /*********************************************************
  * PRIVATE CONTROLLERS
  *********************************************************/
 
-use App\Http\Controllers\Priv\UserController;
-use App\Http\Controllers\Priv\CrashController;
+use App\Http\Controllers\Priv\{UserController, CrashController, WSController};
 
 /*
 |--------------------------------------------------------------------------
@@ -34,6 +31,7 @@ Route::get('/login', [LoginController::class, 'index'])->middleware('guest')->na
 Route::group(['as' => 'guest.'], function () {
     // Home Controller
     Route::get('/', [HomeController::class, 'index'])->name('init');
+    Route::get('/politica-privacidade', [PrivacyPolicyController::class, 'index'])->name('privacy-policy');
 
     Route::group(['middleware' => 'guest'], function () {
 
@@ -50,7 +48,7 @@ Route::group(['middleware' => ['auth'], 'as' => 'priv.'], function () {
     // Crash Controller
     Route::get('/crash', [CrashController::class, 'index'])->name('crash');
     Route::get('/crash/default-history', [CrashController::class, 'defaultHistory'])->name('crash.default-history');
-    Route::get('/crash/advanced-history/{limit}', [CrashController::class, 'advancedHistory'])->name('crash.advanced-history');
+    Route::get('/crash/advanced-history', [CrashController::class, 'advancedHistory'])->name('crash.advanced-history');
 
     Route::get('/logout', [LoginController::class, 'logout'])->name('logout');
 });

@@ -6,6 +6,9 @@ use App\Http\Controllers\Controller;
 
 class UserController extends Controller
 {
+    /**
+     * Função utilizada para recuperar o objeto usuário
+     */
     public function user()
     {
         $user = optional(auth())->user()->load('plan');

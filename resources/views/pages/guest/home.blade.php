@@ -1,5 +1,5 @@
 <x-layout.guest>
-  @section('title', 'Blaze Grid')
+  @section('title', 'Blaze Grids')
 
   @push('css')
   <link href="{{url(mix('assets/css/home/app.min.css'))}}" rel="stylesheet" />
@@ -26,7 +26,7 @@
               </div>
             </div>
 
-            <h4 class="text-light">Filtro de velas para Crash</h4>
+            <h4 class="text-light">Filtros para o Crash</h4>
 
             <p class="text-white-50">
               Em nossa tabela de histórico do Crash você poderá filtrar pelas velas que deseja para ter uma melhor visualização de como o gráfico do Crash opera.
@@ -123,26 +123,17 @@
       <div class="row justify-content-center">
         <div class="col-lg-7">
           <div class="text-center my-4">
-            <h3 class="mb-3 text-light">Nosso Histórico do Crash</h3>
+            <h3 class="mb-3 text-light">Histórico Avançado do Crash</h3>
           </div>
         </div>
       </div>
 
-      <div class="row mb-4">
-        <div class="col-12 col-sm-4">
-          <img class="my-1 img-fluid img-thumbnail" style="cursor: pointer;" src="{{url(mix('assets/images/demo-1.png'))}}" alt="demo-1">
-        </div>
+      <div class="gallery">
+          <img class="my-2 gallery:image" src="{{url(mix('assets/images/img-1.png'))}}" alt="img-1">
 
-        <div class="col-12 col-sm-4">
-          <img class="my-1 img-fluid img-thumbnail" style="cursor: pointer;" src="{{url(mix('assets/images/demo-2.png'))}}" alt="demo-2">
-        </div>
+          <img class="my-2 gallery:image" src="{{url(mix('assets/images/img-2.png'))}}" alt="img-2">
 
-        <div class="col-12 col-sm-4">
-          <img class="my-1 img-fluid img-thumbnail" style="cursor: pointer;" src="{{url(mix('assets/images/demo-3.png'))}}" alt="demo-3">
-        </div>
-
-        TESTING
-
+          <img class="my-2 gallery:image" src="{{url(mix('assets/images/img-3.png'))}}" alt="img-3">
       </div>
     </div>
   </section>
@@ -175,10 +166,10 @@
 
       <p>Abra o app em que vai fazer a transferência, escaneie a imagem ou copie o código do QR Code</p>
 
-      <img class="d-block mx-auto img-fluid" src="{{url(mix('assets/images/qr-code-35.png'))}}" alt="qrcode">
+      <img class="d-block mx-auto img-fluid" src="{{url(mix('assets/images/qr-code-40.png'))}}" alt="qrcode">
 
       <p class="mt-3 text-center">
-        <strong>R$ 35,00</strong>
+        <strong>R$ 40,00</strong>
       </p>
 
       <div class="text-center">
@@ -198,9 +189,9 @@
   @endif
   @endauth
 
-  <div class="modal-image">
-    <span class="modal-image-close">&times;</span>
-    <img class="modal-image:content">
+  <div class="image-viewer">
+    <span class="close">&times;</span>
+    <img class="image-viewer:content">
   </div>
 
   @push('scripts')

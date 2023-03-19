@@ -4,6 +4,9 @@ namespace App\ScraperAPI;
 
 use App\Proxy\Blaze\BlazeHeaders;
 
+/**
+ * Classe que trata o método de conexão com a api do site https://www.scraperapi.com/
+ */
 class Scraper
 {
     private $scraperClient;
@@ -15,6 +18,9 @@ class Scraper
         $this->blazeHeader = new BlazeHeaders();
     }
 
+    /**
+     * Método que faz a busca pela api do ScraperApi através do jogo crash ou double
+     */
     public function fetch($game)
     {
         return $this->scraperClient->get($this->getGameHistoryApi($game), $this->getScraperScope($game));
@@ -35,6 +41,9 @@ class Scraper
         ];
     }
 
+    /**
+     * Método que pega os header pré cadastrados no arquivo Blaze Header
+     */
     private function getGameHeader($game)
     {
         $gameHeaderList = [
@@ -47,8 +56,7 @@ class Scraper
     private function getGameHistoryApi($game)
     {
         $gameHistoryApiList = [
-            // 'crash' =>  config('app.crash_history_api')
-            'crash' =>  'https://blaze.com/api/crash_games/recent/history?page=1'
+            'crash' =>  config('app.crash_history_api')
         ];
 
         return $gameHistoryApiList[$game];

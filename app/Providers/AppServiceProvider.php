@@ -25,11 +25,18 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot()
     {
+        if (config('app.env') === 'production') {
+            \URL::forceScheme('https');
+        }
+
+        /**
+         * Client HTTP Request do crash para ser utilizada no arquivo BlazeProxy
+         */
         PendingRequest::macro('crash', function () {
             $blazeHeader = new BlazeHeaders();
             $crashUrl = config('app.crash_history_api');
 
-            return PendingRequest::retry(3, 3500)->withHeaders($blazeHeader->getCrashHeader())->get($crashUrl);
+            PendingRequest::retry(3, 3500)->withHeaders($blazeHeader->getCrashHeader())->get($crashUrl);
         });
     }
 }

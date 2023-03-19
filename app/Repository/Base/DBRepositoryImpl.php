@@ -5,7 +5,6 @@ namespace App\Repository\Base;
 
 use Illuminate\Support\Arr;
 use Illuminate\Support\Str;
-use stdClass;
 
 class DBRepositoryImpl implements DBRepositoryInterface
 {
@@ -34,60 +33,50 @@ class DBRepositoryImpl implements DBRepositoryInterface
         return $this->entity::all();
     }
 
-    public function findById($id)
+    public function findByUuid($uuid)
     {
-        return $this->entity::where($this->entity->primaryKey, $id)->first();
+        return $this->entity::where($this->entity->getKeyName(), $uuid)->first();
     }
 
-    public function findByIdOrNew($id, $array = [])
+    public function findByUuidOrNew($uuid)
     {
-        return $this->entity::firstOrNew([$this->entity->primaryKey => $id], $array);
+        return $this->entity::firstOrNew([$this->entity->getKeyName() => $uuid]);
     }
 
-    public function findFirstOrNew($search, $array = [])
+    public function getFirstData($params = [])
     {
-        return $this->entity::firstOrNew($search, $array);
-    }
-
-    public function findFirstOrCreate($search, $array = [])
-    {
-        return $this->entity::firstOrCreate($search, $array);
-    }
-
-    public function findFirstOrFail($field)
-    {
-        return $this->entity::firstOrFail($field)->firstOrFail();
+        return $this->query($params)->first() ?? $this->entity;
     }
 
     public function getData($params = [])
     {
         $isPaginable = Arr::get($params, 'page');
         $limit = Arr::get($params, 'limit') ?: -1;
-        $query = $this->query($params);
+        $entity = $this->query($params);
 
         if ($isPaginable) {
-            return ($limit !== -1) ? $query->paginate($limit) : $query->paginate();
+            return ($limit !== -1) ? $entity->paginate($limit) : $entity->paginate();
         }
 
-        return ($limit !== -1) ? $query->limit($limit)->get() : $query->get();
+        return ($limit !== -1) ? $entity->limit($limit)->get() : $entity->get();
     }
 
     public function query($params = [])
     {
-        $query = $this->entity;
-        $query = $this->filter($query, $params);
-        $query = $this->sort($query, $params);
+        $entity = $this->entity;
+        $entity = $this->filter($entity, $params);
+        $entity = $this->sort($entity, $params);
 
-        return $query;
+        return $entity;
     }
 
-    private function filter($query, $params)
+    private function filter($entity, $params)
     {
         $params = collect($params);
-        $isFilterable = $params->contains(fn ($value, $key) => Str::startsWith($key, 'filter:'));
+        $isFilterable = $params->contains(fn ($_, $key) => Str::startsWith($key, 'filter:'));
 
         if ($isFilterable) {
-            // Collect all parameters that begin with "filter:"
+            // Verifica se o parâmetro começa com "filter:"
             $filters = $params->flatMap(function ($value, $key) {
                 $isStringFilter = Str::startsWith($key, 'filter:');
 
@@ -100,29 +89,28 @@ class DBRepositoryImpl implements DBRepositoryInterface
                 }
             });
 
-            $query = $filters->reduce(function ($accQuery, $value, $field) use ($query) {
-                $accQuery = $accQuery ?? $query;
+            $entity = $filters->reduce(function ($accEntity, $value, $field) {
                 $method = 'filterBy' . Str::studly($field);
 
-                // Check for a custom filterByField method
+                // Verifica por algum método filterBYMethod
                 if (method_exists($this, $method)) {
-                    $accQuery = $this->{$method}($accQuery, $value);
+                    $accEntity = $this->{$method}($accEntity, $value);
 
-                    return $accQuery;
+                    return $accEntity;
                 }
 
-                $accQuery = $accQuery->where($field, 'LIKE', "%$value%");
+                $accEntity = $accEntity->where("{$accEntity->tableColumnPrefix}_{$field}", 'LIKE', "%$value%");
 
-                return $accQuery;
-            }, null);
+                return $accEntity;
+            }, $entity);
 
-            return $query;
+            return $entity;
         }
 
-        return $query;
+        return $entity;
     }
 
-    private function sort($query, $params)
+    private function sort($entity, $params)
     {
         $isSortable = Arr::get($params, 'orderBy');
 
@@ -133,14 +121,14 @@ class DBRepositoryImpl implements DBRepositoryInterface
 
             // Check for a custom orderByField method
             if (method_exists($this, $method)) {
-                $query = $this->{$method}($query, $direction);
+                $entity = $this->{$method}($entity, $direction);
             } else {
-                $query = $query->orderBy($orderBy, $direction);
+                $entity = $entity->orderBy($orderBy, $direction);
             }
 
-            return $query;
+            return $entity;
         }
 
-        return $query->orderBy('created_at', 'desc');
+        return $entity->orderBy('created_at', 'desc');
     }
 }

@@ -10,7 +10,7 @@
       <div class="card-body p-4">
         <div class="text-center w-75 m-auto">
           <div class="d-flex justify-content-center">
-            <span class="fs-22 fw-bold text-danger">blaze</span>
+            <span class="fs-22 fw-bold text-white">blaze</span>
 
             &thinsp;
 
@@ -25,9 +25,9 @@
 
               <h4 class="mb-0 px-1 border border-start-0 border-2 border-danger rounded-end fw-bold text-light">s</h4>
 
-              <div class="logo-grid-line" style="top: 33%;"></div>
+              <div class="first-line-logo"></div>
 
-              <div class="logo-grid-line" style="top: 66%;"></div>
+              <div class="second-line-logo"></div>
             </div>
           </div>
 
@@ -37,7 +37,7 @@
         <div class="text-center">
           <p class="fs-18 mt-3 mb-4 text-muted">Entrar com</p>
 
-          <a href="{{route('guest.socialite.login')}}" class="btn btn-sm btn-danger w-50 waves-effect waves-light" type="button">
+          <a href="{{route('guest.socialite.login')}}" class="btn btn-sm btn-danger w-50" type="button">
             <div class="d-flex justify-content-center">
               <span class="me-1 fw-bold">Gmail</span>
 
@@ -48,8 +48,4 @@
       </div>
     </div>
   </div>
-
-  @push('scripts')
-  <script src="{{url(mix('assets/js/login/app.min.js'))}}"></script>
-  @endpush
 </x-layout.guest>

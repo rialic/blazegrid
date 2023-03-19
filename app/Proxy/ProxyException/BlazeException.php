@@ -5,6 +5,11 @@ namespace App\Proxy\ProxyException;
 use Illuminate\Support\Str;
 use Illuminate\Support\Facades\Log;
 
+/**
+ * Classe que faz o tratamento para escrever no arquivo blaze.log
+ * Nesse arquivo poderá ser escrito log de ERROR ou log de INFO
+ * A exception BlazeException foi configurada no arquivo logging
+ */
 class BlazeException
 {
     public function handleException($exception, $game)

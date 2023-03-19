@@ -1,0 +1,39 @@
+.pg-loader {
+  opacity: 0;
+  display: flex;
+  justify-content: center;
+  bottom: rem(50);
+  transition: opacity 0.3s ease-in;
+}
+
+.pg-loader.pg-loader--show {
+  opacity: 1;
+}
+
+.pg-loader\:circle {
+  background-color: $red;
+  width: rem(10);
+  height: rem(10);
+  border-radius: 50%;
+  margin: rem(5);
+  animation: bounce 0.5s ease-in infinite;
+}
+
+.pg-loader\:circle:nth-of-type(2) {
+  animation-delay: 0.1s;
+}
+
+.pg-loader\:circle:nth-of-type(3) {
+  animation-delay: 0.2s;
+}
+
+@keyframes bounce {
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+
+  50% {
+    transform: translateY(rem(-10));
+  }
+}

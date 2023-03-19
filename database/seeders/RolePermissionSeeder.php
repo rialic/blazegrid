@@ -3,7 +3,9 @@
 namespace Database\Seeders;
 
 use Illuminate\Database\Seeder;
-use Illuminate\Support\Facades\DB;
+use App\Models\Role;
+use App\Models\Permission;
+use App\Models\RolePermission;
 
 class RolePermissionSeeder extends Seeder
 {
@@ -44,26 +46,26 @@ class RolePermissionSeeder extends Seeder
 
     private function hasRolePermission($role, $permission)
     {
-        $roleId = DB::table('tb_roles')->where('ro_name', $role)->value('ro_id');
-        $permissionId = DB::table('tb_permissions')->where('pe_name', $permission)->value('pe_id');
+        $roleId = Role::where('ro_name', $role)->value('ro_id');
+        $permissionId = Permission::where('pe_name', $permission)->value('pe_id');
 
-        $roleQuery = DB::table('tb_roles')->select('ro_id')->where('ro_name', $role);
-        $permissionQuery = DB::table('tb_permissions')->select('pe_id')->where('pe_name', $permission);
+        $roleQuery = Role::select('ro_id')->where('ro_name', $role);
+        $permissionQuery = Permission::select('pe_id')->where('pe_name', $permission);
 
-        $count = DB::table('tb_permission_role')
-        ->joinSub($roleQuery, 'role', function ($join) {
-            $join->on('tb_permission_role.ro_id', '=', 'role.ro_id');
+        $count = RolePermission::joinSub($roleQuery, 'role', function ($join) {
+            $join->on('tb_role_permission.ro_id', '=', 'role.ro_id');
         })
         ->joinSub($permissionQuery, 'permission', function ($join) {
-            $join->on('tb_permission_role.pe_id', '=', 'permission.pe_id');
+            $join->on('tb_role_permission.pe_id', '=', 'permission.pe_id');
         })->count();
+
         return array('register' => ($count > 0), 'role' => $roleId, 'permission' => $permissionId);
     }
 
     private function createRolePermission($rolePermission)
     {
         if ($rolePermission['register'] == false) {
-            DB::table('tb_permission_role')->insert(['ro_id' => $rolePermission['role'], 'pe_id' => $rolePermission['permission']]);
+            RolePermission::create(['ro_id' => $rolePermission['role'], 'pe_id' => $rolePermission['permission']]);
         }
     }
 }

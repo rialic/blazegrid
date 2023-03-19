@@ -3,7 +3,6 @@
 namespace Database\Seeders;
 
 use Illuminate\Database\Seeder;
-use Illuminate\Support\Str;
 use App\Models\Plans;
 
 class PlansSeeder extends Seeder
@@ -15,16 +14,10 @@ class PlansSeeder extends Seeder
      */
     public function run()
     {
-        $plan[Str::random(3)] = Plans::firstOrCreate([
-            'pl_plan_name' => 'Basic',
-        ]);
+        Plans::firstOrCreate(['pl_plan_name' => 'Basic']);
 
-        $plan[Str::random(3)] = Plans::firstOrCreate([
-            'pl_plan_name' => 'Premium',
-        ]);
+        Plans::firstOrCreate(['pl_plan_name' => 'Premium']);
 
-        $plan[Str::random(3)] = Plans::firstOrCreate([
-            'pl_plan_name' => 'Deluxe'
-        ]);
+        Plans::firstOrCreate(['pl_plan_name' => 'Deluxe']);
     }
 }

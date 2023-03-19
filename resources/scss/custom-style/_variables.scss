@@ -9,15 +9,14 @@ $fa-font-path: "../../webfonts";
 // Shadows
 
 $enable-shadows:                    true;
-$enable-gradients:                  true;
+
+// $enable-gradients:                  true;
 
 // Contrast Ratio
 
 $min-contrast-ratio:                2;
 
-//
 // Color system
-//
 
 $white:    #fff !default;
 $gray-100: #f8f9fa !default;
@@ -53,65 +52,6 @@ $dark:          $gray-900 !default;
 
 $min-contrast-ratio:   1.95 !default;
 
-// Font Size
-
-$font-size-base: 1rem;
-$font-12:        .75rem;
-$font-13:        .8125rem;
-$font-14:        .875rem;
-$font-15:        .9375rem;
-$font-16:        1rem;
-$font-17:        1.0625rem;
-$font-18:        1.125rem;
-$font-19:        1.1875rem;
-$font-20:        1.25rem;
-$font-21:        1.3125rem;
-$font-22:        1.375rem;
-$font-23:        1.4375rem;
-$font-24:        1.5rem;
-
-$font-sizes: (
-  12: $font-12,
-  13: $font-13,
-  14: $font-14,
-  15: $font-15,
-  16: $font-16,
-  17: $font-17,
-  18: $font-18,
-  19: $font-19,
-  20: $font-20,
-  21: $font-21,
-  22: $font-22,
-  23: $font-23,
-  24: $font-24
-);
-
-// Z Index
-$zindex-1:        1;
-$zindex-2:        2;
-$zindex-3:        3;
-$zindex-4:        4;
-$zindex-5:        5;
-$zindex-10:       10;
-$zindex-50:       50;
-$zindex-100:      100;
-$zindex-500:      500;
-$zindex-999:      999;
-
-$zindex: (
-  1: $zindex-1,
-  2: $zindex-2,
-  3: $zindex-3,
-  4: $zindex-4,
-  5: $zindex-5,
-  10: $zindex-10,
-  50: $zindex-50,
-  100: $zindex-100,
-  500: $zindex-500,
-  999: $zindex-999
-);
-
-
 // Body
 
 $body-bg:                   #0f1923 !default;
@@ -120,8 +60,6 @@ $body-color:                #aaa !default;
 // Links
 
 $link-color:                $white !default;
-
-// Fonts
 
 // Tables
 

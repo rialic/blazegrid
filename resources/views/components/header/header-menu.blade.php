@@ -1,6 +1,6 @@
 <header class="header-menu justify-content-between">
   <a href="{{route('guest.init')}}" class="d-flex align-items-center px-1 text-decoration-none">
-    <span class="fs-24 fw-bold text-danger">blaze</span>
+    <span class="fs-24 fw-bold text-white">blaze</span>
 
     &thinsp;
 
@@ -15,15 +15,16 @@
 
       <h3 class="mb-0 px-1 border border-start-0 border-2 border-danger rounded-end fw-bold text-light">s</h3>
 
-      <div class="logo-grid-line" style="top: 33%;"></div>
+      <div class="first-line-logo"></div>
 
-      <div class="logo-grid-line" style="top: 66%;"></div>
+      <div class="second-line-logo"></div>
     </div>
   </a>
 
   @guest
   <ul class="nav align-items-stretch">
     <x-menu.nav-link href="{{route('login')}}" text="Cadastre-se" />
+
     <x-menu.nav-link href="{{route('login')}}" text="Entrar" />
   </ul>
   @endguest
@@ -31,7 +32,7 @@
   @auth
   <ul class="nav align-items-stretch">
     <li class="nav-item">
-      <a href="javascript:void(0)" class="d-flex align-items-center dropdown-toggle h-100 waves-effect waves-light" role="button" data-bs-toggle="dropdown">
+      <a href="javascript:void(0)" class="d-flex align-items-center dropdown-toggle h-100" role="button" data-bs-toggle="dropdown">
         {{ Str::limit(auth()->user()->name, 10) }}
       </a>
       <ul class="dropdown-menu dropdown-menu-dark">
