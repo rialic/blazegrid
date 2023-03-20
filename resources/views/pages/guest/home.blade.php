@@ -123,7 +123,7 @@
       <div class="row justify-content-center">
         <div class="col-lg-7">
           <div class="text-center my-4">
-            <h3 class="mb-3 text-light">Histórico Avançado do Sem o Crash</h3>
+            <h3 class="mb-3 text-light">Histórico Avançado do Crash</h3>
           </div>
         </div>
       </div>
