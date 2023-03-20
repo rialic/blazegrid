@@ -1,4 +1,17 @@
 <footer class="bg-dark mt-auto py-3">
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-D5LSKYMYZ5"></script>
+
+    <script>
+        window.dataLayer = window.dataLayer || []
+
+        function gtag() {
+            dataLayer.push(arguments)
+        }
+        gtag('js', new Date())
+
+        gtag('config', 'G-D5LSKYMYZ5')
+    </script>
+
     <div class="container-fluid">
         <div class="d-flex justify-content-between text-white-50 fs-14 fw-semibold flex-wrap">
             <div class="d-flex justify-content-center justify-content-sm-start flex-fill mx-1 flex-wrap">
