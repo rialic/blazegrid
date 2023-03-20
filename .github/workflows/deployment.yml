@@ -23,11 +23,12 @@ jobs:
         - name: Deploy to server
           uses: easingthemes/ssh-deploy@v4.1.8
           env:
-            SSH_PRIVATE_KEY: ${{ secrets.SSH_KEY }}
             ARGS: "-rlgoDzvc -i"
+            SSH_PRIVATE_KEY: ${{ secrets.SSH_KEY }}
             REMOTE_HOST: ${{ secrets.SSH_HOST }}
             REMOTE_USER: ${{ secrets.SSH_USER }}
             REMOTE_PORT: ${{ secrets.SSH_PORT }}
+            SSH_CMD_ARGS: "-o HostKeyAlgorithms=+ssh-rsa -o PubkeyAcceptedKeyTypes=+ssh-rsa"
             TARGET: /home/defaultwebsite/blazeGrids
 
         # - name: Execute commands SSH
