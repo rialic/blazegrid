@@ -20,29 +20,23 @@ jobs:
         # - run: yarn
         # - run: yarn production
 
-        # - name: Deploy to server
-        #   uses: easingthemes/ssh-deploy@v2.2.11
-        #   env:
-        #     SSH_PRIVATE_KEY: ${{ secrets.SSH_PRIVATE_KEY }}
-        #     ARGS: "-rltgoDzvO --exclude .git --exclude .docker --exclude .github"
-        #     REMOTE_HOST: ${{ secrets.SSH_HOST }}
-        #     REMOTE_USER: ${{ secrets.SSH_USER }}
-        #     TARGET: /home/${{ secrets.SSH_USER }}/ci-cd
+        - name: Deploy to server
+          uses: easingthemes/ssh-deploy@v4.1.8
+          env:
+            SSH_PRIVATE_KEY: ${{ secrets.SSH_KEY }}
+            ARGS: "-rltgoDzvO --exclude .git --exclude .docker --exclude .github"
+            REMOTE_HOST: ${{ secrets.SSH_HOST }}
+            REMOTE_USER: ${{ secrets.SSH_USER }}
+            TARGET: /home/defaultwebsite/blazeGrids
 
-        - name: Execute commands SSH
-          uses: appleboy/ssh-action@master
-        #   env:
-        #     USER_PASS: "${{ secrets.USER_PASS }}"
-          with:
-            host: ${{ secrets.SSH_HOST }}
-            username: ${{ secrets.SSH_USER }}
-            port: ${{ secrets.SSH_PORT }}
-            key: ${{ secrets.SSH_KEY }}
-            passphrase: ${{ secrets.SSH_PASSPHRASE }}
-        #     envs: USER_PASS
-            script: |
-                pwd
-        #       cd ci-cd/
-        #       echo $USER_PASS | sudo -S docker-compose up -d
-        #       echo $USER_PASS | sudo -S docker-compose exec -T curso_api_cache composer install
-        #       echo $USER_PASS | sudo -S docker-compose exec -T curso_api_cache php artisan migrate --force
+        # - name: Execute commands SSH
+        #   uses: appleboy/ssh-action@master
+        #   with:
+        #     host: ${{ secrets.SSH_HOST }}
+        #     username: ${{ secrets.SSH_USER }}
+        #     port: ${{ secrets.SSH_PORT }}
+        #     key: ${{ secrets.SSH_KEY }}
+        #     passphrase: ${{ secrets.SSH_PASSPHRASE }}
+        #     script: |
+        #       php artisan optimize
+        #       composer dump auto-load -o
