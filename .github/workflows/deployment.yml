@@ -22,14 +22,14 @@ jobs:
         - run: yarn
         - run: yarn production
 
-        # - name: Commit built assets
-        #   run: |
-        #     git config --local user.email "rhiali.candido@gmail.com"
-        #     git config --local user.name "Rhiali"
-        #     git checkout -B master
-        #     git add -f public/
-        #     git commit -m "feat: Front-end assets build"
-        #     git push -f origin master
+        - name: Commit built assets
+          run: |
+            git config --local user.email "rhiali.candido@gmail.com"
+            git config --local user.name "Rhiali"
+            git checkout -B production
+            git add -f public/
+            git commit -m "feat: Front-end assets build"
+            git push -f origin production
 
         # - name: Deploy to server
         #   uses: appleboy/ssh-action@master
