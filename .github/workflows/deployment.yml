@@ -29,7 +29,7 @@ jobs:
             git config --local user.name "rialic"
             git checkout -B production
             git add -f public/
-            git commit -m "feat: Build front-end assets that was compiled"
+            git commit -m "feat: Build compiled front-end assets"
             git push -f origin production
 
         - name: Deploy to server
