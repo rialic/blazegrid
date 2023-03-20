@@ -9,9 +9,9 @@ jobs:
       name: Deployment
       runs-on: ubuntu-latest
       steps:
-        # - uses: actions/checkout@v2
-        #   with:
-        #     ref: master
+        - uses: actions/checkout@v2
+          with:
+            ref: master
 
         # - name: Set Up Node
         #   uses: actions/setup-node@v1
@@ -24,7 +24,7 @@ jobs:
           uses: easingthemes/ssh-deploy@v4.1.8
           env:
             SSH_PRIVATE_KEY: ${{ secrets.SSH_KEY }}
-            ARGS: "-rlgoDzvc -i --delete .git --exclude .docker --exclude .github node_modules .bladeformatterrc.json"
+            ARGS: "-rlgoDzvc -i"
             REMOTE_HOST: ${{ secrets.SSH_HOST }}
             REMOTE_USER: ${{ secrets.SSH_USER }}
             REMOTE_PORT: ${{ secrets.SSH_PORT }}
