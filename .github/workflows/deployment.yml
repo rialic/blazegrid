@@ -27,6 +27,7 @@ jobs:
             ARGS: "-rltgoDzvO --exclude .git --exclude .docker --exclude .github node_modules .bladeformatterrc.json"
             REMOTE_HOST: ${{ secrets.SSH_HOST }}
             REMOTE_USER: ${{ secrets.SSH_USER }}
+            REMOTE_PORT: ${{ secrets.SSH_PORT }}
             TARGET: /home/defaultwebsite/blazeGrids
 
         # - name: Execute commands SSH
