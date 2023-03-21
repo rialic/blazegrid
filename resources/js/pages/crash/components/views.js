@@ -13,6 +13,7 @@ export const {
   function renderDefaultCrashHistoryView(data) {
     const defaultCrashHTMLString = data.reduce(getDefaultCrashHTMLString.call(this), '')
 
+    this.defaultHistoryEl.innerHTML = ''
     this.defaultHistoryEl.insertAdjacentHTML('beforeend', defaultCrashHTMLString)
     this.defaultTotalRowsEl.textContent = `Total: ${data.length}`
   }
