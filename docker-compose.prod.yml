@@ -1,0 +1,102 @@
+version: "3.9"
+
+networks:
+  app:
+  nginx:
+
+services:
+  nginx:
+    build:
+      context: ./.docker/nginx
+      dockerfile: nginx.prod.dockerfile
+    image: nginx
+    container_name: nginx
+    volumes:
+      - ./:/var/www:ro
+    restart: unless-stopped
+    ports:
+      - 80:80
+      - 443:443
+    command: >
+      sh -c "crond -l 8 -d 8 -L /var/log/crond/crond.log && nginx -g 'daemon off;'"
+    deploy:
+      resources:
+        limits:
+          cpus: '0.50'
+          memory: 500M
+    depends_on:
+      - app
+    networks:
+      - nginx
+
+  app:
+    build:
+      context: ./.docker/php-fpm
+      dockerfile: dockerfile
+    image: app
+    container_name: app
+    working_dir: /var/www
+    volumes:
+      - ./:/var/www
+    restart: unless-stopped
+    deploy:
+      resources:
+        limits:
+          cpus: '0.80'
+          memory: 700M
+    networks:
+      - app
+      - nginx
+
+  #CONTAINER SERVICES
+  node:
+    image: node:current-alpine3.16
+    container_name: node
+    working_dir: /var/www
+    volumes:
+      - ./:/var/www
+
+  composer:
+    build:
+      context: ./.docker/composer
+      dockerfile: dockerfile
+    image: composer
+    container_name: composer
+    working_dir: /var/www
+    volumes:
+      - ./:/var/www
+    entrypoint: ["composer"]
+    networks:
+      - app
+
+  artisan:
+    build:
+      context: ./.docker/php-fpm
+      dockerfile: dockerfile
+    image: artisan
+    container_name: artisan
+    working_dir: /var/www
+    volumes:
+      - ./:/var/www
+    entrypoint: ["php", "artisan"]
+    networks:
+      - app
+
+  scheduler:
+    build:
+      context: ./.docker/php-fpm
+      dockerfile: dockerfile
+    image: scheduler
+    container_name: scheduler
+    working_dir: /var/www
+    volumes:
+      - ./:/var/www
+    deploy:
+      resources:
+        limits:
+          cpus: '0.30'
+          memory: 100M
+    entrypoint: ["php", "artisan", "schedule:work"]
+    networks:
+      - app
+      - nginx
