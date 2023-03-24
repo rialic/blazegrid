@@ -21,3 +21,5 @@ yarn-error.log
 .eslintrc.js
 .yarnrc.yml
 /.docker
+docker-compose.prod.yml
+docker-compose.yml
