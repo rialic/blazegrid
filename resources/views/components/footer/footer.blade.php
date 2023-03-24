@@ -29,7 +29,7 @@
                     Email
                 </a>
 
-                <a href="https://wa.me/5567999316800" class="text-white-50 text-decoration-none mx-sm-0 mx-md-1">
+                <a href="https://wa.me/5567999521765" class="text-white-50 text-decoration-none mx-sm-0 mx-md-1">
                     Fale Conosco
                 </a>
             </div>

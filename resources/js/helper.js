@@ -22,7 +22,7 @@ export const {
   }
 
   const dateTimeZone = (date, dateFormat) => {
-    return format(new Date(`${date} +0000`), dateFormat, { timeZone: Intl.DateTimeFormat().resolvedOptions().timeZone })
+    return format(new Date(`${date}Z`), dateFormat, { timeZone: Intl.DateTimeFormat().resolvedOptions().timeZone })
   }
 
   /**

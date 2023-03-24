@@ -180,7 +180,7 @@
 
       <div class="mt-3 text-white">
         Ao realizar a transferência, por favor, nos mande o comprovante PIX via
-        <a href="https://wa.me/5567999316800?text=Olá%20eu%20fiz%20um%20pix%20e%20gostaria%20de%20liberar%20o%20meu%20acesso%20para%20poder%20visualizar%20o%20Histórico%20Avançado%20na%20Blazegrids"
+        <a href="https://wa.me/5567999521765?text=Olá%20eu%20fiz%20um%20pix%20e%20gostaria%20de%20liberar%20o%20meu%20acesso%20para%20poder%20visualizar%20o%20Histórico%20Avançado%20na%20Blazegrids"
           target="_blank" class="fw-bold text-danger">Whatsapp</a> e nos informe seu <span class="fw-bold text-danger">email</span> para que possamos realizar a ativação de sua
         conta. A ativação de sua conta ocorre em até 24H depois da confirmação da transferência PIX.
       </div>
