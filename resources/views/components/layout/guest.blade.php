@@ -17,7 +17,7 @@
 <body>
   @include('components.header.header-menu')
 
-  <main>
+  <main class="d-flex flex-column flex-fill">
     {{$slot}}
   </main>
 
