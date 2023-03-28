@@ -10,7 +10,7 @@
       <div class="row justify-content-center">
         <div class="col-lg-7">
           <div class="text-center my-4">
-            <h3 class="mb-3 text-light">Histórico de operações detalhados para Crash e Double</h3>
+            <h3 class="mb-3 text-light">Histórico Blaze detalhado para Crash e Double</h3>
 
             <p class="text-white-50">Na blazeGrids você encontra históricos para Crash e Double bem mais detalhados para você definir sua estratégia de operações.</p>
           </div>
@@ -21,8 +21,24 @@
         <div class="col-lg-4 col-sm-6">
           <div class="text-center mt-3 p-3">
             <div class="mb-3">
+              <div class="d-inline-block irregular-circle circle--primary">
+              <i class="fa-solid fa-clock-rotate-left text-danger fa-xl"></i>
+              </div>
+            </div>
+
+            <h4 class="text-light">Histórico Blaze</h4>
+
+            <p class="text-muted">
+              Oferecemos histórico blaze gratuito para o crash e o double(Breve). Contudo também temos um plano pago que te oferece um histórico com mais detalhes.
+            </p>
+          </div>
+        </div>
+
+        <div class="col-lg-4 col-sm-6">
+          <div class="text-center mt-3 p-3">
+            <div class="mb-3">
               <div class="d-inline-block irregular-circle-alt circle--primary">
-                <i class="fas fa-filter text-danger fa-2xl"></i>
+                <i class="fas fa-filter text-danger fa-xl"></i>
               </div>
             </div>
 
@@ -38,7 +54,7 @@
           <div class="text-center mt-3 p-3">
             <div class="mb-3">
               <div class="d-inline-block irregular-circle circle--primary">
-                <i class="fas fa-list-ol text-danger fa-2xl"></i>
+                <i class="fas fa-list-ol text-danger fa-xl"></i>
               </div>
             </div>
 
@@ -55,7 +71,7 @@
           <div class="text-center mt-3 p-3">
             <div class="mb-3">
               <div class="d-inline-block irregular-circle circle--primary">
-                <i class="fas fa-clock-rotate-left text-danger fa-2xl"></i>
+                <i class="fas fa-clock-rotate-left text-danger fa-xl"></i>
               </div>
             </div>
 
@@ -71,7 +87,7 @@
           <div class="text-center mt-3 p-3">
             <div class="mb-3">
               <div class="d-inline-block irregular-circle-alt circle--primary">
-                <i class="fas fa-clock text-danger fa-2xl"></i>
+                <i class="fas fa-clock text-danger fa-xl"></i>
               </div>
             </div>
 
@@ -87,7 +103,7 @@
           <div class="text-center mt-3 p-3">
             <div class="mb-3">
               <div class="d-inline-block irregular-circle circle--primary">
-                <i class="fas fa-file-excel text-danger fa-2xl"></i>
+                <i class="fas fa-file-excel text-danger fa-xl"></i>
               </div>
             </div>
 
@@ -95,22 +111,6 @@
 
             <p class="text-white-50">
               Baixe os resultados para excel e manipule-os como desejar.
-            </p>
-          </div>
-        </div>
-
-        <div class="col-lg-4 col-sm-6">
-          <div class="text-center mt-3 p-3">
-            <div class="mb-3">
-              <div class="d-inline-block irregular-circle circle--primary">
-                <i class="fas fa-lightbulb text-danger fa-2xl"></i>
-              </div>
-            </div>
-
-            <h4 class="text-light">Recursos Novos</h4>
-
-            <p class="text-muted">
-              Nosso site acabou de nascer, e se for bem aceito pela comunidade, traremos recursos novos com novas análises para o apostador.
             </p>
           </div>
         </div>
@@ -129,11 +129,11 @@
       </div>
 
       <div class="gallery">
-          <img class="my-2 gallery:image" src="{{url(mix('assets/images/img-1.png'))}}" alt="img-1">
+        <img class="my-2 gallery:image" src="{{url(mix('assets/images/img-1.png'))}}" alt="img-1">
 
-          <img class="my-2 gallery:image" src="{{url(mix('assets/images/img-2.png'))}}" alt="img-2">
+        <img class="my-2 gallery:image" src="{{url(mix('assets/images/img-2.png'))}}" alt="img-2">
 
-          <img class="my-2 gallery:image" src="{{url(mix('assets/images/img-3.png'))}}" alt="img-3">
+        <img class="my-2 gallery:image" src="{{url(mix('assets/images/img-3.png'))}}" alt="img-3">
       </div>
     </div>
   </section>
@@ -180,8 +180,7 @@
 
       <div class="mt-3 text-white">
         Ao realizar a transferência, por favor, nos mande o comprovante PIX via
-        <a href="https://wa.me/5567999521765?text=Olá%20eu%20fiz%20um%20pix%20e%20gostaria%20de%20liberar%20o%20meu%20acesso%20para%20poder%20visualizar%20o%20Histórico%20Avançado%20na%20Blazegrids"
-          target="_blank" class="fw-bold text-danger">Whatsapp</a> e nos informe seu <span class="fw-bold text-danger">email</span> para que possamos realizar a ativação de sua
+        <a href="https://wa.me/5567999521765?text=Olá%20eu%20fiz%20um%20pix%20e%20gostaria%20de%20liberar%20o%20meu%20acesso%20para%20poder%20visualizar%20o%20Histórico%20Avançado%20na%20Blazegrids" target="_blank" class="fw-bold text-danger">Whatsapp</a> e nos informe seu <span class="fw-bold text-danger">email</span> para que possamos realizar a ativação de sua
         conta. A ativação de sua conta ocorre em até 24H depois da confirmação da transferência PIX.
       </div>
     </div>

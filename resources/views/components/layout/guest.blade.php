@@ -7,6 +7,8 @@
   <meta http-equiv="Content-Security-Policy" content="upgrade-insecure-requests">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
 
+  {!! seo() !!}
+
   <title>@yield('title')</title>
 
   @stack('css')
@@ -15,7 +17,9 @@
 <body>
   @include('components.header.header-menu')
 
-  {{$slot}}
+  <main>
+    {{$slot}}
+  </main>
 
   @include('components.footer.footer')
 
