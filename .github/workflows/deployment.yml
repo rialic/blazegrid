@@ -42,4 +42,4 @@ jobs:
             # passphrase: ${{ secrets.SSH_PASSPHRASE }}
             # script: 'cd /home/defaultwebsite/blazeGrids && sh server-deploy.sh'
             script: |
-            'ls -lah'
+              ls -lah
