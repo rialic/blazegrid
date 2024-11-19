@@ -34,6 +34,8 @@ jobs:
 
         - name: Deploy to server
           uses: appleboy/ssh-action@master
+          env:
+            GIT_REPOSITORY: git@github.com:rialic/blazegrids.git
           with:
             host: ${{ secrets.SSH_HOST }}
             username: ${{ secrets.SSH_USER }}
