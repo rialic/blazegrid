@@ -40,6 +40,6 @@ jobs:
             port: ${{ secrets.SSH_PORT }}
             key: ${{ secrets.SSH_KEY }}
             passphrase: ${{ secrets.SSH_PASSPHRASE }}
-            # script: 'cd /home/defaultwebsite/blazeGrids && sh server-deploy.sh'
             script: |
-              ls -lah
+              cd /home/defaultwebsite/blazegrids
+              ./deploy.sh
