@@ -42,6 +42,7 @@ jobs:
             port: ${{ secrets.SSH_PORT }}
             key: ${{ secrets.SSH_KEY }}
             passphrase: ${{ secrets.SSH_PASSPHRASE }}
+            envs: GIT_REPOSITORY
             script: |
               cd /home/defaultwebsite/blazegrids
               ./deploy.sh
