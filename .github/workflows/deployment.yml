@@ -9,29 +9,6 @@ jobs:
       name: Deployment
       runs-on: ubuntu-latest
       steps:
-        # - uses: actions/checkout@v2
-        #   with:
-        #     token: ${{ secrets.GIT_TOKEN }}
-        #     ref: master
-
-        # - name: Set Up Node
-        #   uses: actions/setup-node@v1
-        #   with:
-        #     node-version: "19.x"
-        # - run: corepack enable
-        # - run: yarn set version stable
-        # - run: yarn
-        # - run: yarn production
-
-        # - name: Commit built assets
-        #   run: |
-        #     git config --local user.email "rhiali.candido@gmail.com"
-        #     git config --local user.name "rialic"
-        #     git checkout -B production
-        #     git add -f public/
-        #     git commit -m "feat: Build front-end assets"
-        #     git push -f origin production
-
         - name: Deploy to server
           uses: appleboy/ssh-action@master
           env:
