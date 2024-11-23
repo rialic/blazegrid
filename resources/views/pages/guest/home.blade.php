@@ -10,7 +10,7 @@
       <div class="row justify-content-center">
         <div class="col-lg-7">
           <div class="text-center my-4">
-            <h3 class="mb-3 text-light">Rhiali Crash e Double V2</h3>
+            <h3 class="mb-3 text-light">Rhiali Cândido Histórico Blaze detalhado para Crash e Double V1</h3>
 
             <p class="text-white-50">Na blazeGrids você encontra históricos para Crash e Double bem mais detalhados para você definir sua estratégia de operações.</p>
           </div>
