@@ -12,6 +12,8 @@
           <div class="text-center my-4">
             <h3 class="mb-3 text-light">Histórico Crash Rhiali V2</h3>
 
+            <x-icon-camera class="w-50 h-50" />
+
             <p class="text-white-50">Na blazeGrids você encontra históricos para Crash e Double bem mais detalhados para você definir sua estratégia de operações.</p>
           </div>
         </div>
